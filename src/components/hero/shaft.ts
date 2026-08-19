@@ -33,8 +33,10 @@ export type Flight = { value: number }
 export const TRACER = {
   start: new Vector3(0.85, -2.4, 6.5),
   end: new Vector3(-0.4, 3.2, -21),
-  /** wystrzał — dopiero gdy napis zaczyna gasnąć */
+  /** wystrzał */
   launch: 0.08,
+  /** grot dotyka sygnetu — od tego momentu gaśnie napis */
+  hit: 0.88,
   /** koniec toru; reszta przewijania zostaje na uderzenie (krok 4) */
   impact: 0.92,
   /** prefers-reduced-motion — klatka, na której pocisk zastyga */

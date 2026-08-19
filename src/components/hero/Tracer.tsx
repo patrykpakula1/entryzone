@@ -207,7 +207,9 @@ export function Tracer({ flight, frozen }: Props) {
 
       // Lekko szybszy start — wystrzał, nie przesuwanie.
       progress = Math.pow(t, 0.9)
-      fade = smoothstep(0, 0.08, t) * (1 - smoothstep(0.78, 1, t))
+      // Pocisk musi świecić pełnią w chwili, gdy dotyka sygnetu — gaśnie
+      // dopiero na ostatnich procentach toru, do przejęcia przez uderzenie.
+      fade = smoothstep(0, 0.08, t) * (1 - smoothstep(0.97, 1, t))
     }
 
     const visible = fade > 0.001

@@ -2,13 +2,24 @@ import { useLayoutEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
+import { range } from '../../lib/math'
 import { HeroScene } from './HeroScene'
-import type { Flight } from './shaft'
+import { type Flight, TRACER } from './shaft'
 
 gsap.registerPlugin(ScrollTrigger)
 
 /** Ile ekranów przewijania zajmuje przypięte intro. */
 const PIN_SCREENS = 3
+
+/**
+ * Sygnet i wordmark świecą przez cały lot i gasną dopiero, gdy grot dotyka
+ * sygnetu. Liczone z tych samych stałych co tor pocisku — własny tween na osi
+ * czasu odjechałby od trafienia przy każdej korekcie toru.
+ */
+function wordmarkOpacity(flight: number): number {
+  // Pierwiastek: zanik startuje ostro i dobija miękko, jak reakcja na cios.
+  return 1 - Math.pow(range(TRACER.hit, TRACER.impact, flight), 0.6)
+}
 
 export function Hero() {
   const reducedMotion = usePrefersReducedMotion()
@@ -40,10 +51,20 @@ export function Hero() {
       // kolejnych są wprost ułamkami całego przewijania.
       tl.to(flight, { value: 1, duration: 1, ease: 'none' }, 0)
       tl.to(hint.current, { opacity: 0, duration: 0.06, ease: 'none' }, 0)
-      tl.to(overlay.current, { opacity: 0, duration: 0.16, ease: 'none' }, 0.06)
     }, section)
 
-    return () => ctx.revert()
+    // Napis nie ma własnego tweena — jego przezroczystość idzie wprost
+    // z postępu pocisku, tego samego, który czyta scena.
+    const wordmark = overlay.current
+    const setOpacity = gsap.quickSetter(wordmark, 'opacity')
+    const paint = () => setOpacity(wordmarkOpacity(flight.value))
+    gsap.ticker.add(paint)
+
+    return () => {
+      gsap.ticker.remove(paint)
+      ctx.revert()
+      wordmark?.style.removeProperty('opacity')
+    }
   }, [flight, reducedMotion])
 
   return (
