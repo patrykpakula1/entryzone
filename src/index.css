@@ -1,7 +1,9 @@
 @import 'tailwindcss';
 
 /* EntryZone — tokeny projektu.
-   Źródło prawdy: kolory.css. Trzymaj oba pliki zgodne. */
+   JEDYNE źródło prawdy dla kolorów i typografii. Nie duplikuj tych wartości
+   w innych plikach — w JSX używaj klas Tailwinda (bg-gold, text-text),
+   w CSS var(--color-gold). */
 @theme {
   --color-gold: #e3b25a;
   --color-gold-lite: #efc983;

@@ -32,3 +32,6 @@ dist-ssr
 *.sw?
 ~$*
 Thumbs.db
+
+# Archiwa (paczki z assetami trzymamy poza repo)
+*.zip

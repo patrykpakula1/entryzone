@@ -14,6 +14,9 @@ Deadline v1: 12 września.
 - Dane (drużyny, zawodnicy, drabinka, zwycięzcy) w plikach JSON. ZERO backendu w v1.
 
 ## Kolory (używaj wyłącznie tych tokenów)
+Jedyne źródło prawdy: blok `@theme` w `src/index.css`. Nie duplikuj tych
+wartości w innych plikach — zmiana idzie tam i tylko tam.
+
 --gold:      #E3B25A   /* znak, akcenty */
 --gold-lite: #EFC983   /* hover, podświetlenia */
 --copper:    #BC8624   /* detale drugoplanowe */
@@ -21,6 +24,10 @@ Deadline v1: 12 września.
 --surface:   #211D16   /* karty, sekcje */
 --border:    #3A3225   /* ramki, linie */
 --text:      #E8E2D4   /* ciepła biel */
+
+W `@theme` żyją jako `--color-gold`, `--color-bg` itd., więc Tailwind generuje
+z nich klasy: `bg-gold`, `text-text`, `border-border`. W czystym CSS sięgaj po
+`var(--color-gold)`. Nigdy nie wpisuj hexów na sztywno.
 
 Złota używamy MAŁO. Dominuje ciemne tło i ciepła biel. Złoto = znak, jedna linia
 akcentu, stan aktywny. Nigdy całe sekcje w złocie.
