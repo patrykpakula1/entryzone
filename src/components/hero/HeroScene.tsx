@@ -4,6 +4,7 @@ import { token } from '../../lib/tokens'
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
 import { DustField } from './DustField'
 import { LightShaft } from './LightShaft'
+import { Tracer } from './Tracer'
 import { DUST_COUNT_DESKTOP, DUST_COUNT_MOBILE } from './shaft'
 
 /**
@@ -37,6 +38,7 @@ export function HeroScene() {
         frozen={reducedMotion}
         pixelRatio={pixelRatio}
       />
+      <Tracer frozen={reducedMotion} />
     </Canvas>
   )
 }
