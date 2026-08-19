@@ -1,0 +1,10 @@
+/* EntryZone — tokeny kolorów */
+:root {
+  --gold:      #E3B25A;
+  --gold-lite: #EFC983;
+  --copper:    #BC8624;
+  --bg:        #14120E;
+  --surface:   #211D16;
+  --border:    #3A3225;
+  --text:      #E8E2D4;
+}

@@ -1,0 +1,45 @@
+@import 'tailwindcss';
+
+/* EntryZone — tokeny projektu.
+   Źródło prawdy: kolory.css. Trzymaj oba pliki zgodne. */
+@theme {
+  --color-gold: #e3b25a;
+  --color-gold-lite: #efc983;
+  --color-copper: #bc8624;
+  --color-bg: #14120e;
+  --color-surface: #211d16;
+  --color-border: #3a3225;
+  --color-text: #e8e2d4;
+
+  --font-display: 'Lora', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Lora', Georgia, 'Times New Roman', serif;
+
+  /* Wersaliki nagłówków — zakres z CLAUDE.md */
+  --tracking-wordmark: 0.15em;
+  --tracking-wordmark-wide: 0.25em;
+}
+
+@layer base {
+  html {
+    background-color: var(--color-bg);
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wordmark);
+  }
+}
