@@ -12,7 +12,7 @@ import {
 } from 'three'
 import { tokenColor } from '../../lib/tokens'
 import { range, smoothstep } from '../../lib/math'
-import { type Flight, TRACER } from './shaft'
+import { type Flight, TRACER, TRACER_DIRECTION, tracerProgress } from './shaft'
 
 const streakVertexShader = /* glsl */ `
   varying vec2 vUv;
@@ -109,11 +109,6 @@ export function Tracer({ flight, frozen }: Props) {
   const group = useRef<Group>(null)
   const glow = useRef<Mesh>(null)
 
-  const direction = useMemo(
-    () => new Vector3().subVectors(TRACER.end, TRACER.start).normalize(),
-    [],
-  )
-
   const core = useMemo(() => streakGeometry(0.5, 2.6), [])
   const halo = useMemo(() => streakGeometry(1.6, 3.6), [])
   const glowPlane = useMemo(() => new PlaneGeometry(0.7, 0.7), [])
@@ -205,9 +200,8 @@ export function Tracer({ flight, frozen }: Props) {
     if (!frozen) {
       const t = range(TRACER.launch, TRACER.impact, flight.value)
 
-      // Lekko szybszy start — wystrzał, nie przesuwanie.
-      progress = Math.pow(t, 0.9)
-      // Pocisk musi świecić pełnią w chwili, gdy dotyka sygnetu — gaśnie
+      progress = tracerProgress(flight.value)
+      // Pocisk musi świecić pełnią w chwili, gdy dotyka płyty — gaśnie
       // dopiero na ostatnich procentach toru, do przejęcia przez uderzenie.
       fade = smoothstep(0, 0.08, t) * (1 - smoothstep(0.97, 1, t))
     }
@@ -226,7 +220,7 @@ export function Tracer({ flight, frozen }: Props) {
     group.current.position.copy(point)
 
     // Baza płata: +Z wzdłuż ogona, +Y (normalna) możliwie wprost do kamery.
-    axisZ.copy(direction).negate()
+    axisZ.copy(TRACER_DIRECTION).negate()
     toCamera.subVectors(camera.position, point).normalize()
     axisX.crossVectors(toCamera, axisZ)
     // Patrzenie dokładnie wzdłuż toru — dowolna prostopadła jest tak samo dobra.
