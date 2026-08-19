@@ -19,6 +19,13 @@ export const DUST_COUNT_DESKTOP = 2500
 export const DUST_COUNT_MOBILE = 500
 
 /**
+ * Postęp intra, 0..1. ScrollTrigger wpisuje tu wartość, pętla renderu ją
+ * czyta — po drodze nie ma setState, więc przewijanie nie przerysowuje
+ * Reacta.
+ */
+export type Flight = { value: number }
+
+/**
  * Tor pocisku — od punktu tuż przed kamerą w głąb sceny, wewnątrz smugi.
  * Lekki skos w bok i w górę, żeby wydłużony kształt czytał się na ekranie,
  * a nie zwijał w punkt na osi patrzenia.
@@ -26,10 +33,22 @@ export const DUST_COUNT_MOBILE = 500
 export const TRACER = {
   start: new Vector3(0.85, -2.4, 6.5),
   end: new Vector3(-0.4, 3.2, -21),
-  /** sekundy lotu */
-  flight: 1.8,
-  /** przerwa między strzałami */
-  pause: 1.0,
+  /** wystrzał — dopiero gdy napis zaczyna gasnąć */
+  launch: 0.08,
+  /** koniec toru; reszta przewijania zostaje na uderzenie (krok 4) */
+  impact: 0.92,
   /** prefers-reduced-motion — klatka, na której pocisk zastyga */
   frozenProgress: 0.3,
+} as const
+
+/**
+ * Kamera rusza za pociskiem dopiero, gdy ten zdąży odskoczyć — inaczej lot
+ * nie ma czego mijać. Zostaje wewnątrz słupa kurzu i przed poświatą (z = -2),
+ * żeby scena nie została za plecami.
+ */
+export const CAMERA = {
+  start: new Vector3(0, 0, 9),
+  end: new Vector3(-0.15, 1.7, 1),
+  /** postęp, przy którym kamera zaczyna gonić */
+  chase: 0.18,
 } as const

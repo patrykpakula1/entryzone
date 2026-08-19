@@ -39,7 +39,9 @@ const vertexShader = /* glsl */ `
 
     vec4 mv = modelViewMatrix * vec4(p, 1.0);
     gl_Position = projectionMatrix * mv;
-    gl_PointSize = aSize * uSize * uPixelRatio * (8.0 / -mv.z);
+    // Kamera wlatuje w słup kurzu, więc mijane z bliska drobiny rozdęłyby się
+    // w plamy na pół ekranu — stąd sufit na rozmiar punktu.
+    gl_PointSize = min(aSize * uSize * uPixelRatio * (8.0 / -mv.z), 48.0 * uPixelRatio);
 
     // Bliżej osi smugi = jaśniej.
     vCore = 1.0 - length(aDisk);

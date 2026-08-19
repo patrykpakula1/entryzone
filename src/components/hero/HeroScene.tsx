@@ -2,16 +2,27 @@ import { useMemo } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { token } from '../../lib/tokens'
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
+import { CameraRig } from './CameraRig'
 import { DustField } from './DustField'
 import { LightShaft } from './LightShaft'
 import { Tracer } from './Tracer'
-import { DUST_COUNT_DESKTOP, DUST_COUNT_MOBILE } from './shaft'
+import {
+  CAMERA,
+  DUST_COUNT_DESKTOP,
+  DUST_COUNT_MOBILE,
+  type Flight,
+} from './shaft'
+
+type Props = {
+  /** postęp intra spod ScrollTrigger — czytany w pętli renderu, nie w Reakcie */
+  flight: Flight
+}
 
 /**
  * Jedna scena, jedna pętla renderu. Liczba cząsteczek ustalana raz przy
  * montowaniu — przebudowa bufora przy każdym resize nie jest tego warta.
  */
-export function HeroScene() {
+export function HeroScene({ flight }: Props) {
   const reducedMotion = usePrefersReducedMotion()
 
   const isMobile = useMemo(
@@ -27,18 +38,24 @@ export function HeroScene() {
     <Canvas
       className="absolute inset-0"
       dpr={[1, 2]}
-      camera={{ position: [0, 0, 9], fov: 45, near: 0.1, far: 100 }}
+      camera={{
+        position: [CAMERA.start.x, CAMERA.start.y, CAMERA.start.z],
+        fov: 45,
+        near: 0.1,
+        far: 100,
+      }}
       gl={{ antialias: false, powerPreference: 'high-performance' }}
       frameloop={reducedMotion ? 'demand' : 'always'}
     >
       <color attach="background" args={[background]} />
+      <CameraRig flight={flight} frozen={reducedMotion} />
       <LightShaft />
       <DustField
         count={count}
         frozen={reducedMotion}
         pixelRatio={pixelRatio}
       />
-      <Tracer frozen={reducedMotion} />
+      <Tracer flight={flight} frozen={reducedMotion} />
     </Canvas>
   )
 }

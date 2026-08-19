@@ -11,7 +11,8 @@ import {
   Vector3,
 } from 'three'
 import { tokenColor } from '../../lib/tokens'
-import { TRACER } from './shaft'
+import { range, smoothstep } from '../../lib/math'
+import { type Flight, TRACER } from './shaft'
 
 const streakVertexShader = /* glsl */ `
   varying vec2 vUv;
@@ -83,11 +84,6 @@ function setFade(material: ShaderMaterial, value: number) {
   material.uniforms.uFade.value = value
 }
 
-function smoothstep(edge0: number, edge1: number, x: number) {
-  const t = Math.min(Math.max((x - edge0) / (edge1 - edge0), 0), 1)
-  return t * t * (3 - 2 * t)
-}
-
 const point = new Vector3()
 const toCamera = new Vector3()
 const axisX = new Vector3()
@@ -96,21 +92,22 @@ const axisZ = new Vector3()
 const basis = new Matrix4()
 
 type Props = {
+  /** postęp intra spod ScrollTrigger */
+  flight: Flight
   /** prefers-reduced-motion — pocisk zastyga w jednej klatce lotu */
   frozen: boolean
 }
 
 /**
  * Świecąca smuga lecąca od kamery w głąb sceny, wewnątrz słupa światła.
- * W kroku 2 chodzi w pętli; w kroku 3 postęp lotu przejmie ScrollTrigger.
+ * Pozycją steruje wyłącznie scroll — pocisk stoi, dopóki stoi strona.
  */
-export function Tracer({ frozen }: Props) {
+export function Tracer({ flight, frozen }: Props) {
   const invalidate = useThree((s) => s.invalidate)
   const camera = useThree((s) => s.camera)
 
   const group = useRef<Group>(null)
   const glow = useRef<Mesh>(null)
-  const elapsed = useRef(0)
 
   const direction = useMemo(
     () => new Vector3().subVectors(TRACER.end, TRACER.start).normalize(),
@@ -199,24 +196,18 @@ export function Tracer({ frozen }: Props) {
     invalidate()
   }, [invalidate])
 
-  useFrame((_, delta) => {
+  useFrame(() => {
     if (!group.current || !glow.current) return
 
     let progress: number = TRACER.frozenProgress
     let fade = 1
 
     if (!frozen) {
-      // clamp — po powrocie z nieaktywnej karty delta potrafi być ogromna
-      elapsed.current += Math.min(delta, 0.05)
-      const cycle = elapsed.current % (TRACER.flight + TRACER.pause)
-      const t = Math.min(cycle / TRACER.flight, 1)
+      const t = range(TRACER.launch, TRACER.impact, flight.value)
 
       // Lekko szybszy start — wystrzał, nie przesuwanie.
       progress = Math.pow(t, 0.9)
-      fade =
-        cycle > TRACER.flight
-          ? 0
-          : smoothstep(0, 0.1, t) * (1 - smoothstep(0.7, 1, t))
+      fade = smoothstep(0, 0.08, t) * (1 - smoothstep(0.78, 1, t))
     }
 
     const visible = fade > 0.001
