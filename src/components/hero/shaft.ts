@@ -28,17 +28,19 @@ export type Flight = { value: number }
 
 /**
  * Tor pocisku — od punktu tuż przed kamerą w głąb sceny, wewnątrz smugi.
- * Lekki skos w bok i w górę, żeby wydłużony kształt czytał się na ekranie,
- * a nie zwijał w punkt na osi patrzenia.
+ * Koniec toru jest tak dobrany, żeby w chwili TRACER.hit grot wypadał
+ * dokładnie na sygnecie: w poziomie na osi kamery, w pionie na 44% wysokości
+ * kadru. Obie te wartości nie zależą od proporcji ekranu, więc pocisk trafia
+ * w znak tak samo na monitorze i na telefonie.
  */
 export const TRACER = {
   start: new Vector3(0.85, -2.4, 6.5),
-  end: new Vector3(-0.4, 3.2, -21),
+  end: new Vector3(-0.184, 2.872, -21),
   /** wystrzał */
   launch: 0.08,
-  /** grot dotyka płyty — od tego momentu gaśnie napis i rusza uderzenie */
+  /** grot dotyka sygnetu — od tego momentu leci uderzenie */
   hit: 0.88,
-  /** koniec toru: resztki smugi giną w rozbłysku */
+  /** koniec toru: dobieg smugi, gdyby nic jej nie zatrzymało */
   impact: 0.92,
   /** rozpęd zamiast ruszania z miejsca */
   easing: 0.9,
@@ -46,7 +48,7 @@ export const TRACER = {
   frozenProgress: 0.3,
 } as const
 
-/** Kierunek lotu — jedna definicja dla smugi, celu i pierścienia. */
+/** Kierunek lotu — jedna definicja dla smugi i pierścienia uderzeniowego. */
 export const TRACER_DIRECTION = new Vector3()
   .subVectors(TRACER.end, TRACER.start)
   .normalize()
@@ -57,54 +59,38 @@ export function tracerProgress(flight: number): number {
   return Math.pow(t, TRACER.easing)
 }
 
-/** Punkt, w którym grot jest w chwili trafienia — środek płyty siedzi na nim. */
-const hitPoint = new Vector3().lerpVectors(
+/** Postęp toru w chwili trafienia — dalej pocisk już nie leci. */
+export const HIT_PROGRESS = tracerProgress(TRACER.hit)
+
+/** Punkt trafienia w scenie. Rzutuje się na środek sygnetu. */
+export const HIT_POINT = new Vector3().lerpVectors(
   TRACER.start,
   TRACER.end,
-  tracerProgress(TRACER.hit),
+  HIT_PROGRESS,
 )
 
-/**
- * Cel: kanciasta płyta z chevronem, w poprzek toru, przodem do nadlatującego
- * pocisku. Wyłania się z mroku w trakcie lotu — widać, dokąd lecimy.
- */
-export const TARGET = {
-  /**
-   * Płyta stoi kawałek za punktem trafienia. Poświata grotu jest płatem
-   * zwróconym do kamery, czyli niemal równoległym do lica płyty — bez tego
-   * odstępu połowa poświaty wpadałaby pod powierzchnię i ucinała się kantem.
-   */
-  position: hitPoint.clone().addScaledVector(TRACER_DIRECTION, 0.9),
-  radius: 3.3,
-  /** początek wyłaniania się z ciemności */
-  revealStart: 0.24,
-  /** pełna widoczność, na długo przed trafieniem */
-  revealEnd: 0.82,
-  /** prefers-reduced-motion — cel majaczy w mroku statycznej klatki */
-  frozenReveal: 0.4,
-} as const
-
-/** Obrót płyty i pierścienia: lico prostopadle do toru, przodem do pocisku. */
-export const TARGET_QUATERNION = (() => {
+/** Obrót pierścienia: rozchodzi się w poprzek toru, czyli na boki kadru. */
+export const HIT_QUATERNION = (() => {
   const pivot = new Object3D()
-  pivot.position.copy(TARGET.position)
+  pivot.position.copy(HIT_POINT)
   pivot.lookAt(TRACER.start)
   return pivot.quaternion.clone()
 })()
 
 /**
- * Uderzenie. Zaczyna się dokładnie tam, gdzie grot dotyka płyty — rozbłysk,
- * pierścień, odłamki i drganie kamery czytają jeden i ten sam postęp scrolla,
+ * Uderzenie. Zaczyna się dokładnie tam, gdzie grot dotyka sygnetu — rozbłysk,
+ * pierścień, rozpad znaku i drganie kamery czytają ten sam postęp scrolla,
  * więc nic nie może się rozjechać z trafieniem.
  */
 export const IMPACT = {
   start: TRACER.hit,
   /** odłamki dolatują, rozbłysk dogasa */
   end: 0.99,
-  /** drganie kamery gaśnie dużo wcześniej niż reszta */
-  shakeEnd: 0.945,
-  /** wychylenie kamery w jednostkach sceny */
-  shakeAmplitude: 0.3,
+  /** zasięg pierścienia w jednostkach sceny — wychodzi poza kadr */
+  ringReach: 13,
+  /** drganie kamery: krótkie kopnięcie, nie kołysanie */
+  shakeEnd: 0.925,
+  shakeAmplitude: 0.16,
 } as const
 
 /**

@@ -8,7 +8,7 @@ import {
 } from 'three'
 import { tokenColor } from '../../lib/tokens'
 import { range, smoothstep } from '../../lib/math'
-import { IMPACT, TARGET, TARGET_QUATERNION, type Flight } from './shaft'
+import { HIT_POINT, HIT_QUATERNION, IMPACT, type Flight } from './shaft'
 
 const vertexShader = /* glsl */ `
   varying vec2 vUv;
@@ -64,9 +64,6 @@ function setUniform(material: ShaderMaterial, name: string, value: number) {
   material.uniforms[name].value = value
 }
 
-/** Ile promieni płyty obejmuje pierścień, zanim zgaśnie za kadrem. */
-const RING_REACH = 4
-
 type Props = {
   /** postęp intra spod ScrollTrigger */
   flight: Flight
@@ -75,9 +72,9 @@ type Props = {
 }
 
 /**
- * Rozbłysk i pierścień uderzeniowy. Oba wiszą na tym samym postępie scrolla
- * co rozpad płyty — trafienie nie ma własnej osi czasu, którą dałoby się
- * rozjechać z resztą.
+ * Rozbłysk i pierścień uderzeniowy w punkcie, w który leci pocisk. Oba wiszą
+ * na tym samym postępie scrolla co rozpad znaku — trafienie nie ma własnej osi
+ * czasu, którą dałoby się rozjechać z resztą.
  */
 export function Impact({ flight, frozen }: Props) {
   const invalidate = useThree((s) => s.invalidate)
@@ -87,10 +84,10 @@ export function Impact({ flight, frozen }: Props) {
   const ring = useRef<Mesh>(null)
 
   const flashPlane = useMemo(() => new PlaneGeometry(1, 1), [])
-  const ringPlane = useMemo(() => {
-    const size = TARGET.radius * RING_REACH * 2
-    return new PlaneGeometry(size, size)
-  }, [])
+  const ringPlane = useMemo(
+    () => new PlaneGeometry(IMPACT.ringReach * 2, IMPACT.ringReach * 2),
+    [],
+  )
 
   const flashMaterial = useMemo(
     () =>
@@ -180,15 +177,15 @@ export function Impact({ flight, frozen }: Props) {
         ref={ring}
         geometry={ringPlane}
         material={ringMaterial}
-        position={TARGET.position}
-        quaternion={TARGET_QUATERNION}
+        position={HIT_POINT}
+        quaternion={HIT_QUATERNION}
         visible={false}
       />
       <mesh
         ref={flash}
         geometry={flashPlane}
         material={flashMaterial}
-        position={TARGET.position}
+        position={HIT_POINT}
         visible={false}
       />
     </>

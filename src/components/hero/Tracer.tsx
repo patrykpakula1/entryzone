@@ -12,7 +12,13 @@ import {
 } from 'three'
 import { tokenColor } from '../../lib/tokens'
 import { range, smoothstep } from '../../lib/math'
-import { type Flight, TRACER, TRACER_DIRECTION, tracerProgress } from './shaft'
+import {
+  type Flight,
+  HIT_PROGRESS,
+  TRACER,
+  TRACER_DIRECTION,
+  tracerProgress,
+} from './shaft'
 
 const streakVertexShader = /* glsl */ `
   varying vec2 vUv;
@@ -99,7 +105,7 @@ type Props = {
 }
 
 /**
- * Świecąca smuga lecąca od kamery w głąb sceny, wewnątrz słupa światła.
+ * Świecąca smuga lecąca od kamery w głąb sceny, wprost w sygnet.
  * Pozycją steruje wyłącznie scroll — pocisk stoi, dopóki stoi strona.
  */
 export function Tracer({ flight, frozen }: Props) {
@@ -200,10 +206,11 @@ export function Tracer({ flight, frozen }: Props) {
     if (!frozen) {
       const t = range(TRACER.launch, TRACER.impact, flight.value)
 
-      progress = tracerProgress(flight.value)
-      // Pocisk musi świecić pełnią w chwili, gdy dotyka płyty — gaśnie
-      // dopiero na ostatnich procentach toru, do przejęcia przez uderzenie.
-      fade = smoothstep(0, 0.08, t) * (1 - smoothstep(0.97, 1, t))
+      // Po trafieniu grot zostaje na sygnecie — dalej nie ma dokąd lecieć.
+      progress = Math.min(tracerProgress(flight.value), HIT_PROGRESS)
+      // Pełnia blasku przypada na moment dotknięcia sygnetu; zaraz po nim
+      // smuga gaśnie, bo pałeczkę przejmuje rozbłysk.
+      fade = smoothstep(0, 0.08, t) * (1 - smoothstep(0.95, 0.995, t))
     }
 
     const visible = fade > 0.001

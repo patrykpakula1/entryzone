@@ -6,7 +6,6 @@ import { CameraRig } from './CameraRig'
 import { DustField } from './DustField'
 import { Impact } from './Impact'
 import { LightShaft } from './LightShaft'
-import { Target } from './Target'
 import { Tracer } from './Tracer'
 import {
   CAMERA,
@@ -57,7 +56,6 @@ export function HeroScene({ flight }: Props) {
         frozen={reducedMotion}
         pixelRatio={pixelRatio}
       />
-      <Target flight={flight} frozen={reducedMotion} />
       <Tracer flight={flight} frozen={reducedMotion} />
       <Impact flight={flight} frozen={reducedMotion} />
     </Canvas>
