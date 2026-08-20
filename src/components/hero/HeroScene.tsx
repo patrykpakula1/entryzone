@@ -11,19 +11,27 @@ import {
   CAMERA,
   DUST_COUNT_DESKTOP,
   DUST_COUNT_MOBILE,
+  type Exit,
   type Flight,
 } from './shaft'
 
 type Props = {
   /** postęp intra spod ScrollTrigger — czytany w pętli renderu, nie w Reakcie */
   flight: Flight
+  /** postęp wyjścia — druga oś, dopięta za lotem */
+  exit: Exit
+  /** czy hero jest w kadrze — poza nim pętla renderu stoi */
+  onScreen: boolean
 }
 
 /**
  * Jedna scena, jedna pętla renderu. Liczba cząsteczek ustalana raz przy
  * montowaniu — przebudowa bufora przy każdym resize nie jest tego warta.
+ *
+ * Bloomu nie ma nigdzie: poświata jest wypalona w shaderach na blendingu
+ * addytywnym, więc nie ma post-processingu, który trzeba by gasić na telefonie.
  */
-export function HeroScene({ flight }: Props) {
+export function HeroScene({ flight, exit, onScreen }: Props) {
   const reducedMotion = usePrefersReducedMotion()
 
   const isMobile = useMemo(
@@ -34,6 +42,10 @@ export function HeroScene({ flight }: Props) {
   const count = isMobile ? DUST_COUNT_MOBILE : DUST_COUNT_DESKTOP
   const pixelRatio = Math.min(window.devicePixelRatio, 2)
   const background = token('--color-bg')
+
+  // Poza kadrem nie ma czego rysować — pełna pętla paliłaby baterię przez
+  // całą resztę strony. Reduced-motion i tak rysuje tylko na żądanie.
+  const frameloop = reducedMotion ? 'demand' : onScreen ? 'always' : 'never'
 
   return (
     <Canvas
@@ -46,10 +58,10 @@ export function HeroScene({ flight }: Props) {
         far: 100,
       }}
       gl={{ antialias: false, powerPreference: 'high-performance' }}
-      frameloop={reducedMotion ? 'demand' : 'always'}
+      frameloop={frameloop}
     >
       <color attach="background" args={[background]} />
-      <CameraRig flight={flight} frozen={reducedMotion} />
+      <CameraRig flight={flight} exit={exit} frozen={reducedMotion} />
       <LightShaft />
       <DustField
         count={count}

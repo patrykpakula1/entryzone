@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import { Vector3 } from 'three'
 import { range, smoothstep } from '../../lib/math'
-import { CAMERA, IMPACT, type Flight } from './shaft'
+import { CAMERA, EXIT, IMPACT, type Exit, type Flight } from './shaft'
 
 const shake = new Vector3()
 
@@ -26,9 +26,29 @@ function impactShake(flight: number, out: Vector3): Vector3 {
   )
 }
 
+/**
+ * Tor wyjścia. Do EXIT.swap kadr rzuca się w stronę trafienia, potem — już pod
+ * szczelnym rozbłyskiem — kamera jest po drugiej stronie i opada wzdłuż smugi.
+ * Przeskok między torami jest niewidoczny, bo wypada w środku rozbłysku.
+ */
+function exitPosition(exit: number, out: Vector3): Vector3 {
+  if (exit < EXIT.swap) {
+    // Rozpęd zamiast równego dojazdu — im bliżej trafienia, tym szybciej.
+    const t = Math.pow(range(0, EXIT.swap, exit), 1.7)
+    return out.lerpVectors(CAMERA.end, EXIT.lunge, t)
+  }
+
+  // Wynurzenie z pełną prędkością i miękkie osiadanie — kamera oddaje ruch
+  // scrollowi strony, zamiast zatrzymać się w miejscu przed końcem pinu.
+  const t = Math.pow(range(EXIT.swap, 1, exit), 0.8)
+  return out.lerpVectors(EXIT.top, EXIT.bottom, t)
+}
+
 type Props = {
   /** postęp intra spod ScrollTrigger */
   flight: Flight
+  /** postęp wyjścia — rusza dopiero, gdy lot dobiegnie końca */
+  exit: Exit
   /** prefers-reduced-motion — kamera zostaje w klatce startowej */
   frozen: boolean
 }
@@ -37,7 +57,7 @@ type Props = {
  * Kamera goni pocisk. Nie obraca się — sam przelot w głąb plus kurz mijany
  * po drodze robią robotę, a obrót przy scrubie łatwo zamienia się w kołysanie.
  */
-export function CameraRig({ flight, frozen }: Props) {
+export function CameraRig({ flight, exit, frozen }: Props) {
   const camera = useThree((s) => s.camera)
 
   useEffect(() => {
@@ -46,6 +66,13 @@ export function CameraRig({ flight, frozen }: Props) {
 
   useFrame(() => {
     if (frozen) return
+
+    // Wyjście przejmuje kamerę w całości: zaczyna dokładnie tam, gdzie lot
+    // ją zostawił, więc przejęcie nie ma szwu.
+    if (exit.value > 0) {
+      exitPosition(exit.value, camera.position)
+      return
+    }
 
     // Rozpęd zamiast ruszania z miejsca — stąd potęga na wygładzonym zakresie.
     const t = Math.pow(smoothstep(CAMERA.chase, 1, flight.value), 1.2)

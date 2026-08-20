@@ -104,3 +104,50 @@ export const CAMERA = {
   /** postęp, przy którym kamera zaczyna gonić */
   chase: 0.18,
 } as const
+
+/**
+ * Wyjście z intra, 0..1. Osobna oś dopięta za lotem: dzięki temu przejście
+ * dokłada się do osi czasu, nie ruszając ani jednej wartości z faz 0-3.
+ */
+export type Exit = { value: number }
+
+/**
+ * Przejście do kolejnej sekcji. Rozbłysk zalewa kadr, a pod nim kamera
+ * przechodzi na drugą stronę trafienia i opada wzdłuż smugi w ciemność —
+ * tam, gdzie zaczyna się treść strony.
+ *
+ * Kolejność bloom < swap < clear jest wiążąca: przeskok kamery musi wypaść
+ * pod szczelnym rozbłyskiem, inaczej widać cięcie.
+ */
+export const EXIT = {
+  /**
+   * Kiedy rozbłysk wyjścia zaczyna narastać — jeszcze w skali lotu, przed
+   * jego końcem. Podejmuje blask uderzenia, zanim ten zgaśnie, więc światło
+   * przybiera jednym ruchem zamiast błysnąć drugi raz.
+   */
+  riseFrom: 0.93,
+  /** rozbłysk urósł na tyle, że zaszywa kadr */
+  bloom: 0.34,
+  /** kamera przeskakuje z toru rozpędu na tor opadania */
+  swap: 0.4,
+  /** rozbłysk zaczyna gasnąć — od tej chwili widać już opadanie */
+  clear: 0.46,
+  /** rozbłysk zgaszony, zostaje sama scena */
+  clearEnd: 0.8,
+  /**
+   * Dokąd kadr rzuca się w stronę trafienia, nim zaleje go światło. Krótko
+   * i wzdłuż toru pocisku: kamera ma zostać w słupie kurzu, żeby rozpęd miał
+   * co mijać. Dalszy lot i tak byłby pod szczelnym rozbłyskiem, więc nic by
+   * nie wniósł.
+   */
+  lunge: new Vector3().copy(CAMERA.end).addScaledVector(TRACER_DIRECTION, 1.4),
+  /**
+   * Wynurzenie: wysoko w smudze, w najjaśniejszym jej miejscu. Kamera stoi
+   * dalej od słupa niż w locie — z bliska w kadrze mieści się ledwie skrawek
+   * światła i opadanie czyta się jak płaska plama, zwłaszcza na telefonie,
+   * gdzie kurzu jest pięć razy mniej.
+   */
+  top: new Vector3(0, 7.5, 5),
+  /** koniec opadania: pod smugą, w ciemności — dalej przejmuje strona */
+  bottom: new Vector3(0, -7.5, 5),
+} as const

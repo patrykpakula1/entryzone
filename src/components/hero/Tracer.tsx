@@ -49,7 +49,10 @@ const streakFragmentShader = /* glsl */ `
     float across = 1.0 - smoothstep(0.0, halfWidth, abs(vUv.x - 0.5));
     across *= across;
 
-    float along = pow(head, uTaper);
+    // Płat kończy się krawędzią siatki. Bez wygaszenia ostatniego skrawka
+    // widać w tym miejscu prostą kreskę — najbardziej przy zatrzymanym
+    // pocisku, bo tam nikt jej nie przewinie.
+    float along = pow(head, uTaper) * (1.0 - smoothstep(0.86, 1.0, head));
 
     vec3 c = mix(uColor, uHotColor, smoothstep(0.7, 1.0, head) * across);
     gl_FragColor = vec4(c, across * along * uIntensity * uFade);

@@ -1,16 +1,30 @@
-import { useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
 import { range } from '../../lib/math'
 import { HeroScene } from './HeroScene'
-import { buildDebris, paintDebris, type Shard } from './shatter'
-import { IMPACT, type Flight } from './shaft'
+import { buildDebris, DEBRIS_SPENT, paintDebris, type Shard } from './shatter'
+import { EXIT, IMPACT, type Exit, type Flight } from './shaft'
 
 gsap.registerPlugin(ScrollTrigger)
 
-/** Ile ekranów przewijania zajmuje przypięte intro. */
-const PIN_SCREENS = 3
+/** Ile ekranów przewijania zajmuje sam lot, czyli fazy 0-3. */
+const FLIGHT_SCREENS = 3
+/** Ile ekranów zajmuje wyjście: rozbłysk, przejście, opadanie. */
+const EXIT_SCREENS = 1
+const PIN_SCREENS = FLIGHT_SCREENS + EXIT_SCREENS
+/** Lot ma na osi czasu długość 1, więc wyjście to wprost proporcja ekranów. */
+const EXIT_SPAN = EXIT_SCREENS / FLIGHT_SCREENS
+
+/** Rozbłysk startuje jako punkt światła w miejscu trafienia. */
+const VEIL_SEED = 0.14
+/**
+ * Skala, przy której pełny kolor gradientu wychodzi poza róg kadru. Promień
+ * rozbłysku jest podany w vmax, więc rośnie razem z ekranem — ta sama skala
+ * zaszywa kadr na monitorze i na telefonie.
+ */
+const VEIL_COVER = 3.8
 
 export function Hero() {
   const reducedMotion = usePrefersReducedMotion()
@@ -21,8 +35,27 @@ export function Hero() {
   const mark = useRef<HTMLHeadingElement>(null)
   const debris = useRef<HTMLDivElement>(null)
   const hint = useRef<HTMLSpanElement>(null)
+  const veil = useRef<HTMLDivElement>(null)
   // Jeden obiekt na całe życie komponentu: GSAP go tweenuje, scena czyta.
   const [flight] = useState<Flight>(() => ({ value: 0 }))
+  const [exit] = useState<Exit>(() => ({ value: 0 }))
+
+  // Poza kadrem scena nie ma czego rysować — hero to jedyna sekcja z 3D,
+  // a reszta strony nie musi płacić za jego pętlę renderu.
+  const [onScreen, setOnScreen] = useState(true)
+
+  useEffect(() => {
+    const el = section.current
+    if (!el) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setOnScreen(entry.isIntersecting),
+      // Zapas, żeby scena wracała do życia, zanim wjedzie w kadr.
+      { rootMargin: '20% 0px' },
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
 
   useLayoutEffect(() => {
     // prefers-reduced-motion: żadnego pinu ani scruba, zostaje statyczna klatka.
@@ -42,9 +75,40 @@ export function Hero() {
       })
 
       // Pierwszy tween nadaje osi czasu długość 1, więc pozycje i czasy
-      // kolejnych są wprost ułamkami całego przewijania.
+      // kolejnych są wprost ułamkami całego lotu.
       tl.to(flight, { value: 1, duration: 1, ease: 'none' }, 0)
       tl.to(hint.current, { opacity: 0, duration: 0.06, ease: 'none' }, 0)
+
+      // Wyjście dopięte za lotem: rozbłysk zalewa kadr, a pod nim kamera
+      // przechodzi na drugą stronę trafienia i opada do kolejnej sekcji.
+      tl.to(exit, { value: 1, duration: EXIT_SPAN, ease: 'none' }, 1)
+
+      // Rozbłysk puchnie z punktu trafienia, nie zapala się płasko na całym
+      // kadrze — dlatego rośnie skalą, a nie samą przezroczystością. Wystartuje
+      // jeszcze w trakcie lotu, żeby przejąć blask uderzenia bez przerwy.
+      const peak = 1 + EXIT_SPAN * EXIT.bloom
+      gsap.set(veil.current, { scale: VEIL_SEED, transformOrigin: '50% 44%' })
+      tl.to(
+        veil.current,
+        {
+          opacity: 1,
+          scale: VEIL_COVER,
+          duration: peak - EXIT.riseFrom,
+          ease: 'power2.in',
+        },
+        EXIT.riseFrom,
+      )
+      tl.to(
+        veil.current,
+        {
+          opacity: 0,
+          // Dalej rośnie, gdy gaśnie — światło się rozchodzi, a nie ścieka.
+          scale: VEIL_COVER * 1.3,
+          duration: EXIT_SPAN * (EXIT.clearEnd - EXIT.clear),
+          ease: 'power2.out',
+        },
+        1 + EXIT_SPAN * EXIT.clear,
+      )
     }, section)
 
     const overlayEl = overlay.current
@@ -80,19 +144,34 @@ export function Hero() {
 
     // Znak nie ma własnego tweena — rozpad idzie wprost z postępu pocisku,
     // tego samego, który czyta scena.
-    let breaking: boolean | null = null
+    let whole: boolean | null = null
+    let flying: boolean | null = null
+    let painted = -1
+
     const paint = () => {
       const progress = range(IMPACT.start, IMPACT.end, flight.value)
-      const broken = progress > 0
 
-      if (broken !== breaking) {
-        breaking = broken
-        // Odłamki pokrywają znak co do piksela, więc podmiana jest niewidoczna.
-        if (overlayEl) overlayEl.style.visibility = broken ? 'hidden' : 'visible'
-        if (host) host.style.visibility = broken ? 'visible' : 'hidden'
+      // Odłamki pokrywają znak co do piksela, więc podmiana jest niewidoczna.
+      const intact = progress === 0
+      if (intact !== whole) {
+        whole = intact
+        if (overlayEl) overlayEl.style.visibility = intact ? 'visible' : 'hidden'
       }
 
-      if (broken) paintDebris(shards, progress)
+      // Gruz gaśnie długo przed końcem intra i już nie wraca — dalej nie ma po
+      // co trzymać kilkudziesięciu warstw kompozytora nad canvasem.
+      const alive = progress > 0 && progress < DEBRIS_SPENT
+      if (alive !== flying) {
+        flying = alive
+        if (host) host.style.visibility = alive ? 'visible' : 'hidden'
+      }
+
+      // Scrub potrafi stać w miejscu przez wiele klatek — wtedy nie ma czego
+      // przemalowywać.
+      if (alive && progress !== painted) {
+        painted = progress
+        paintDebris(shards, progress)
+      }
     }
     gsap.ticker.add(paint)
 
@@ -104,12 +183,16 @@ export function Hero() {
       host?.replaceChildren()
       host?.style.removeProperty('visibility')
       overlayEl?.style.removeProperty('visibility')
+      // Postępy są współdzielone ze sceną i przeżywają efekt — po zdjęciu
+      // sterowania muszą wrócić na start, inaczej scena zostaje w pół lotu.
+      flight.value = 0
+      exit.value = 0
     }
-  }, [flight, reducedMotion])
+  }, [flight, exit, reducedMotion])
 
   return (
     <section ref={section} className="relative h-svh w-full overflow-hidden">
-      <HeroScene flight={flight} />
+      <HeroScene flight={flight} exit={exit} onScreen={onScreen} />
 
       <div
         ref={overlay}
@@ -149,6 +232,20 @@ export function Hero() {
       >
         Scroll
       </span>
+
+      {/* Rozbłysk wyjścia. Pod nim kamera przechodzi na drugą stronę trafienia,
+          więc w szczycie musi być szczelny — stąd warstwa w DOM, a nie mesh
+          w scenie, którą przesłoniłby własny kurz. Środek gradientu wypada
+          tam, gdzie pocisk trafia w sygnet, a miękka krawędź pozwala mu
+          napłynąć na kadr zamiast wjechać prostokątem. Promień koła jest
+          podany wprost: przy domyślnym farthest-corner zanik wypadałby poza
+          krótszym bokiem i zamiast miękkiej krawędzi widać by było kant
+          pudełka. */}
+      <div
+        ref={veil}
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 opacity-0 [background:radial-gradient(circle_42vmax_at_50%_44%,var(--color-text)_0%,var(--color-gold-lite)_30%,var(--color-gold)_52%,transparent_78%)]"
+      />
     </section>
   )
 }

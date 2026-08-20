@@ -223,6 +223,13 @@ export function buildDebris(
 }
 
 /**
+ * Postęp, przy którym odłamki są już całkiem przezroczyste. Warstwa trzyma
+ * kilkadziesiąt kompozytowanych elementów z will-change, więc od tego miejsca
+ * opłaca się ją schować, zamiast malować niewidoczne kawałki do końca intra.
+ */
+export const DEBRIS_SPENT = 0.65
+
+/**
  * Rozpad sterowany postępem scrolla: kopnięcie i wyhamowanie, potem zanik.
  * Bez własnej osi czasu — cofnięcie strony składa znak z powrotem.
  */
@@ -230,7 +237,7 @@ export function paintDebris(shards: Shard[], progress: number) {
   const distance = Math.pow(progress, 0.75)
   // Gruz gaśnie szybciej, niż dolatuje — inaczej czyta się jak rozjeżdżające
   // się litery, a nie jak rozbity znak.
-  const fade = 1 - smoothstep(0.12, 0.65, progress)
+  const fade = 1 - smoothstep(0.12, DEBRIS_SPENT, progress)
 
   for (const shard of shards) {
     const x = shard.dirX * shard.travel * distance
