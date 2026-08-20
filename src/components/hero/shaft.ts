@@ -117,23 +117,25 @@ export type Exit = { value: number }
  * tam, gdzie zaczyna się treść strony.
  *
  * Kolejność bloom < swap < clear jest wiążąca: przeskok kamery musi wypaść
- * pod szczelnym rozbłyskiem, inaczej widać cięcie.
+ * pod szczelnym rozbłyskiem, inaczej widać cięcie. Rozbłysk ma być krótki
+ * i ostry, więc okno szczelności jest wąskie — przy skracaniu tych wartości
+ * pilnuj, żeby swap dalej leżał w środku.
  */
 export const EXIT = {
   /**
    * Kiedy rozbłysk wyjścia zaczyna narastać — jeszcze w skali lotu, przed
-   * jego końcem. Podejmuje blask uderzenia, zanim ten zgaśnie, więc światło
-   * przybiera jednym ruchem zamiast błysnąć drugi raz.
+   * jego końcem. Podejmuje blask uderzenia dokładnie tam, gdzie ten gaśnie,
+   * więc światło przybiera jednym ruchem zamiast błysnąć drugi raz.
    */
-  riseFrom: 0.93,
+  riseFrom: 0.945,
   /** rozbłysk urósł na tyle, że zaszywa kadr */
-  bloom: 0.34,
+  bloom: 0.12,
   /** kamera przeskakuje z toru rozpędu na tor opadania */
-  swap: 0.4,
+  swap: 0.16,
   /** rozbłysk zaczyna gasnąć — od tej chwili widać już opadanie */
-  clear: 0.46,
+  clear: 0.2,
   /** rozbłysk zgaszony, zostaje sama scena */
-  clearEnd: 0.8,
+  clearEnd: 0.375,
   /**
    * Dokąd kadr rzuca się w stronę trafienia, nim zaleje go światło. Krótko
    * i wzdłuż toru pocisku: kamera ma zostać w słupie kurzu, żeby rozpęd miał

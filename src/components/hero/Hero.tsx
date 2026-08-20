@@ -10,11 +10,15 @@ import { EXIT, IMPACT, type Exit, type Flight } from './shaft'
 gsap.registerPlugin(ScrollTrigger)
 
 /** Ile ekranów przewijania zajmuje sam lot, czyli fazy 0-3. */
-const FLIGHT_SCREENS = 3
+const FLIGHT_SCREENS = 1.5
 /** Ile ekranów zajmuje wyjście: rozbłysk, przejście, opadanie. */
-const EXIT_SCREENS = 1
+const EXIT_SCREENS = 0.5
 const PIN_SCREENS = FLIGHT_SCREENS + EXIT_SCREENS
-/** Lot ma na osi czasu długość 1, więc wyjście to wprost proporcja ekranów. */
+/**
+ * Lot ma na osi czasu długość 1, więc wyjście to wprost proporcja ekranów.
+ * Skrócenie pinu zmienia oba składniki w tej samej skali, więc wszystkie
+ * ułamki faz zostają tam, gdzie były — zmienia się tempo, nie kompozycja.
+ */
 const EXIT_SPAN = EXIT_SCREENS / FLIGHT_SCREENS
 
 /** Rozbłysk startuje jako punkt światła w miejscu trafienia. */
@@ -69,7 +73,10 @@ export function Hero() {
           end: `+=${PIN_SCREENS * 100}%`,
           pin: true,
           // Ułamek sekundy dobiegu — scroll w obie strony nie skacze klatkami.
-          scrub: 0.6,
+          // Krótszy pin to ten sam gest przewinięty przez dwa razy więcej osi
+          // czasu, więc dobieg musi być krótszy, żeby animacja nie wlokła się
+          // za palcem.
+          scrub: 0.4,
           invalidateOnRefresh: true,
         },
       })
@@ -86,6 +93,8 @@ export function Hero() {
       // Rozbłysk puchnie z punktu trafienia, nie zapala się płasko na całym
       // kadrze — dlatego rośnie skalą, a nie samą przezroczystością. Wystartuje
       // jeszcze w trakcie lotu, żeby przejąć blask uderzenia bez przerwy.
+      // Narastanie idzie na power2.out: błysk ma uderzyć od razu i dopiero
+      // dobierać resztę, a nie rozpędzać się przez pół fazy.
       const peak = 1 + EXIT_SPAN * EXIT.bloom
       gsap.set(veil.current, { scale: VEIL_SEED, transformOrigin: '50% 44%' })
       tl.to(
@@ -94,7 +103,7 @@ export function Hero() {
           opacity: 1,
           scale: VEIL_COVER,
           duration: peak - EXIT.riseFrom,
-          ease: 'power2.in',
+          ease: 'power2.out',
         },
         EXIT.riseFrom,
       )
