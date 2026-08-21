@@ -3,6 +3,7 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Lenis from 'lenis'
 import 'lenis/dist/lenis.css'
+import { registerLenis } from '../lib/scroll'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -22,10 +23,12 @@ export function useSmoothScroll(enabled: boolean) {
     // Wygładzanie lagów cofa czas animacji przy zadyszce — przy scrubie
     // objawia się to szarpnięciem w tył.
     gsap.ticker.lagSmoothing(0)
+    registerLenis(lenis)
 
     return () => {
       gsap.ticker.remove(tick)
       gsap.ticker.lagSmoothing(500, 33)
+      registerLenis(null)
       lenis.destroy()
     }
   }, [enabled])

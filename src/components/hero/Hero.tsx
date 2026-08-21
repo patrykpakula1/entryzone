@@ -3,6 +3,7 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
 import { range } from '../../lib/math'
+import { Navbar } from '../nav/Navbar'
 import { HeroScene } from './HeroScene'
 import { buildDebris, DEBRIS_SPENT, paintDebris, type Shard } from './shatter'
 import { EXIT, IMPACT, type Exit, type Flight } from './shaft'
@@ -10,9 +11,9 @@ import { EXIT, IMPACT, type Exit, type Flight } from './shaft'
 gsap.registerPlugin(ScrollTrigger)
 
 /** Ile ekranów przewijania zajmuje sam lot, czyli fazy 0-3. */
-const FLIGHT_SCREENS = 1.5
+const FLIGHT_SCREENS = 0.75
 /** Ile ekranów zajmuje wyjście: rozbłysk, przejście, opadanie. */
-const EXIT_SCREENS = 0.5
+const EXIT_SCREENS = 0.25
 const PIN_SCREENS = FLIGHT_SCREENS + EXIT_SCREENS
 /**
  * Lot ma na osi czasu długość 1, więc wyjście to wprost proporcja ekranów.
@@ -34,6 +35,7 @@ export function Hero() {
   const reducedMotion = usePrefersReducedMotion()
 
   const section = useRef<HTMLElement>(null)
+  const nav = useRef<HTMLElement>(null)
   const overlay = useRef<HTMLDivElement>(null)
   const sigil = useRef<HTMLImageElement>(null)
   const mark = useRef<HTMLHeadingElement>(null)
@@ -76,7 +78,7 @@ export function Hero() {
           // Krótszy pin to ten sam gest przewinięty przez dwa razy więcej osi
           // czasu, więc dobieg musi być krótszy, żeby animacja nie wlokła się
           // za palcem.
-          scrub: 0.4,
+          scrub: 0.25,
           invalidateOnRefresh: true,
         },
       })
@@ -85,6 +87,15 @@ export function Hero() {
       // kolejnych są wprost ułamkami całego lotu.
       tl.to(flight, { value: 1, duration: 1, ease: 'none' }, 0)
       tl.to(hint.current, { opacity: 0, duration: 0.06, ease: 'none' }, 0)
+
+      // Pasek wjeżdża z góry dokładnie w chwili trafienia — ten sam punkt
+      // na osi, od którego IMPACT liczy rozbłysk i rozpad znaku.
+      tl.fromTo(
+        nav.current,
+        { yPercent: -100 },
+        { yPercent: 0, duration: 0.06, ease: 'power2.out' },
+        IMPACT.start,
+      )
 
       // Wyjście dopięte za lotem: rozbłysk zalewa kadr, a pod nim kamera
       // przechodzi na drugą stronę trafienia i opada do kolejnej sekcji.
@@ -200,61 +211,65 @@ export function Hero() {
   }, [flight, exit, reducedMotion])
 
   return (
-    <section ref={section} className="relative h-svh w-full overflow-hidden">
-      <HeroScene flight={flight} exit={exit} onScreen={onScreen} />
+    <>
+      <Navbar ref={nav} mode="hero" />
 
-      <div
-        ref={overlay}
-        className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-8 px-6 sm:gap-10"
-      >
-        <img
-          ref={sigil}
-          src="/logo.svg"
-          alt=""
+      <section ref={section} className="relative h-svh w-full overflow-hidden">
+        <HeroScene flight={flight} exit={exit} onScreen={onScreen} />
+
+        <div
+          ref={overlay}
+          className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-8 px-6 sm:gap-10"
+        >
+          <img
+            ref={sigil}
+            src="/logo.svg"
+            alt=""
+            aria-hidden="true"
+            width={120}
+            height={120}
+            className="w-20 sm:w-28"
+          />
+
+          {/* text-indent kompensuje światło doklejane przez letter-spacing
+              za ostatnią literą — bez tego napis siedzi nieco w lewo */}
+          <h1
+            ref={mark}
+            className="text-[clamp(1.5rem,7.5vw,4rem)] leading-none text-text [text-indent:0.28em] [letter-spacing:0.28em]"
+          >
+            Entryzone
+          </h1>
+        </div>
+
+        {/* Warstwa odłamków: kopie znaku pocięte clip-path, budowane w efekcie.
+            Perspektywa daje im lot w stronę kamery, nie samo rozsuwanie. */}
+        <div
+          ref={debris}
           aria-hidden="true"
-          width={120}
-          height={120}
-          className="w-20 sm:w-28"
+          className="pointer-events-none invisible absolute inset-0 [perspective:900px]"
         />
 
-        {/* text-indent kompensuje światło doklejane przez letter-spacing
-            za ostatnią literą — bez tego napis siedzi nieco w lewo */}
-        <h1
-          ref={mark}
-          className="text-[clamp(1.5rem,7.5vw,4rem)] leading-none text-text [text-indent:0.28em] [letter-spacing:0.28em]"
+        <span
+          ref={hint}
+          className="pointer-events-none absolute inset-x-0 bottom-8 text-center text-[0.625rem] tracking-[0.4em] text-copper uppercase sm:bottom-10 sm:text-xs"
         >
-          Entryzone
-        </h1>
-      </div>
+          Scroll
+        </span>
 
-      {/* Warstwa odłamków: kopie znaku pocięte clip-path, budowane w efekcie.
-          Perspektywa daje im lot w stronę kamery, nie samo rozsuwanie. */}
-      <div
-        ref={debris}
-        aria-hidden="true"
-        className="pointer-events-none invisible absolute inset-0 [perspective:900px]"
-      />
-
-      <span
-        ref={hint}
-        className="pointer-events-none absolute inset-x-0 bottom-8 text-center text-[0.625rem] tracking-[0.4em] text-copper uppercase sm:bottom-10 sm:text-xs"
-      >
-        Scroll
-      </span>
-
-      {/* Rozbłysk wyjścia. Pod nim kamera przechodzi na drugą stronę trafienia,
-          więc w szczycie musi być szczelny — stąd warstwa w DOM, a nie mesh
-          w scenie, którą przesłoniłby własny kurz. Środek gradientu wypada
-          tam, gdzie pocisk trafia w sygnet, a miękka krawędź pozwala mu
-          napłynąć na kadr zamiast wjechać prostokątem. Promień koła jest
-          podany wprost: przy domyślnym farthest-corner zanik wypadałby poza
-          krótszym bokiem i zamiast miękkiej krawędzi widać by było kant
-          pudełka. */}
-      <div
-        ref={veil}
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 opacity-0 [background:radial-gradient(circle_42vmax_at_50%_44%,var(--color-text)_0%,var(--color-gold-lite)_30%,var(--color-gold)_52%,transparent_78%)]"
-      />
-    </section>
+        {/* Rozbłysk wyjścia. Pod nim kamera przechodzi na drugą stronę trafienia,
+            więc w szczycie musi być szczelny — stąd warstwa w DOM, a nie mesh
+            w scenie, którą przesłoniłby własny kurz. Środek gradientu wypada
+            tam, gdzie pocisk trafia w sygnet, a miękka krawędź pozwala mu
+            napłynąć na kadr zamiast wjechać prostokątem. Promień koła jest
+            podany wprost: przy domyślnym farthest-corner zanik wypadałby poza
+            krótszym bokiem i zamiast miękkiej krawędzi widać by było kant
+            pudełka. */}
+        <div
+          ref={veil}
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 opacity-0 [background:radial-gradient(circle_42vmax_at_50%_44%,var(--color-text)_0%,var(--color-gold-lite)_30%,var(--color-gold)_52%,transparent_78%)]"
+        />
+      </section>
+    </>
   )
 }

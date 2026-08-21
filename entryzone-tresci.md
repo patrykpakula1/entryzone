@@ -17,15 +17,15 @@ Miejsca do uzupełnienia oznaczone [NAWIASAMI].
 
 ## O NAS (krótka sekcja na stronie głównej)
 
-EntryZone to nowa organizacja turniejowa CS2. Powstała z prostego powodu:
-większość rozgrywek jest albo zamknięta dla znanych składów, albo prowadzona
-tak, że nikt nie wie, kto z kim gra i o której.
+EntryZone to nowa organizacja turniejowa CS2 łącząca ze sobą fanów e-sportu.
+Powstała z prostego powodu: większość rozgrywek jest albo zamknięta dla znanych
+składów, albo prowadzona tak, że nikt nie wie, kto z kim gra i o której.
 
 Robimy to inaczej. Jasna drabinka, ustalone terminy, sędzia dostępny w trakcie
-meczu i wyniki publikowane od razu po zakończeniu rundy. Bez zaproszeń,
-bez znajomości, bez czekania na swoją kolej.
+meczu i wyniki publikowane od razu po zakończeniu rundy. Bez zaproszeń, bez
+znajomości, z jasnymi zasadami i nagrodami.
 
-Startujemy z pierwszym CUP-em. Dołącz albo obserwuj — obie opcje są w porządku.
+Startujemy z pierwszym CUP-em. Dołącz i pokaż kto jest nowym królem EntryZone!
 
 ---
 

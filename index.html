@@ -12,6 +12,17 @@
       rel="stylesheet"
     />
     <title>ENTRYZONE</title>
+    <script>
+      // Musi wykonać się tu, nie w main.tsx: skrypt modułowy jest odroczony
+      // do momentu, gdy dokument jest już sparsowany, a przeglądarka zdąża
+      // do tego czasu zacząć przywracać zapamiętaną pozycję scrolla (stąd
+      // hero po F5 potrafiło wylądować w połowie lotu). Zwykły, blokujący
+      // skrypt w head wykonuje się najwcześniej, jak to możliwe.
+      if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual'
+      }
+      window.scrollTo(0, 0)
+    </script>
   </head>
   <body>
     <div id="root"></div>
