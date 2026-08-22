@@ -88,6 +88,7 @@ export const Navbar = forwardRef<HTMLElement, NavbarProps>(function Navbar(
   )
 
   return (
+    <>
     <nav
       ref={setRefs}
       className="fixed inset-x-0 top-0 z-50 border-b border-border/60 bg-bg/70 backdrop-blur-md"
@@ -150,37 +151,41 @@ export const Navbar = forwardRef<HTMLElement, NavbarProps>(function Navbar(
           />
         </button>
       </div>
-
-      {/* Mobile fullscreen menu. Pasek nad nim (z-10) zostaje widoczny, więc
-          logo i przycisk zamknięcia działają, gdy menu jest otwarte. */}
-      <div
-        className={`fixed inset-0 flex flex-col items-center justify-center gap-10 bg-bg pt-24 transition-opacity duration-300 sm:hidden ${
-          open
-            ? 'pointer-events-auto opacity-100'
-            : 'pointer-events-none opacity-0'
-        }`}
-      >
-        {ITEMS.map((item, i) =>
-          renderLink(
-            item,
-            `font-display text-2xl uppercase tracking-[0.2em] duration-300 ${
-              open ? 'translate-y-0 opacity-100' : 'translate-y-3 opacity-0'
-            } ${
-              item.featured === 'solid'
-                ? 'rounded-full bg-gold px-6 py-2 text-bg'
-                : item.featured === 'outline'
-                  ? 'rounded-full border border-gold px-6 py-2 text-gold'
-                  : isActive(item)
-                    ? 'text-gold'
-                    : 'text-text'
-            }`,
-            {
-              transitionDelay: open ? `${i * 60}ms` : '0ms',
-              transitionProperty: 'opacity, transform',
-            },
-          ),
-        )}
-      </div>
     </nav>
+
+    {/* Mobile fullscreen menu — poza <nav>, bo backdrop-blur/transform na
+        pasku tworzy containing block dla position:fixed potomków i psuje
+        inset-0 (menu kurczy się do wysokości paska zamiast całego ekranu).
+        z-40, żeby pasek nad nim (z-50) zostawał widoczny — logo i przycisk
+        zamknięcia działają, gdy menu jest otwarte. */}
+    <div
+      className={`fixed inset-0 z-40 flex flex-col items-center justify-center gap-10 bg-bg pt-24 transition-opacity duration-300 sm:hidden ${
+        open
+          ? 'pointer-events-auto opacity-100'
+          : 'pointer-events-none opacity-0'
+      }`}
+    >
+      {ITEMS.map((item, i) =>
+        renderLink(
+          item,
+          `font-display text-2xl uppercase tracking-[0.2em] duration-300 ${
+            open ? 'translate-y-0 opacity-100' : 'translate-y-3 opacity-0'
+          } ${
+            item.featured === 'solid'
+              ? 'rounded-full bg-gold px-6 py-2 text-bg'
+              : item.featured === 'outline'
+                ? 'rounded-full border border-gold px-6 py-2 text-gold'
+                : isActive(item)
+                  ? 'text-gold'
+                  : 'text-text'
+          }`,
+          {
+            transitionDelay: open ? `${i * 60}ms` : '0ms',
+            transitionProperty: 'opacity, transform',
+          },
+        ),
+      )}
+    </div>
+    </>
   )
 })

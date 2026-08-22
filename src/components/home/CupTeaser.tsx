@@ -56,7 +56,7 @@ export function CupTeaser() {
             </Link>
             <Link
               to="/cup#regulamin"
-              className="text-xs text-text/40 underline decoration-border underline-offset-4 transition-colors duration-200 hover:text-gold-lite"
+              className="-my-3 inline-block py-3 text-xs text-text/40 underline decoration-border underline-offset-4 transition-colors duration-200 hover:text-gold-lite"
             >
               Zapoznaj się z regulaminem
             </Link>
