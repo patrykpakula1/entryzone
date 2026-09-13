@@ -5,8 +5,9 @@ function formatDiff(diff: number) {
   return diff > 0 ? `+${diff}` : `${diff}`
 }
 
-/** Ranking ligi — dane z data/league.ts, pierwsze trzy miejsca wyróżnione. */
+/** Ranking ligi — dane z data/league.ts, pierwsze trzy miejsca wyróżnione. Pusty stan, dopóki `standings` jest puste. */
 export function LeagueTable() {
+  const isEmpty = standings.length === 0
   const ranked = [...standings].sort(
     (a, b) => b.points - a.points || b.roundDiff - a.roundDiff,
   )
@@ -21,85 +22,94 @@ export function LeagueTable() {
           </h2>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[560px] border-collapse text-left text-sm">
-            <thead>
-              <tr className="font-display border-b border-border text-xs uppercase tracking-[0.15em] text-copper">
-                <th
-                  scope="col"
-                  className="sticky left-0 z-10 w-10 bg-bg py-3 pr-3 font-normal"
-                >
-                  #
-                </th>
-                <th
-                  scope="col"
-                  className="sticky left-10 z-10 bg-bg py-3 pr-3 font-normal"
-                >
-                  Drużyna
-                </th>
-                <th scope="col" className="py-3 pr-3 text-right font-normal">
-                  M
-                </th>
-                <th scope="col" className="py-3 pr-3 text-right font-normal">
-                  W
-                </th>
-                <th scope="col" className="py-3 pr-3 text-right font-normal">
-                  P
-                </th>
-                <th scope="col" className="py-3 pr-3 text-right font-normal">
-                  Runda +/−
-                </th>
-                <th scope="col" className="py-3 pl-3 text-right font-normal">
-                  Pkt
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {ranked.map((row, i) => {
-                const place = i + 1
-                const isTop3 = place <= 3
-                const team = teams[row.teamId]
-
-                return (
-                  <tr
-                    key={row.teamId}
-                    className={`border-b border-border last:border-b-0 ${
-                      isTop3 ? 'bg-surface' : ''
-                    }`}
+        {isEmpty ? (
+          <div className="flex flex-col items-center gap-2 border border-border px-8 py-12 text-center">
+            <p className="text-text/70">Sezon jeszcze się nie rozpoczął.</p>
+            <p className="text-sm text-text/40">
+              Tabela zapełni się po pierwszej kolejce.
+            </p>
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[560px] border-collapse text-left text-sm">
+              <thead>
+                <tr className="font-display border-b border-border text-xs uppercase tracking-[0.15em] text-copper">
+                  <th
+                    scope="col"
+                    className="sticky left-0 z-10 w-10 bg-bg py-3 pr-3 font-normal"
                   >
-                    <td
-                      className={`sticky left-0 z-10 w-10 py-3 pr-3 font-display ${
-                        isTop3 ? 'bg-surface text-gold' : 'bg-bg text-text/50'
+                    #
+                  </th>
+                  <th
+                    scope="col"
+                    className="sticky left-10 z-10 bg-bg py-3 pr-3 font-normal"
+                  >
+                    Drużyna
+                  </th>
+                  <th scope="col" className="py-3 pr-3 text-right font-normal">
+                    M
+                  </th>
+                  <th scope="col" className="py-3 pr-3 text-right font-normal">
+                    W
+                  </th>
+                  <th scope="col" className="py-3 pr-3 text-right font-normal">
+                    P
+                  </th>
+                  <th scope="col" className="py-3 pr-3 text-right font-normal">
+                    Runda +/−
+                  </th>
+                  <th scope="col" className="py-3 pl-3 text-right font-normal">
+                    Pkt
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {ranked.map((row, i) => {
+                  const place = i + 1
+                  const isTop3 = place <= 3
+                  const team = teams[row.teamId]
+
+                  return (
+                    <tr
+                      key={row.teamId}
+                      className={`border-b border-border last:border-b-0 ${
+                        isTop3 ? 'bg-surface' : ''
                       }`}
                     >
-                      {place}
-                    </td>
-                    <td
-                      className={`sticky left-10 z-10 py-3 pr-3 ${
-                        isTop3 ? 'bg-surface text-text' : 'bg-bg text-text/80'
-                      }`}
-                    >
-                      {team.name}
-                    </td>
-                    <td className="py-3 pr-3 text-right text-text/70">{row.played}</td>
-                    <td className="py-3 pr-3 text-right text-text/70">{row.wins}</td>
-                    <td className="py-3 pr-3 text-right text-text/70">{row.losses}</td>
-                    <td className="py-3 pr-3 text-right text-text/70">
-                      {formatDiff(row.roundDiff)}
-                    </td>
-                    <td
-                      className={`font-display py-3 pl-3 text-right ${
-                        isTop3 ? 'text-gold' : 'text-text'
-                      }`}
-                    >
-                      {row.points}
-                    </td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
-        </div>
+                      <td
+                        className={`sticky left-0 z-10 w-10 py-3 pr-3 font-display ${
+                          isTop3 ? 'bg-surface text-gold' : 'bg-bg text-text/50'
+                        }`}
+                      >
+                        {place}
+                      </td>
+                      <td
+                        className={`sticky left-10 z-10 py-3 pr-3 ${
+                          isTop3 ? 'bg-surface text-text' : 'bg-bg text-text/80'
+                        }`}
+                      >
+                        {team.name}
+                      </td>
+                      <td className="py-3 pr-3 text-right text-text/70">{row.played}</td>
+                      <td className="py-3 pr-3 text-right text-text/70">{row.wins}</td>
+                      <td className="py-3 pr-3 text-right text-text/70">{row.losses}</td>
+                      <td className="py-3 pr-3 text-right text-text/70">
+                        {formatDiff(row.roundDiff)}
+                      </td>
+                      <td
+                        className={`font-display py-3 pl-3 text-right ${
+                          isTop3 ? 'text-gold' : 'text-text'
+                        }`}
+                      >
+                        {row.points}
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </section>
   )

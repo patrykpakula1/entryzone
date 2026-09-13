@@ -1,4 +1,5 @@
 import { registration } from '../../data/registration'
+import { useTeamsRegistered } from '../../hooks/useTeamsRegistered'
 
 const buttonBase =
   'font-display inline-flex items-center justify-center rounded-full px-10 py-4 text-sm uppercase tracking-[0.2em] transition-colors duration-200 sm:text-base'
@@ -8,10 +9,11 @@ const statCard = 'rounded-2xl border border-border bg-surface px-6 py-5 text-lef
 
 export function Registration() {
   const { status } = registration
-  const progress = Math.min(
-    100,
-    Math.round((registration.teamsRegistered / registration.teamsMax) * 100),
-  )
+  const teamsRegistered = useTeamsRegistered()
+  const progress =
+    teamsRegistered === null
+      ? 0
+      : Math.min(100, Math.round((teamsRegistered / registration.teamsMax) * 100))
 
   return (
     <section className="flex min-h-svh flex-col items-center justify-center bg-bg px-6 pb-16 pt-32 sm:pb-20 sm:pt-40">
@@ -42,7 +44,11 @@ export function Registration() {
               <div className={statCard}>
                 <p className={statLabel}>Zapisanych drużyn</p>
                 <p className="mt-2 font-display text-3xl text-gold sm:text-4xl">
-                  {registration.teamsRegistered}
+                  {teamsRegistered === null ? (
+                    <span className="animate-pulse">—</span>
+                  ) : (
+                    teamsRegistered
+                  )}
                   <span className="text-text/40">
                     {' '}
                     / {registration.teamsMax}
@@ -50,7 +56,7 @@ export function Registration() {
                 </p>
                 <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-border">
                   <div
-                    className="h-full rounded-full bg-gold"
+                    className="h-full rounded-full bg-gold transition-[width] duration-500"
                     style={{ width: `${progress}%` }}
                   />
                 </div>

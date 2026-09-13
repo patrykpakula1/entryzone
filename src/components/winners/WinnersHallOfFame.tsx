@@ -33,7 +33,7 @@ function EmptyStateTemplate() {
         <span className="font-display text-lg uppercase tracking-[0.15em] text-text/70">
           EntryZone Cup #1
         </span>
-        <span className="text-sm text-text/40">wrzesień 2026</span>
+        <span className="text-sm text-text/40">październik 2026</span>
       </div>
       <div className="flex flex-col items-center gap-2">
         <span className="text-xs uppercase tracking-[0.2em] text-copper">

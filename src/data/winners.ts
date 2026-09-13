@@ -13,7 +13,7 @@ export type WinnerEntry = {
  * edycji. Dodanie wpisu po turnieju to dopisanie jednego obiektu do tej
  * tablicy, np.:
  *
- * { id: 'cup-1', tournamentName: 'EntryZone Cup #1', dateLabel: 'wrzesień 2026',
+ * { id: 'cup-1', tournamentName: 'EntryZone Cup #1', dateLabel: 'październik 2026',
  *   championTeam: 'Iron Wolves', mvpNick: 'Sh4rk', mvpFrags: 112, mvpMaps: 5 }
  */
 export const winners: WinnerEntry[] = []

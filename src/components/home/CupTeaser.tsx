@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { registration } from '../../data/registration'
+import { useTeamsRegistered } from '../../hooks/useTeamsRegistered'
 import { BracketBackground } from './BracketBackground'
 import { Countdown } from './Countdown'
 
@@ -15,10 +16,11 @@ const STEPS = [
  * zgłoszenia na dole — mieszczą się na jednym ekranie.
  */
 export function CupTeaser() {
-  const progress = Math.min(
-    100,
-    Math.round((registration.teamsRegistered / registration.teamsMax) * 100),
-  )
+  const teamsRegistered = useTeamsRegistered()
+  const progress =
+    teamsRegistered === null
+      ? 0
+      : Math.min(100, Math.round((teamsRegistered / registration.teamsMax) * 100))
 
   return (
     <section className="relative flex min-h-svh flex-col items-center justify-center overflow-hidden bg-bg px-6 py-16 sm:py-20">
@@ -35,13 +37,17 @@ export function CupTeaser() {
           <div className="flex flex-col items-center gap-3">
             <div className="flex items-baseline gap-2">
               <span className="font-display text-2xl text-gold">
-                {registration.teamsRegistered}
+                {teamsRegistered === null ? (
+                  <span className="animate-pulse">—</span>
+                ) : (
+                  teamsRegistered
+                )}
               </span>
               <span className="text-text/40">/ {registration.teamsMax} drużyn</span>
             </div>
             <div className="h-1.5 w-40 overflow-hidden rounded-full bg-border sm:w-48">
               <div
-                className="h-full rounded-full bg-gold"
+                className="h-full rounded-full bg-gold transition-[width] duration-500"
                 style={{ width: `${progress}%` }}
               />
             </div>
