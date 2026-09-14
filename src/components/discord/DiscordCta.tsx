@@ -1,8 +1,10 @@
 import { registration } from '../../data/registration'
-import { discordMemberCount } from '../../data/discord'
+import { useDiscordOnlineCount } from '../../hooks/useDiscordOnlineCount'
 
 /** Sekcja podstrony /discord. Treść: entryzone-tresci.md, sekcja „DISCORD — podstrona”. */
 export function DiscordCta() {
+  const onlineCount = useDiscordOnlineCount()
+
   return (
     <section className="flex min-h-svh flex-col items-center justify-center bg-bg px-6 pb-16 pt-32 sm:pb-20 sm:pt-40">
       <div className="mx-auto flex max-w-[700px] flex-col items-center gap-8 text-center">
@@ -34,8 +36,14 @@ export function DiscordCta() {
             Dołącz do serwera
           </a>
           <p className="text-sm text-text/50">
-            <span className="font-display text-gold">{discordMemberCount}</span>{' '}
-            osób już jest.
+            <span className="font-display text-gold">
+              {onlineCount === null ? (
+                <span className="animate-pulse">—</span>
+              ) : (
+                onlineCount
+              )}
+            </span>{' '}
+            osób online.
           </p>
         </div>
       </div>
