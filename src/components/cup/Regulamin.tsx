@@ -15,9 +15,10 @@ const RULES = [
   `Wpisowe wynosi ${prizes.entryFee} zł od drużyny i musi zostać opłacone przed startem turnieju. Cała pula trafia do zwycięzców.`,
   'W przypadku nieobecności opłaconej drużyny mecz zostaje przyznany przeciwnikowi walkowerem, a wpisowe nie podlega zwrotowi i pozostaje w puli nagród.',
   'W razie sporu mecz zostaje zapauzowany do czasu decyzji sędziego.',
-  'Po zakończeniu mapy kapitan zwycięskiej drużyny zgłasza wynik na Discordzie wraz ze zrzutem ekranu tabeli wyników.',
+  'Po zakończeniu mapy kapitan zwycięskiej drużyny zgłasza wynik sędziemu wraz ze zrzutem ekranu tabeli wyników.',
   'Pula nagród jest gwarantowana przez organizatora niezależnie od liczby zgłoszonych drużyn.',
   'Organizator zastrzega sobie prawo do przełożenia turnieju w przypadku zgłoszenia mniej niż 8 drużyn.',
+  'Turniej rozgrywany jest w dwa dni — sobotę i niedzielę. Udział wymaga dostępności w obu terminach.',
 ]
 
 /** Rozwijana sekcja regulaminu — zwinięta domyślnie, cel linku „Zapoznaj się z regulaminem” na stronie głównej. */
