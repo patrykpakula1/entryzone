@@ -5,7 +5,7 @@ export type RegistrationStatus = 'open' | 'closed' | 'none'
  * Odliczanie w sekcji CTA i etykiety daty/godziny na stronie zapisów czytają
  * z tego samego obiektu, więc nie mogą się rozjechać.
  */
-const closeAt = new Date('2026-10-03T20:00:00')
+const closeAt = new Date('2026-11-01T20:00:00')
 
 /**
  * Jedno miejsce do przełączania stanu sekcji zapisów — zmień tylko `status`.
@@ -33,7 +33,7 @@ export const registration = {
     minute: '2-digit',
   }),
 
-  startDate: '10 października',
+  startDate: '8 listopada',
   startTime: '18:00',
 
   formUrl:

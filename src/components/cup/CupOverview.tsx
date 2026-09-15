@@ -1,4 +1,5 @@
 import { registration } from '../../data/registration'
+import { prizes } from '../../data/prizes'
 
 const FORMAT = [
   { label: 'Drużyny', text: '16 składów po 5 zawodników (+ opcjonalnie 1 rezerwowy)' },
@@ -7,6 +8,11 @@ const FORMAT = [
   { label: 'Mapy', text: 'aktywna pula Premier, veto systemem ban/ban/pick' },
   { label: 'Serwery', text: 'serwery organizatora / FACEIT' },
   { label: 'Zapisy', text: 'otwarte dla wszystkich, bez limitu rangi' },
+  { label: 'Wpisowe', text: `${prizes.entryFee} zł od drużyny — cała pula trafia do zwycięzców` },
+  {
+    label: 'Nagrody',
+    text: `Pula ${prizes.poolTotal} zł — ${prizes.first} zł za I miejsce, ${prizes.second} zł za II miejsce, dla MVP turnieju ${prizes.mvpPrize}`,
+  },
 ]
 
 /** Nagłówek + opis + format CUP‑u. Treść: entryzone-tresci.md, sekcja „CUP — opis turnieju”. */

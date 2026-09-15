@@ -1,4 +1,5 @@
 import { useId, useRef, useState } from 'react'
+import { prizes } from '../../data/prizes'
 
 /** Treść dokładnie z entryzone-tresci.md, sekcja „REGULAMIN”. */
 const RULES = [
@@ -11,6 +12,12 @@ const RULES = [
   'Obraźliwe zachowanie wobec przeciwników, sędziów lub widzów kończy się usunięciem z turnieju bez zwrotu wpisowego.',
   'Organizator może zmienić terminarz — zmiany ogłaszamy na Discordzie z wyprzedzeniem.',
   'Udział w turnieju oznacza zgodę na transmisję meczu i publikację wyniku wraz z nickami zawodników.',
+  `Wpisowe wynosi ${prizes.entryFee} zł od drużyny i musi zostać opłacone przed startem turnieju. Cała pula trafia do zwycięzców.`,
+  'W przypadku nieobecności opłaconej drużyny mecz zostaje przyznany przeciwnikowi walkowerem, a wpisowe nie podlega zwrotowi i pozostaje w puli nagród.',
+  'W razie sporu mecz zostaje zapauzowany do czasu decyzji sędziego.',
+  'Po zakończeniu mapy kapitan zwycięskiej drużyny zgłasza wynik na Discordzie wraz ze zrzutem ekranu tabeli wyników.',
+  'Pula nagród jest gwarantowana przez organizatora niezależnie od liczby zgłoszonych drużyn.',
+  'Organizator zastrzega sobie prawo do przełożenia turnieju w przypadku zgłoszenia mniej niż 8 drużyn.',
 ]
 
 /** Rozwijana sekcja regulaminu — zwinięta domyślnie, cel linku „Zapoznaj się z regulaminem” na stronie głównej. */
