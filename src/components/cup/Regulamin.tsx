@@ -8,7 +8,7 @@ const RULES = [
   'Drużyna stawia się na serwerze do 15 minut po wyznaczonej godzinie. Po tym czasie mecz przyznajemy przeciwnikowi.',
   'Wszelkie oszustwa — cheaty, smurfy, granie na cudzym koncie — oznaczają dyskwalifikację całej drużyny i blokadę w kolejnych edycjach.',
   'Spory zgłasza kapitan, na Discordzie, w trakcie meczu. Zgłoszenia po zakończeniu mapy nie są rozpatrywane.',
-  'Decyzje sędziego są ostateczne.',
+  'Decyzje sędziego są wiążące w trakcie meczu. Od decyzji przysługuje odwołanie do organizatora, składane na Discordzie w ciągu 30 minut od zakończenia meczu, wraz z dowodem. Decyzja organizatora jest ostateczna.',
   'Obraźliwe zachowanie wobec przeciwników, sędziów lub widzów kończy się usunięciem z turnieju bez zwrotu wpisowego.',
   'Organizator może zmienić terminarz — zmiany ogłaszamy na Discordzie z wyprzedzeniem.',
   'Udział w turnieju oznacza zgodę na transmisję meczu i publikację wyniku wraz z nickami zawodników.',
