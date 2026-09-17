@@ -2,7 +2,7 @@ import { forwardRef, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { Link, useLocation } from 'react-router-dom'
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
-import { lockScroll } from '../../lib/scroll'
+import { lockScroll, scrollToTop } from '../../lib/scroll'
 
 type Featured = 'solid' | 'outline'
 
@@ -96,7 +96,12 @@ export const Navbar = forwardRef<HTMLElement, NavbarProps>(function Navbar(
       <div className="relative z-10 flex w-full items-center justify-between px-10 py-3">
         <Link
           to="/"
-          onClick={() => setOpen(false)}
+          onClick={() => {
+            setOpen(false)
+            // Przy tej samej trasie router nie nawiguje, więc scroll na
+            // górę trzeba wymusić ręcznie — tym samym Lenisem co reszta.
+            if (location.pathname === '/') scrollToTop()
+          }}
           aria-label="EntryZone — strona główna"
         >
           <img
