@@ -3,22 +3,19 @@ import { prizes } from '../../data/prizes'
 
 /** Treść dokładnie z entryzone-tresci.md, sekcja „REGULAMIN”. */
 const RULES = [
-  'Drużyna zgłasza 5 zawodników. Rezerwowy jest opcjonalny i musi być zgłoszony przed startem turnieju — po pierwszym meczu składu nie zmieniamy.',
-  'Konta muszą być bez blokad VAC i Overwatch. Konto z blokadą to walkower.',
-  'Drużyna stawia się na serwerze do 15 minut po wyznaczonej godzinie. Po tym czasie mecz przyznajemy przeciwnikowi.',
-  'Wszelkie oszustwa — cheaty, smurfy, granie na cudzym koncie — oznaczają dyskwalifikację całej drużyny i blokadę w kolejnych edycjach.',
-  'Spory zgłasza kapitan, na Discordzie, w trakcie meczu. Zgłoszenia po zakończeniu mapy nie są rozpatrywane.',
-  'Decyzje sędziego są wiążące w trakcie meczu. Od decyzji przysługuje odwołanie do organizatora, składane na Discordzie w ciągu 30 minut od zakończenia meczu, wraz z dowodem. Decyzja organizatora jest ostateczna.',
-  'Obraźliwe zachowanie wobec przeciwników, sędziów lub widzów kończy się usunięciem z turnieju bez zwrotu wpisowego.',
-  'Organizator może zmienić terminarz — zmiany ogłaszamy na Discordzie z wyprzedzeniem.',
+  'Skład to 5 zawodników + opcjonalny rezerwowy, zgłoszony przed startem. Po pierwszym meczu składu nie zmieniamy.',
+  `Wpisowe ${prizes.entryFee} zł od drużyny, płatne przed turniejem. Cała pula trafia do zwycięzców.`,
+  'Turniej trwa dwa dni. Sobota: runda 1 i ćwierćfinały. Niedziela: półfinały i finał. Wymagana dostępność w obu terminach.',
+  'Konta bez blokad VAC i Overwatch. Blokada to walkower.',
+  'Drużyna stawia się do 15 minut po wyznaczonej godzinie. Później mecz przyznajemy przeciwnikowi.',
+  'Nieobecność opłaconej drużyny to walkower. Wpisowe zostaje w puli.',
+  'Spory zgłasza kapitan sędziemu na serwerze, w trakcie meczu. Mecz zostaje zapauzowany.',
+  'Decyzja sędziego jest wiążąca w meczu. Odwołanie na #odwołania w ciągu 30 minut od końca meczu, z dowodem. Decyzja organizatora jest ostateczna.',
+  'Cheaty, smurfy, gra na cudzym koncie to dyskwalifikacja i blokada w kolejnych edycjach.',
+  'Obraźliwe zachowanie kończy się usunięciem z turnieju bez zwrotu wpisowego.',
+  `Pula ${prizes.poolTotal} zł jest gwarantowana niezależnie od liczby zgłoszonych drużyn.`,
+  'Przy mniej niż 8 zgłoszonych drużynach organizator może przełożyć turniej.',
   'Udział w turnieju oznacza zgodę na transmisję meczu i publikację wyniku wraz z nickami zawodników.',
-  `Wpisowe wynosi ${prizes.entryFee} zł od drużyny i musi zostać opłacone przed startem turnieju. Cała pula trafia do zwycięzców.`,
-  'W przypadku nieobecności opłaconej drużyny mecz zostaje przyznany przeciwnikowi walkowerem, a wpisowe nie podlega zwrotowi i pozostaje w puli nagród.',
-  'W razie sporu mecz zostaje zapauzowany do czasu decyzji sędziego.',
-  'Po zakończeniu mapy kapitan zwycięskiej drużyny zgłasza wynik sędziemu wraz ze zrzutem ekranu tabeli wyników.',
-  'Pula nagród jest gwarantowana przez organizatora niezależnie od liczby zgłoszonych drużyn.',
-  'Organizator zastrzega sobie prawo do przełożenia turnieju w przypadku zgłoszenia mniej niż 8 drużyn.',
-  'Turniej rozgrywany jest w dwa dni — sobotę i niedzielę. Udział wymaga dostępności w obu terminach.',
 ]
 
 /** Rozwijana sekcja regulaminu — zwinięta domyślnie, cel linku „Zapoznaj się z regulaminem” na stronie głównej. */
