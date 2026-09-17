@@ -73,7 +73,8 @@ Wymagania techniczne hero:
 
 ## Zasady pracy
 - Pracujemy SEKCJA PO SEKCJI. Nigdy cała strona jednym poleceniem.
-- Po każdej działającej sekcji: commit.
+- Po każdej działającej sekcji: commit ORAZ push na GitHuba, bez pytania o zgodę.
+  Bez pusha zmiany nie trafiają na produkcję.
 - Mobile first — sprawdzaj responsywność po każdej sekcji.
 - Zapytaj zanim dodasz nową bibliotekę.
 - Zero modeli, tekstur i assetów z CS2 — to własność Valve. Własne kształty.
