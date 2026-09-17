@@ -3,6 +3,7 @@ import { Route, Routes, useLocation } from 'react-router-dom'
 import { usePrefersReducedMotion } from './hooks/usePrefersReducedMotion'
 import { useSmoothScroll } from './hooks/useSmoothScroll'
 import { scrollToElement, scrollToTop } from './lib/scroll'
+import { SocialSidebar } from './components/layout/SocialSidebar'
 import { Home } from './pages/Home'
 import { Zapisy } from './pages/Zapisy'
 import { ONas } from './pages/ONas'
@@ -52,6 +53,7 @@ export default function App() {
   return (
     <>
       <ScrollToTop />
+      <SocialSidebar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/zapisy" element={<Zapisy />} />
