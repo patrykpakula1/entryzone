@@ -32,7 +32,16 @@ export function CupTeaser() {
             Entryzone Cup #1
           </h2>
 
-          <Countdown target={registration.closeAt} />
+          <p className="font-display text-3xl uppercase tracking-[0.2em] text-gold sm:text-4xl">
+            {registration.startDate} 2026
+          </p>
+
+          <div className="flex flex-col items-center gap-2">
+            <Countdown target={registration.closeAt} />
+            <p className="text-xs uppercase tracking-[0.15em] text-text/40">
+              Do zamknięcia zapisów ({registration.closeDateLabel}, {registration.closeTimeLabel})
+            </p>
+          </div>
 
           <div className="flex flex-col items-center gap-3">
             <div className="flex items-baseline gap-2">
