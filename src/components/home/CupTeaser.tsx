@@ -32,7 +32,7 @@ export function CupTeaser() {
             Entryzone Cup #1
           </h2>
 
-          <p className="font-display text-3xl uppercase tracking-[0.2em] text-gold sm:text-4xl">
+          <p className="font-display text-xl uppercase tracking-[0.2em] text-gold sm:text-2xl">
             {registration.startDate} 2026
           </p>
 
