@@ -1,6 +1,7 @@
 import { Navbar } from '../components/nav/Navbar'
 import { LeagueOverview } from '../components/league/LeagueOverview'
 import { LeagueTable } from '../components/league/LeagueTable'
+import { Footer } from '../components/layout/Footer'
 import { usePageMeta } from '../hooks/usePageMeta'
 
 export function League() {
@@ -14,6 +15,7 @@ export function League() {
       <Navbar mode="page" />
       <LeagueOverview />
       <LeagueTable />
+      <Footer />
     </>
   )
 }

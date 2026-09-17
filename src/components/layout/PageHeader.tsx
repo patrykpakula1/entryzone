@@ -1,12 +1,13 @@
 import type { ReactNode } from 'react'
 import { Navbar } from '../nav/Navbar'
+import { Footer } from './Footer'
 
 type PageHeaderProps = {
   title: string
   children?: ReactNode
 }
 
-/** Szkielet podstrony: statyczny pasek nawigacji + nagłówek od góry. */
+/** Szkielet podstrony: statyczny pasek nawigacji + nagłówek od góry + stopka. */
 export function PageHeader({ title, children }: PageHeaderProps) {
   return (
     <>
@@ -18,6 +19,7 @@ export function PageHeader({ title, children }: PageHeaderProps) {
           {children}
         </div>
       </main>
+      <Footer />
     </>
   )
 }

@@ -1,5 +1,6 @@
 import { Navbar } from '../components/nav/Navbar'
 import { WinnersHallOfFame } from '../components/winners/WinnersHallOfFame'
+import { Footer } from '../components/layout/Footer'
 import { usePageMeta } from '../hooks/usePageMeta'
 
 export function Winners() {
@@ -12,6 +13,7 @@ export function Winners() {
     <>
       <Navbar mode="page" />
       <WinnersHallOfFame />
+      <Footer />
     </>
   )
 }

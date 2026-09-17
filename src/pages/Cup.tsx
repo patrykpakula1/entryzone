@@ -2,6 +2,7 @@ import { Navbar } from '../components/nav/Navbar'
 import { CupOverview } from '../components/cup/CupOverview'
 import { Bracket } from '../components/cup/Bracket'
 import { Regulamin } from '../components/cup/Regulamin'
+import { Footer } from '../components/layout/Footer'
 import { usePageMeta } from '../hooks/usePageMeta'
 
 export function Cup() {
@@ -16,6 +17,7 @@ export function Cup() {
       <CupOverview />
       <Bracket />
       <Regulamin />
+      <Footer />
     </>
   )
 }

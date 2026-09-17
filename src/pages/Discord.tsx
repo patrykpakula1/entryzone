@@ -1,5 +1,6 @@
 import { Navbar } from '../components/nav/Navbar'
 import { DiscordCta } from '../components/discord/DiscordCta'
+import { Footer } from '../components/layout/Footer'
 import { usePageMeta } from '../hooks/usePageMeta'
 
 export function Discord() {
@@ -12,6 +13,7 @@ export function Discord() {
     <>
       <Navbar mode="page" />
       <DiscordCta />
+      <Footer />
     </>
   )
 }

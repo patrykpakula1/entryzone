@@ -10,6 +10,9 @@ import { Cup } from './pages/Cup'
 import { League } from './pages/League'
 import { Winners } from './pages/Winners'
 import { Discord } from './pages/Discord'
+import { Regulamin } from './pages/Regulamin'
+import { PolitykaPrywatnosci } from './pages/PolitykaPrywatnosci'
+import { PolitykaCookies } from './pages/PolitykaCookies'
 
 /**
  * Router nie resetuje scrolla między trasami — bez tego nowa strona
@@ -57,6 +60,9 @@ export default function App() {
         <Route path="/league" element={<League />} />
         <Route path="/winners" element={<Winners />} />
         <Route path="/discord" element={<Discord />} />
+        <Route path="/regulamin" element={<Regulamin />} />
+        <Route path="/polityka-prywatnosci" element={<PolitykaPrywatnosci />} />
+        <Route path="/polityka-cookies" element={<PolitykaCookies />} />
       </Routes>
     </>
   )
