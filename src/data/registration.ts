@@ -42,5 +42,5 @@ export const registration = {
 
   formUrl:
     'https://docs.google.com/forms/d/e/1FAIpQLSd1pCLSYh6cIRv3Yc3B8-ozbYzaEZkQ5l5RHkm_YVPrOM5Suw/viewform',
-  discordUrl: 'https://discord.gg/Z9GfbVG3vm',
+  discordUrl: 'https://discord.gg/EGwYTYpjXR',
 }
