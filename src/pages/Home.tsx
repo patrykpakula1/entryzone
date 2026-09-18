@@ -1,5 +1,6 @@
 import { Hero } from '../components/hero/Hero'
 import { CupTeaser } from '../components/home/CupTeaser'
+import { News } from '../components/home/News'
 import { Partners } from '../components/home/Partners'
 import { Footer } from '../components/layout/Footer'
 import { usePageMeta } from '../hooks/usePageMeta'
@@ -14,6 +15,7 @@ export function Home() {
     <>
       <Hero />
       <CupTeaser />
+      <News />
       <Partners />
       <Footer />
     </>

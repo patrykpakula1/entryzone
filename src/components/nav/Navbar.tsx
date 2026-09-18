@@ -14,6 +14,7 @@ const ITEMS: NavItem[] = [
   { label: 'Cup', to: '/cup' },
   { label: 'League', to: '/league' },
   { label: 'Winners', to: '/winners' },
+  { label: 'Aktualności', to: '/aktualnosci' },
   { label: 'Discord', to: '/discord', featured: 'outline' },
 ]
 
@@ -69,7 +70,9 @@ export const Navbar = forwardRef<HTMLElement, NavbarProps>(function Navbar(
     return () => window.removeEventListener('keydown', onKey)
   }, [open])
 
-  const isActive = (item: NavItem) => location.pathname === item.to
+  const isActive = (item: NavItem) =>
+    location.pathname === item.to ||
+    location.pathname.startsWith(`${item.to}/`)
 
   const renderLink = (
     item: NavItem,

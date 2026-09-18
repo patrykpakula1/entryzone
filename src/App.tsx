@@ -11,6 +11,8 @@ import { Cup } from './pages/Cup'
 import { League } from './pages/League'
 import { Winners } from './pages/Winners'
 import { Discord } from './pages/Discord'
+import { Aktualnosci } from './pages/Aktualnosci'
+import { AktualnosciWpis } from './pages/AktualnosciWpis'
 import { Regulamin } from './pages/Regulamin'
 import { PolitykaPrywatnosci } from './pages/PolitykaPrywatnosci'
 import { PolitykaCookies } from './pages/PolitykaCookies'
@@ -62,6 +64,8 @@ export default function App() {
         <Route path="/league" element={<League />} />
         <Route path="/winners" element={<Winners />} />
         <Route path="/discord" element={<Discord />} />
+        <Route path="/aktualnosci" element={<Aktualnosci />} />
+        <Route path="/aktualnosci/:slug" element={<AktualnosciWpis />} />
         <Route path="/regulamin" element={<Regulamin />} />
         <Route path="/polityka-prywatnosci" element={<PolitykaPrywatnosci />} />
         <Route path="/polityka-cookies" element={<PolitykaCookies />} />
