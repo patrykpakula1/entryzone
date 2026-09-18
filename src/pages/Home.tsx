@@ -1,6 +1,7 @@
 import { Hero } from '../components/hero/Hero'
 import { CupTeaser } from '../components/home/CupTeaser'
 import { Partners } from '../components/home/Partners'
+import { StatsBar } from '../components/home/StatsBar'
 import { Footer } from '../components/layout/Footer'
 import { usePageMeta } from '../hooks/usePageMeta'
 
@@ -13,6 +14,7 @@ export function Home() {
   return (
     <>
       <Hero />
+      <StatsBar />
       <CupTeaser />
       <Partners />
       <Footer />
