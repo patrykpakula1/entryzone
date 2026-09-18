@@ -9,6 +9,9 @@ const ITEMS = [
 /**
  * Wąski pasek statystyk pod hero. Liczby z data/stats.ts — aktualizowane
  * ręcznie po turnieju, nie liczone automatycznie z niczego.
+ *
+ * Celowo niepodpięty w Home.tsx do czasu pierwszego turnieju — na same
+ * zera nie ma się czym pochwalić. Gotowy do włączenia jednym importem.
  */
 export function StatsBar() {
   return (
