@@ -10,7 +10,7 @@ const CONTACT_EMAIL = 'entryzone@wp.pl'
  */
 export function Partners() {
   return (
-    <section className="flex flex-col items-center bg-bg px-6 py-16 sm:py-24">
+    <section className="flex flex-col items-center bg-bg px-6 pt-4 pb-16 sm:pt-6 sm:pb-24">
       <div className="mx-auto flex max-w-[700px] flex-col items-center gap-8 text-center">
         <div className="flex flex-col items-center gap-6">
           <span className="h-px w-12 bg-gold" />

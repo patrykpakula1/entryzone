@@ -13,7 +13,9 @@ const STEPS = [
 /**
  * Sekcja pod hero: zapowiedź CUP‑u #1. Trzy warstwy jedna na drugiej —
  * scenografia drabinki w tle, odliczanie i CTA na środku, trzy kroki
- * zgłoszenia na dole — mieszczą się na jednym ekranie.
+ * zgłoszenia na dole. Wysokość dopasowana do treści (bez min-h-svh) —
+ * dzięki temu sekcja Partnerzy zaczyna się zaraz po krokach zgłoszenia,
+ * bez pustego marginesu z wyśrodkowania w pełnym ekranie.
  */
 export function CupTeaser() {
   const teamsRegistered = useTeamsRegistered()
@@ -23,7 +25,7 @@ export function CupTeaser() {
       : Math.min(100, Math.round((teamsRegistered / registration.teamsMax) * 100))
 
   return (
-    <section className="relative flex min-h-svh flex-col items-center justify-center overflow-hidden bg-bg px-6 py-16 sm:py-20">
+    <section className="relative flex flex-col items-center overflow-hidden bg-bg px-6 pt-20 pb-6 sm:pt-24 sm:pb-8">
       <BracketBackground />
 
       <div className="relative z-10 flex flex-col items-center gap-10 text-center sm:gap-12">
