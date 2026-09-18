@@ -43,6 +43,6 @@ export const faq = [
   {
     question: 'Czy będzie transmisja?',
     answer:
-      'Tak, przynajmniej wielki finał BO3 gramy z komentarzem na żywo. Udział w turnieju oznacza zgodę na transmisję meczu i publikację wyniku wraz z nickami zawodników.',
+      'Tak, półfinały i wielki finał BO3 gramy z komentarzem na żywo. Udział w turnieju oznacza zgodę na transmisję meczu i publikację wyniku wraz z nickami zawodników.',
   },
 ]
