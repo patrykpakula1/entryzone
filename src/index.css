@@ -36,6 +36,15 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
+  /* Stopka zawsze na dole okna: #root to kolumna flex na całą wysokość
+     viewportu, a Footer domyka ją margin-top: auto — działa niezależnie
+     od wysokości treści strony (patrz Footer.tsx). */
+  #root {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+
   h1,
   h2,
   h3,

@@ -9,7 +9,7 @@ const LEGAL_LINKS = [
 /** Stopka na wszystkich podstronach — prawa, drobny druk o Valve. */
 export function Footer() {
   return (
-    <footer className="border-t border-border bg-surface px-6 py-8 sm:px-10">
+    <footer className="mt-auto border-t border-border bg-surface px-6 py-8 sm:px-10">
       <div className="mx-auto flex max-w-[700px] flex-col gap-4">
         <div className="flex flex-col items-center gap-4 text-sm text-text/60 sm:flex-row sm:justify-between">
           <span>© 2026 EntryZone</span>
