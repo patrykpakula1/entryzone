@@ -128,7 +128,7 @@ export const Navbar = forwardRef<HTMLElement, NavbarProps>(function Navbar(
                     ? `${linkBase} rounded-full border border-gold px-5 py-2 text-gold hover:bg-gold/10`
                     : `${linkBase} border-b-2 pb-1.5 ${
                         isActive(item)
-                          ? 'border-gold text-text'
+                          ? 'border-gold text-gold'
                           : 'border-transparent text-text hover:text-gold-lite'
                       }`,
               )}
