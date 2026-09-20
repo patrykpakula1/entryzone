@@ -19,6 +19,28 @@ export function NewsArticle({ entry }: { entry: NewsEntry }) {
           ))}
         </div>
 
+        {entry.links && (
+          <ul className="flex flex-col items-center gap-3 text-base sm:flex-row sm:gap-8">
+            {entry.links.map((link) => {
+              const className =
+                'text-gold underline decoration-border underline-offset-4 transition-colors duration-200 hover:text-gold-lite'
+              return (
+                <li key={link.to}>
+                  {link.to.startsWith('/') ? (
+                    <Link to={link.to} className={className}>
+                      {link.label}
+                    </Link>
+                  ) : (
+                    <a href={link.to} target="_blank" rel="noopener noreferrer" className={className}>
+                      {link.label}
+                    </a>
+                  )}
+                </li>
+              )
+            })}
+          </ul>
+        )}
+
         <Link
           to="/aktualnosci"
           className="text-sm text-gold underline decoration-border underline-offset-4 transition-colors duration-200 hover:text-gold-lite"
