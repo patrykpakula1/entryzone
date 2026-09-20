@@ -31,7 +31,7 @@ export function Giveaway() {
           <span className="h-px w-12 bg-gold" />
           <h1 className="text-4xl text-text sm:text-5xl">Giveaway</h1>
           <p className="text-lg text-text/70 sm:text-xl">
-            Co tydzień losujemy nagrodę wśród społeczności EntryZone.
+            Co tydzień losujemy skina do CS2 wśród społeczności EntryZone.
           </p>
         </div>
 
