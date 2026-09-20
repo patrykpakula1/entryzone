@@ -74,6 +74,10 @@ export function Hero() {
           start: 'top top',
           end: `+=${PIN_SCREENS * 100}%`,
           pin: true,
+          // Jawnie, bo #root jest kolumną flex, a GSAP przy rodzicu flex
+          // domyślnie wyłącza pinSpacing — następna sekcja wjeżdżałaby
+          // na hero w trakcie animacji.
+          pinSpacing: true,
           // Ułamek sekundy dobiegu — scroll w obie strony nie skacze klatkami.
           // Krótszy pin to ten sam gest przewinięty przez dwa razy więcej osi
           // czasu, więc dobieg musi być krótszy, żeby animacja nie wlokła się
