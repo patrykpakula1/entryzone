@@ -1,0 +1,20 @@
+{
+  "current": {
+    "prize": "Klawiatura mechaniczna",
+    "drawDate": "2026-09-27T20:00:00",
+    "howToEnter": [
+      "Dołącz na serwer Discord EntryZone.",
+      "Wejdź na kanał #giveaway i kliknij reakcję pod wpisem z losowaniem.",
+      "Bądź na serwerze w chwili losowania — zwycięzcę ogłaszamy na Discordzie."
+    ]
+  },
+  "rules": [
+    "W losowaniu może wziąć udział każdy członek serwera Discord EntryZone.",
+    "Jedno zgłoszenie na osobę — kolejne konta nie zwiększają szans.",
+    "Zwycięzcę losujemy losowo spośród wszystkich zgłoszeń.",
+    "Zwycięzca ma 48 godzin na odpowiedź, potem nagrodę losujemy ponownie.",
+    "Nagrodę wysyłamy na terenie Polski, na nasz koszt.",
+    "EntryZone może wykluczyć konta oszukujące lub łamiące regulamin serwera."
+  ],
+  "pastWinners": []
+}

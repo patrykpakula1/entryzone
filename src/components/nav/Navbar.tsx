@@ -15,11 +15,12 @@ const ITEMS: NavItem[] = [
   { label: 'League', to: '/league' },
   { label: 'Winners', to: '/winners' },
   { label: 'Aktualności', to: '/aktualnosci' },
+  { label: 'Giveaway', to: '/giveaway' },
   { label: 'Discord', to: '/discord', featured: 'outline' },
 ]
 
 const linkBase =
-  'font-display text-sm uppercase tracking-[0.2em] transition-colors duration-200'
+  'font-display text-xs uppercase tracking-[0.15em] transition-colors duration-200 xl:text-sm xl:tracking-[0.2em]'
 
 type NavbarProps = {
   /**
@@ -99,6 +100,7 @@ export const Navbar = forwardRef<HTMLElement, NavbarProps>(function Navbar(
       <div className="relative z-10 flex w-full items-center justify-between px-10 py-3">
         <Link
           to="/"
+          className="shrink-0"
           onClick={() => {
             setOpen(false)
             // Przy tej samej trasie router nie nawiguje, więc scroll na
@@ -110,12 +112,12 @@ export const Navbar = forwardRef<HTMLElement, NavbarProps>(function Navbar(
           <img
             src="/logo-lockup.svg"
             alt="EntryZone"
-            className="h-14 w-auto sm:h-24"
+            className="h-14 w-auto sm:h-24 xl:h-14 2xl:h-24"
           />
         </Link>
 
         {/* Desktop */}
-        <ul className="hidden items-center gap-10 sm:flex">
+        <ul className="hidden items-center gap-6 whitespace-nowrap xl:flex 2xl:gap-10">
           {ITEMS.map((item) => (
             <li key={item.label}>
               {renderLink(
@@ -140,7 +142,7 @@ export const Navbar = forwardRef<HTMLElement, NavbarProps>(function Navbar(
           onClick={() => setOpen((v) => !v)}
           aria-label={open ? 'Zamknij menu' : 'Otwórz menu'}
           aria-expanded={open}
-          className="relative flex h-11 w-11 flex-col items-center justify-center gap-[6px] sm:hidden"
+          className="relative flex h-11 w-11 flex-col items-center justify-center gap-[6px] xl:hidden"
         >
           <span
             className={`block h-px w-7 bg-text transition-transform duration-300 ${
@@ -167,7 +169,7 @@ export const Navbar = forwardRef<HTMLElement, NavbarProps>(function Navbar(
         z-40, żeby pasek nad nim (z-50) zostawał widoczny — logo i przycisk
         zamknięcia działają, gdy menu jest otwarte. */}
     <div
-      className={`fixed inset-0 z-40 flex flex-col items-center justify-center gap-10 bg-bg pt-24 transition-opacity duration-300 sm:hidden ${
+      className={`fixed inset-0 z-40 flex flex-col items-center justify-center gap-10 bg-bg pt-24 transition-opacity duration-300 xl:hidden ${
         open
           ? 'pointer-events-auto opacity-100'
           : 'pointer-events-none opacity-0'
