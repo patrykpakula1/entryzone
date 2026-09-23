@@ -64,17 +64,26 @@ export function Registration() {
             </div>
 
             <div className="flex flex-col items-center gap-3">
-              <a
-                href={registration.formUrl}
-                target="_blank"
-                rel="noreferrer"
-                className={`${buttonBase} bg-gold text-bg hover:bg-gold-lite`}
-              >
-                Zgłoś drużynę
-              </a>
+              {registration.faceitUrl ? (
+                <a
+                  href={registration.faceitUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={`${buttonBase} bg-gold text-bg hover:bg-gold-lite`}
+                >
+                  Zapisz drużynę na FACEIT
+                </a>
+              ) : (
+                <span
+                  aria-disabled="true"
+                  className={`${buttonBase} cursor-not-allowed border border-border text-text/40`}
+                >
+                  Zapisy na FACEIT — wkrótce
+                </span>
+              )}
               <p className="max-w-sm text-sm text-text/50">
-                Potrzebujesz nicków całego składu i linków do profili Steam.
-                Zajmie Ci to 3 minuty.
+                Udział jest bezpłatny. Kapitan zapisuje cały skład na FACEIT —
+                każdy zawodnik potrzebuje konta FACEIT z podpiętym CS2.
               </p>
             </div>
           </>

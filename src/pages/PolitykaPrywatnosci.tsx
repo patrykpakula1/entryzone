@@ -9,7 +9,7 @@ const SECTIONS = [
   },
   {
     label: 'Zbierane dane',
-    text: 'Formularz zgłoszeniowy (Google Forms) zbiera: nazwę drużyny, nicki zawodników, linki do profili Steam oraz kontakt Discord.',
+    text: 'Zapisy na turniej odbywają się na FACEIT. EntryZone korzysta z nazw drużyn i nicków zawodników widocznych w turnieju na FACEIT oraz z kontaktu Discord kapitana przy rozliczeniu nagród.',
   },
   {
     label: 'Cel przetwarzania',
@@ -24,8 +24,8 @@ const SECTIONS = [
     text: 'Do zakończenia turnieju i rozliczenia nagród.',
   },
   {
-    label: 'Podmiot przetwarzający',
-    text: 'Formularz zgłoszeniowy działa na Google Forms — w tym zakresie Google LLC przetwarza dane jako podmiot przetwarzający.',
+    label: 'FACEIT',
+    text: 'Zapisy na turniej idą przez platformę FACEIT. FACEIT przetwarza dane swoich użytkowników na zasadach własnej polityki prywatności.',
   },
   {
     label: 'Publikacja wyników',

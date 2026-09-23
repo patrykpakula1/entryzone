@@ -6,13 +6,13 @@ const FORMAT = [
   { label: 'System', text: 'single elimination — jedna porażka kończy udział' },
   { label: 'Mecze', text: 'BO1 we wszystkich rundach, BO3 w finale' },
   { label: 'Mapy', text: 'aktywna pula Premier, veto systemem ban/ban/pick' },
-  { label: 'Serwery', text: 'serwery organizatora / FACEIT' },
-  { label: 'Zapisy', text: 'otwarte dla wszystkich, bez limitu rangi' },
+  { label: 'Serwery', text: 'FACEIT' },
+  { label: 'Zapisy', text: 'przez FACEIT, otwarte dla wszystkich, bez limitu rangi' },
   {
     label: 'Terminarz',
     text: 'Sobota 14 listopada, start 14:00: runda 1 i ćwierćfinały na dwóch serwerach równolegle. Niedziela 15 listopada, od 18:00: półfinały i wielki finał BO3 z komentarzem na żywo.',
   },
-  { label: 'Wpisowe', text: `${prizes.entryFee} zł od drużyny — cała pula trafia do zwycięzców` },
+  { label: 'Udział', text: 'bezpłatny' },
   {
     label: 'Nagrody',
     text: `Pula ${prizes.poolTotal} zł — ${prizes.first} zł za I miejsce, ${prizes.second} zł za II miejsce, dla MVP turnieju ${prizes.mvpPrize}`,

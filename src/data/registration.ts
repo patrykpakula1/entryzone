@@ -15,12 +15,10 @@ const closeAt = new Date('2026-11-08T20:00:00')
 export const registration = {
   status: 'open' as RegistrationStatus,
 
-  // Liczba zgłoszonych drużyn NIE jest tu wpisywana ręcznie — czyta ją
-  // useTeamsRegistered() z arkusza odpowiedzi formularza (opublikowanego
-  // jako CSV pod adresem niżej) i liczy wiersze. Ten URL to jedyne miejsce
-  // do zmiany, gdyby arkusz się przeniósł.
-  responsesCsvUrl:
-    'https://docs.google.com/spreadsheets/d/e/2PACX-1vSFEi46fK4sHSLuMRZw_IWmsm3BJ-VMusPgvZHtvBOVnUuLzKmlyS3-SlvnR5RfHvbd5P0vl1_5_8rz/pub?output=csv',
+  // Zapisy idą wyłącznie przez FACEIT (FACEIT nie pozwala zbierać ich poza
+  // platformą), więc liczby zgłoszonych drużyn nie da się pobrać
+  // automatycznie — wpisujemy ją tu ręcznie, patrząc na stronę turnieju.
+  teamsRegistered: 0,
   teamsMax: 16,
 
   closeAt,
@@ -40,7 +38,7 @@ export const registration = {
   startDate: '14–15 listopada',
   startTime: '14:00',
 
-  formUrl:
-    'https://docs.google.com/forms/d/e/1FAIpQLSd1pCLSYh6cIRv3Yc3B8-ozbYzaEZkQ5l5RHkm_YVPrOM5Suw/viewform',
+  // Link do turnieju na FACEIT — uzupełnić po założeniu turnieju.
+  faceitUrl: '',
   discordUrl: 'https://discord.gg/EGwYTYpjXR',
 }

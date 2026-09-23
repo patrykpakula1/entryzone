@@ -12,13 +12,18 @@ export const faq = [
       'Turniej jest otwarty dla wszystkich — bez kwalifikacji i bez limitu rangi. Liczy się tylko to, kto wygra swój mecz. Zgłoszenia przyjmujemy do wypełnienia drabinki (16 drużyn) albo do terminu zamknięcia zapisów.',
   },
   {
-    question: 'Ile kosztuje wpisowe i na co idzie?',
-    answer: `Wpisowe wynosi ${prizes.entryFee} zł od drużyny, płatne przed turniejem. Cała zebrana kwota trafia do puli nagród — organizator nic z niej nie zatrzymuje. Pula ${prizes.poolTotal} zł jest gwarantowana niezależnie od liczby zgłoszonych drużyn.`,
+    question: 'Ile kosztuje udział?',
+    answer: `Nic — udział jest darmowy. Pula ${prizes.poolTotal} zł jest gwarantowana niezależnie od liczby zgłoszonych drużyn.`,
+  },
+  {
+    question: 'Jak się zapisać?',
+    answer:
+      'Kapitan zapisuje drużynę z pełnym składem na stronie turnieju na FACEIT. Każdy zawodnik musi mieć konto FACEIT z podpiętym CS2. Link do zapisów znajdziesz w zakładce Zapisy i na Discordzie. Check-in trzeba zrobić najpóźniej 30 minut przed startem turnieju.',
   },
   {
     question: 'Czy muszę mieć pełny skład pięciu osób?',
     answer:
-      'Tak, zgłaszasz 5 zawodników. Możesz dodać jednego rezerwowego, ale musi być zgłoszony przed startem turnieju — po pierwszym meczu składu nie zmieniamy.',
+      'Tak, zgłaszasz 5 zawodników. Możesz dodać jednego rezerwowego, ale musi być zgłoszony przy zapisie na FACEIT. Zmiana składu wymaga wypisania drużyny i ponownego zapisu przed startem turnieju.',
   },
   {
     question: 'Co jeśli nie mam drużyny?',
@@ -28,7 +33,7 @@ export const faq = [
   {
     question: 'Na czym gramy?',
     answer:
-      'Na aktywnej puli map trybu Premier, z veto w systemie ban/ban/pick. Mecze rozgrywane są na serwerach organizatora albo na FACEIT.',
+      'Na aktywnej puli map trybu Premier, z veto w systemie ban/ban/pick. Mecze rozgrywane są na serwerach FACEIT.',
   },
   {
     question: 'Co jeśli ktoś z drużyny nie może w niedzielę?',

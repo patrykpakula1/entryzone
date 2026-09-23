@@ -49,7 +49,7 @@ akcentu, stan aktywny. Nigdy całe sekcje w złocie.
 4. WINNERS — zwycięzcy i MVP każdego turnieju/sezonu
 5. DISCORD — zaproszenie
 6. Pasek nawigacji + wersja mobilna
-7. Zapisy — formularz Google + licznik miejsc + termin
+7. Zapisy — bezpłatny udział, wyłącznie przez FACEIT (link do turnieju) + licznik miejsc + termin
 
 Poza zakresem v1 (nie proponuj, nie buduj): statystyki zawodników z API,
 overlay do streamów, sklep z merchem, logowanie, panel admina, backend, baza danych.

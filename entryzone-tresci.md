@@ -48,8 +48,9 @@ mapa jest finałem. Wszystkie rundy w formacie BO1, wielki finał BO3.
 - **System:** single elimination — jedna porażka kończy udział
 - **Mecze:** BO1 we wszystkich rundach, BO3 w finale
 - **Mapy:** aktywna pula Premier, veto systemem ban/ban/pick
-- **Serwery:** [serwery organizatora / FACEIT]
-- **Zapisy:** otwarte dla wszystkich, bez limitu rangi
+- **Serwery:** FACEIT
+- **Zapisy:** przez FACEIT, otwarte dla wszystkich, bez limitu rangi
+- **Udział:** bezpłatny
 
 ### Nagrody
 Pula: **[X XXX zł]**
@@ -61,22 +62,27 @@ Pula: **[X XXX zł]**
 
 ## REGULAMIN (skrócony, do rozwijanej sekcji)
 
-1. Drużyna zgłasza 5 zawodników. Rezerwowy jest opcjonalny i musi być zgłoszony
-   przed startem turnieju — po pierwszym meczu składu nie zmieniamy.
-2. Konta muszą być bez blokad VAC i Overwatch. Konto z blokadą to walkower.
-3. Drużyna stawia się na serwerze do 15 minut po wyznaczonej godzinie.
+1. Udział jest bezpłatny. Zapisy wyłącznie przez FACEIT — każdy zawodnik
+   potrzebuje konta FACEIT z podpiętym CS2 i klienta FACEIT Anti-Cheat.
+2. Drużyna zgłasza 5 zawodników. Rezerwowy jest opcjonalny i musi być
+   zgłoszony przy zapisie na FACEIT. Zmiana składu wymaga wypisania drużyny
+   i ponownego zapisu przed startem turnieju.
+3. Konta muszą być bez blokad VAC i Overwatch. Konto z blokadą to walkower.
+4. Kapitan robi check-in na FACEIT najpóźniej 30 minut przed startem
+   turnieju. Brak check-inu to usunięcie drużyny z turnieju.
+5. Drużyna stawia się na serwerze do 15 minut po wyznaczonej godzinie.
    Po tym czasie mecz przyznajemy przeciwnikowi.
-4. Wszelkie oszustwa — cheaty, smurfy, granie na cudzym koncie — oznaczają
+6. Wszelkie oszustwa — cheaty, smurfy, granie na cudzym koncie — oznaczają
    dyskwalifikację całej drużyny i blokadę w kolejnych edycjach.
-5. Spory zgłasza kapitan, na Discordzie, w trakcie meczu. Zgłoszenia po
+7. Spory zgłasza kapitan, na Discordzie, w trakcie meczu. Zgłoszenia po
    zakończeniu mapy nie są rozpatrywane.
-6. Decyzje sędziego są ostateczne.
-7. Obraźliwe zachowanie wobec przeciwników, sędziów lub widzów kończy się
-   usunięciem z turnieju bez zwrotu wpisowego.
-8. Organizator może zmienić terminarz — zmiany ogłaszamy na Discordzie
-   z wyprzedzeniem.
-9. Udział w turnieju oznacza zgodę na transmisję meczu i publikację wyniku
-   wraz z nickami zawodników.
+8. Decyzje sędziego są ostateczne.
+9. Obraźliwe zachowanie wobec przeciwników, sędziów lub widzów kończy się
+   usunięciem z turnieju.
+10. Organizator może zmienić terminarz — zmiany ogłaszamy na Discordzie
+    z wyprzedzeniem.
+11. Udział w turnieju oznacza zgodę na transmisję meczu i publikację wyniku
+    wraz z nickami zawodników.
 
 ---
 
@@ -88,9 +94,10 @@ Zamykamy [DATA] o [GODZINA] — albo wcześniej, jeśli wypełnimy drabinkę.
 
 Zapisanych drużyn: **[7] / 16**
 
-*Przycisk:* ZGŁOŚ DRUŻYNĘ
-*Pod przyciskiem:* Potrzebujesz nicków całego składu i linków do profili Steam.
-Zajmie Ci to 3 minuty.
+*Przycisk:* ZAPISZ DRUŻYNĘ NA FACEIT (jeśli link do turnieju jeszcze nie jest
+gotowy: przycisk nieaktywny, ZAPISY NA FACEIT — WKRÓTCE)
+*Pod przyciskiem:* Udział jest bezpłatny. Kapitan zapisuje cały skład na
+FACEIT — każdy zawodnik potrzebuje konta FACEIT z podpiętym CS2.
 
 ### Stan B: zapisy zamknięte
 **ZAPISY ZAMKNIĘTE**

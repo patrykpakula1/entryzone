@@ -8,7 +8,7 @@ import { rules } from '../data/rules'
 export function Regulamin() {
   usePageMeta(
     'EntryZone — Regulamin',
-    'Pełny regulamin Entryzone Cup #1 — zasady składów, wpisowego, terminarza, sporów i dyskwalifikacji.',
+    'Pełny regulamin Entryzone Cup #1 — zasady składów, zapisów, terminarza, sporów i dyskwalifikacji.',
   )
 
   return (
@@ -26,8 +26,9 @@ export function Regulamin() {
 
           <p className="text-lg leading-loose text-text/70 sm:text-xl">
             16 drużyn, system pucharowy (single elimination) — BO1 we
-            wszystkich rundach, wielki finał BO3. Wpisowe {prizes.entryFee}{' '}
-            zł od drużyny, gwarantowana pula nagród {prizes.poolTotal} zł.
+            wszystkich rundach, wielki finał BO3. Udział bezpłatny, zapisy
+            wyłącznie przez FACEIT, gwarantowana pula nagród{' '}
+            {prizes.poolTotal} zł.
           </p>
 
           <ol className="flex w-full flex-col">

@@ -5,7 +5,7 @@ import { BracketBackground } from './BracketBackground'
 import { Countdown } from './Countdown'
 
 const STEPS = [
-  { n: '01', text: 'Zgłoś skład' },
+  { n: '01', text: 'Zapisz skład na FACEIT' },
   { n: '02', text: 'Dołącz na Discorda' },
   { n: '03', text: `Graj ${registration.startDate}` },
 ]
