@@ -43,7 +43,7 @@ export const news: NewsEntry[] = [
     date: '2026-09-18',
     excerpt: `Pierwszy turniej EntryZone startuje ${registration.startDate} — 16 drużyn, bez limitu rangi, pula nagród ${prizes.poolTotal} zł.`,
     body: [
-      'Zapisy na EntryZone Cup #1 są już otwarte. To pierwszy turniej naszej organizacji — otwarty puchar CS2 dla 16 drużyn, bez limitu rangi.',
+      'Zapisy na EntryZone Cup #1 są już otwarte — wyłącznie przez FACEIT. To pierwszy turniej naszej organizacji: otwarty, bezpłatny puchar CS2 dla 16 drużyn, bez limitu rangi.',
       `Turniej odbędzie się ${registration.startDate} 2026. Format: pojedyncza drabinka eliminacyjna, mecze do jednej mapy, wielki finał do dwóch wygranych map. Pula nagród wynosi ${prizes.poolTotal} zł.`,
       `Zapisy przyjmujemy do ${registration.closeDateLabel}, do godziny ${registration.closeTimeLabel}. Liczba miejsc jest ograniczona — im szybciej zgłosisz skład, tym pewniej zagracie.`,
       'Szczegóły formatu i regulamin znajdziesz na stronie CUP. Zapisz drużynę i dołącz do naszego Discorda, żeby być na bieżąco z terminarzem.',

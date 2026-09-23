@@ -50,6 +50,9 @@ mapa jest finałem. Wszystkie rundy w formacie BO1, wielki finał BO3.
 - **Mapy:** aktywna pula Premier, veto systemem ban/ban/pick
 - **Serwery:** FACEIT
 - **Zapisy:** przez FACEIT, otwarte dla wszystkich, bez limitu rangi
+- **Terminarz:** sobota 14 listopada, start 14:00 — runda 1 i ćwierćfinały;
+  niedziela 15 listopada — półfinały o 18:00, wielki finał BO3 o 20:00 z
+  komentarzem na żywo. Check-in kapitanów w sobotę 12:30–13:00
 - **Udział:** bezpłatny
 
 ### Nagrody
@@ -63,25 +66,34 @@ Pula: **[X XXX zł]**
 ## REGULAMIN (skrócony, do rozwijanej sekcji)
 
 1. Udział jest bezpłatny. Zapisy wyłącznie przez FACEIT — każdy zawodnik
-   potrzebuje konta FACEIT z podpiętym CS2 i klienta FACEIT Anti-Cheat.
+   potrzebuje konta FACEIT z podpiętym CS2 i klienta FACEIT Anti-Cheat. Przy
+   zapisie gracz akceptuje regulamin, dołącza do Discorda EntryZone i
+   obserwuje stronę ENTRYZONE na FACEIT.
 2. Drużyna zgłasza 5 zawodników. Rezerwowy jest opcjonalny i musi być
-   zgłoszony przy zapisie na FACEIT. Zmiana składu wymaga wypisania drużyny
-   i ponownego zapisu przed startem turnieju.
-3. Konta muszą być bez blokad VAC i Overwatch. Konto z blokadą to walkower.
-4. Kapitan robi check-in na FACEIT najpóźniej 30 minut przed startem
-   turnieju. Brak check-inu to usunięcie drużyny z turnieju.
-5. Drużyna stawia się na serwerze do 15 minut po wyznaczonej godzinie.
-   Po tym czasie mecz przyznajemy przeciwnikowi.
-6. Wszelkie oszustwa — cheaty, smurfy, granie na cudzym koncie — oznaczają
+   zgłoszony przy zapisie na FACEIT. Kapitan może wymienić gracza z
+   rezerwowym przed meczem. Dodanie nowej osoby do składu wymaga wypisania
+   drużyny i ponownego zapisu przed startem turnieju.
+3. Turniej trwa dwa dni. Sobota 14 listopada: runda 1 i ćwierćfinały.
+   Niedziela 15 listopada: półfinały i wielki finał. Wymagana dostępność w
+   obu terminach.
+4. Check-in robi kapitan na FACEIT w sobotę 14 listopada, 12:30–13:00.
+   Brak check-inu to usunięcie drużyny z turnieju.
+5. Konta muszą być bez blokad VAC i Overwatch. Konto z blokadą to walkower.
+6. Drużyna musi dołączyć do serwera, zanim skończy się licznik w pokoju
+   meczowym FACEIT. Po jego upływie FACEIT automatycznie przyznaje walkower
+   przeciwnikowi.
+7. Spory zgłasza kapitan adminowi turnieju w trakcie meczu — admin może
+   zapauzować mecz.
+8. Odwołanie zgłaszamy na #odwołania w ciągu 30 minut od końca meczu, z
+   dowodem. Decyzja organizatora jest ostateczna.
+9. Wszelkie oszustwa — cheaty, smurfy, granie na cudzym koncie — oznaczają
    dyskwalifikację całej drużyny i blokadę w kolejnych edycjach.
-7. Spory zgłasza kapitan, na Discordzie, w trakcie meczu. Zgłoszenia po
-   zakończeniu mapy nie są rozpatrywane.
-8. Decyzje sędziego są ostateczne.
-9. Obraźliwe zachowanie wobec przeciwników, sędziów lub widzów kończy się
-   usunięciem z turnieju.
-10. Organizator może zmienić terminarz — zmiany ogłaszamy na Discordzie
-    z wyprzedzeniem.
-11. Udział w turnieju oznacza zgodę na transmisję meczu i publikację wyniku
+10. Obraźliwe zachowanie wobec przeciwników, sędziów lub widzów kończy się
+    usunięciem z turnieju.
+11. Pula nagród jest gwarantowana niezależnie od liczby zgłoszonych drużyn.
+    Przy mniej niż 8 zgłoszonych drużynach organizator może przełożyć
+    turniej.
+12. Udział w turnieju oznacza zgodę na transmisję meczu i publikację wyniku
     wraz z nickami zawodników.
 
 ---

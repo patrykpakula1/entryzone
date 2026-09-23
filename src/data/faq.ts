@@ -18,7 +18,7 @@ export const faq = [
   {
     question: 'Jak się zapisać?',
     answer:
-      'Kapitan zapisuje drużynę z pełnym składem na stronie turnieju na FACEIT. Każdy zawodnik musi mieć konto FACEIT z podpiętym CS2. Link do zapisów znajdziesz w zakładce Zapisy i na Discordzie. Check-in trzeba zrobić najpóźniej 30 minut przed startem turnieju.',
+      'Kapitan zapisuje drużynę z pełnym składem na stronie turnieju na FACEIT. Każdy zawodnik musi mieć konto FACEIT z podpiętym CS2 i klienta FACEIT Anti-Cheat. Link do zapisów znajdziesz w zakładce Zapisy i na Discordzie. Check-in kapitana na FACEIT odbywa się w sobotę 12:30–13:00 — brak check-inu to usunięcie drużyny z turnieju.',
   },
   {
     question: 'Czy muszę mieć pełny skład pięciu osób?',
@@ -38,7 +38,7 @@ export const faq = [
   {
     question: 'Co jeśli ktoś z drużyny nie może w niedzielę?',
     answer:
-      'Dostępność w obu dniach turnieju jest wymagana — dlatego regulamin pozwala zgłosić rezerwowego przed startem. Jeśli w niedzielę zabraknie Wam graczy do pełnego składu, obowiązują normalne zasady stawiennictwa: spóźnienie powyżej 15 minut to walkower dla przeciwnika.',
+      'Dostępność w obu dniach turnieju jest wymagana — dlatego regulamin pozwala zgłosić rezerwowego, którym kapitan może przed meczem wymienić gracza z podstawowego składu. Pamiętajcie też o liczniku w pokoju meczowym FACEIT: drużyna musi dołączyć do serwera, zanim się wyzeruje, inaczej FACEIT automatycznie przyzna walkower przeciwnikowi.',
   },
   {
     question: 'Kiedy dostanę nagrodę?',

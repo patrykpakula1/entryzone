@@ -5,7 +5,7 @@ export type RegistrationStatus = 'open' | 'closed' | 'none'
  * Odliczanie w sekcji CTA i etykiety daty/godziny na stronie zapisów czytają
  * z tego samego obiektu, więc nie mogą się rozjechać.
  */
-const closeAt = new Date('2026-11-08T20:00:00')
+const closeAt = new Date('2026-11-14T13:30:00')
 
 /**
  * Jedno miejsce do przełączania stanu sekcji zapisów — zmień tylko `status`.
@@ -38,7 +38,7 @@ export const registration = {
   startDate: '14–15 listopada',
   startTime: '14:00',
 
-  // Link do turnieju na FACEIT — uzupełnić po założeniu turnieju.
-  faceitUrl: '',
+  faceitUrl:
+    'https://www.faceit.com/pl/championship/4c962c5e-7481-4fd2-ae32-007a47e79455/FIRST%2520ENTRYZONE%2520CUP',
   discordUrl: 'https://discord.gg/EGwYTYpjXR',
 }
