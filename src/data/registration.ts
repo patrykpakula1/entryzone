@@ -1,3 +1,5 @@
+import { DISCORD_URL } from './socials'
+
 export type RegistrationStatus = 'open' | 'closed' | 'none'
 
 /**
@@ -39,5 +41,5 @@ export const registration = {
 
   faceitUrl:
     'https://www.faceit.com/pl/championship/4c962c5e-7481-4fd2-ae32-007a47e79455/FIRST%2520ENTRYZONE%2520CUP',
-  discordUrl: 'https://discord.gg/EGwYTYpjXR',
+  discordUrl: DISCORD_URL,
 }
