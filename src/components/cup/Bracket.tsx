@@ -64,7 +64,7 @@ export function Bracket() {
             ))}
           </div>
 
-          <div className="mt-8 flex flex-col gap-8">
+          <div className="mt-10 flex flex-col gap-8">
             {rounds[activeRound].map((match, i) => (
               <BracketMatch
                 key={match.id}
@@ -111,8 +111,9 @@ export function Bracket() {
                   x2={line.x2}
                   y2={line.y2}
                   stroke="var(--color-gold)"
-                  strokeOpacity={0.45}
-                  strokeWidth={1.5}
+                  strokeOpacity={0.35}
+                  shapeRendering="crispEdges"
+                  strokeWidth={1}
                 />
               ))}
             </svg>

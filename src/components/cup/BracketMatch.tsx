@@ -26,17 +26,16 @@ function TeamRow({
 }) {
   const team = slot ? teams[slot] : null
 
-  // Każdy slot to osobne pudełko: puste ma ramkę copper, z drużyną — złotą
-  // z delikatną poświatą. Finał dostaje złotą ramkę także przy pustych slotach.
-  const box = 'flex flex-1 items-center rounded-sm border bg-surface px-3 text-sm'
-  const glow = isFinal ? 'shadow-[0_0_14px_0] shadow-gold/20' : 'shadow-[0_0_12px_0] shadow-gold/15'
-  const emptyBorder = isFinal ? 'border-gold/60' : 'border-copper/40'
+  // Drukowana drabinka: slot to jedna linijka tekstu na cienkiej linii bazowej,
+  // bez ramek i tła. Złoto tylko w kropce przed nazwą i przy wyniku zwycięzcy.
+  const line = 'flex flex-1 items-end justify-between gap-2 border-b border-border/60 pb-1.5'
+  const size = isFinal ? 'text-base' : 'text-sm'
 
   // Do czasu odpowiedzi API nie wiemy, czy miejsce jest wolne — pokazujemy
   // neutralny pasek zamiast fałszywego "wolne miejsce".
   if (loading) {
     return (
-      <div className={`${box} ${emptyBorder}`} aria-hidden="true">
+      <div className={`${line} items-center`} aria-hidden="true">
         <span className="h-2 w-24 animate-pulse rounded-full bg-text/10" />
       </div>
     )
@@ -44,7 +43,7 @@ function TeamRow({
 
   if (!team) {
     return (
-      <div className={`${box} ${emptyBorder} ${isWalkover ? 'text-copper' : 'text-text/40'}`}>
+      <div className={`${line} text-xs ${isWalkover ? 'text-copper' : 'text-text/25'}`}>
         {isWalkover ? 'walkower' : isRegistrationRound ? 'wolne miejsce' : 'TBD'}
       </div>
     )
@@ -54,18 +53,22 @@ function TeamRow({
     <button
       type="button"
       onClick={() => onSelect(team.id)}
-      className={`${box} justify-between gap-2 text-left transition-colors duration-150 ${
-        state === 'loser'
-          ? 'border-copper/40 text-text/50 hover:border-gold/60 hover:text-gold-lite'
-          : `border-gold/60 ${glow} hover:border-gold hover:text-gold-lite ${
-              state === 'winner' ? 'text-gold' : 'text-text'
-            }`
+      className={`${line} ${size} text-left transition-colors duration-150 hover:text-gold-lite ${
+        state === 'loser' ? 'text-text/40' : state === 'winner' ? 'text-gold' : 'text-text'
       }`}
     >
-      <span className="truncate">{team.name}</span>
+      <span className="flex min-w-0 items-center gap-2">
+        <span
+          aria-hidden="true"
+          className={`h-1 w-1 shrink-0 rounded-full ${state === 'loser' ? 'bg-text/25' : 'bg-gold'}`}
+        />
+        <span className="truncate">{team.name}</span>
+      </span>
       {score !== undefined && (
         <span
-          className={`font-display shrink-0 text-xs ${state === 'winner' ? 'text-gold' : 'text-text/50'}`}
+          className={`font-display shrink-0 text-xs tabular-nums ${
+            state === 'winner' ? 'text-gold' : 'text-text/40'
+          }`}
         >
           {score}
         </span>
@@ -109,12 +112,17 @@ export function BracketMatch({
   return (
     <div style={style} className="relative">
       {/* Podpis leży nad kartą i nie zajmuje miejsca, więc nie rusza układu. */}
+      {isFinal && <span className="absolute -top-[26px] left-0 right-0 h-px bg-gold/50" />}
       {caption && (
-        <span className="font-display absolute -top-[18px] left-0 text-[10px] uppercase tracking-[0.15em] text-copper">
+        <span
+          className={`font-display absolute -top-[18px] left-0 text-[10px] uppercase tracking-[0.15em] ${
+            isFinal ? 'text-gold' : 'text-copper'
+          }`}
+        >
           {caption}
         </span>
       )}
-      <div className="flex h-full flex-col gap-1">
+      <div className="flex h-full flex-col">
         <TeamRow
           slot={match.teamA}
           score={result?.scoreA}
