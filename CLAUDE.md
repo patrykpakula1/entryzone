@@ -12,6 +12,9 @@ Deadline v1: 12 września.
 - Lenis — smooth scroll
 - Tailwind — style
 - Dane (drużyny, zawodnicy, drabinka, zwycięzcy) w plikach JSON. ZERO backendu w v1.
+  Jedyny wyjątek: jedna funkcja serverless Vercel (`api/teams.ts`) do licznika
+  zapisanych drużyn z FACEIT Data API. Klucz w zmiennej `FACEIT_API_KEY` na
+  Vercelu — nigdy w repo ani we froncie. Żadnych innych endpointów.
 
 ## Kolory (używaj wyłącznie tych tokenów)
 Jedyne źródło prawdy: blok `@theme` w `src/index.css`. Nie duplikuj tych

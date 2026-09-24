@@ -15,11 +15,10 @@ const closeAt = new Date('2026-11-14T13:30:00')
 export const registration = {
   status: 'open' as RegistrationStatus,
 
-  // Zapisy idą wyłącznie przez FACEIT (FACEIT nie pozwala zbierać ich poza
-  // platformą), więc liczby zgłoszonych drużyn nie da się pobrać
-  // automatycznie — wpisujemy ją tu ręcznie, patrząc na stronę turnieju.
+  // Licznik zapisanych drużyn i liczba miejsc idą na żywo z FACEIT przez
+  // /api/teams (useTeamsRegistered). Ta wartość to tylko fallback, gdy API
+  // nie odpowie — wpisujemy ją ręcznie, patrząc na stronę turnieju.
   teamsRegistered: 0,
-  teamsMax: 16,
 
   closeAt,
   closeDateLabel: closeAt.toLocaleDateString('pl-PL', {

@@ -9,11 +9,11 @@ const statCard = 'rounded-2xl border border-border bg-surface px-6 py-5 text-lef
 
 export function Registration() {
   const { status } = registration
-  const teamsRegistered = useTeamsRegistered()
+  const { registered: teamsRegistered, max: teamsMax } = useTeamsRegistered()
   const progress =
     teamsRegistered === null
       ? 0
-      : Math.min(100, Math.round((teamsRegistered / registration.teamsMax) * 100))
+      : Math.min(100, Math.round((teamsRegistered / teamsMax) * 100))
 
   return (
     <section className="flex min-h-svh flex-col items-center justify-center bg-bg px-6 pb-16 pt-32 sm:pb-20 sm:pt-40">
@@ -51,7 +51,7 @@ export function Registration() {
                   )}
                   <span className="text-text/40">
                     {' '}
-                    / {registration.teamsMax}
+                    / {teamsMax}
                   </span>
                 </p>
                 <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-border">

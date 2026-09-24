@@ -18,11 +18,11 @@ const STEPS = [
  * bez pustego marginesu z wyśrodkowania w pełnym ekranie.
  */
 export function CupTeaser() {
-  const teamsRegistered = useTeamsRegistered()
+  const { registered: teamsRegistered, max: teamsMax } = useTeamsRegistered()
   const progress =
     teamsRegistered === null
       ? 0
-      : Math.min(100, Math.round((teamsRegistered / registration.teamsMax) * 100))
+      : Math.min(100, Math.round((teamsRegistered / teamsMax) * 100))
 
   return (
     <section className="relative flex flex-col items-center overflow-hidden bg-bg px-6 pt-20 pb-6 sm:pt-24 sm:pb-8">
@@ -54,7 +54,7 @@ export function CupTeaser() {
                   teamsRegistered
                 )}
               </span>
-              <span className="text-text/40">/ {registration.teamsMax} drużyn</span>
+              <span className="text-text/40">/ {teamsMax} drużyn</span>
             </div>
             <div className="h-1.5 w-40 overflow-hidden rounded-full bg-border sm:w-48">
               <div
