@@ -38,7 +38,7 @@ function TeamRow({
     return (
       <div
         className={`flex flex-1 items-center px-3 text-sm italic ${
-          isWalkover ? 'text-copper' : 'text-text/20'
+          isWalkover ? 'text-copper' : 'text-text/60'
         }`}
       >
         {isWalkover ? 'walkower' : isRegistrationRound ? 'wolne miejsce' : 'TBD'}
@@ -109,8 +109,8 @@ export function BracketMatch({
         </span>
       )}
       <div
-        className={`flex h-full flex-col divide-y divide-border overflow-hidden rounded-sm border bg-surface ${
-          isEmpty ? 'border-border/30' : 'border-border'
+        className={`flex h-full flex-col divide-y divide-text/20 overflow-hidden rounded-sm border bg-surface ${
+          isEmpty ? 'border-text/20' : 'border-text/30'
         }`}
       >
         <TeamRow

@@ -110,8 +110,9 @@ export function Bracket() {
                   y1={line.y1}
                   x2={line.x2}
                   y2={line.y2}
-                  stroke="var(--color-border)"
-                  strokeWidth={1}
+                  stroke="var(--color-text)"
+                  strokeOpacity={0.35}
+                  strokeWidth={1.5}
                 />
               ))}
             </svg>

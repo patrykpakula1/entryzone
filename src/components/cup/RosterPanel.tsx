@@ -86,7 +86,7 @@ export function RosterPanel({
           <div className="flex min-w-0 items-center gap-4">
             <Avatar src={team.avatar} name={team.name} className="h-12 w-12 text-base" />
             <div className="min-w-0">
-              <h3 className="font-display break-words text-xl uppercase tracking-[0.15em] text-text sm:text-2xl">
+              <h3 className="font-display text-xl normal-case leading-snug tracking-normal text-text [overflow-wrap:anywhere] sm:text-2xl">
                 {team.name}
               </h3>
               {team.avgElo !== null && (
