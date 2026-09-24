@@ -23,6 +23,7 @@ type Phase = 'registration' | 'live' | 'finished'
 type MatchStatus = 'scheduled' | 'live' | 'finished' | 'cancelled'
 
 type Player = {
+  id: string
   nickname: string
   avatar: string | null
   level: number | null
@@ -308,6 +309,7 @@ function buildTeam(raw: RawTeam, infos: Map<string, PlayerInfo>): Team {
   const players: Player[] = raw.roster.map((p) => {
     const info = infos.get(p.id)
     return {
+      id: p.id,
       nickname: info?.nickname ?? p.nickname ?? '—',
       avatar: info?.avatar ?? p.avatar,
       level: info?.level ?? null,

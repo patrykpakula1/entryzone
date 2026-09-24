@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { buildBracketView, ROUND_LABELS } from '../../data/bracket'
 import { useBracket } from '../../hooks/useBracket'
+import { useTournamentStats } from '../../hooks/useTournamentStats'
 import {
   CONNECTORS,
   HEADER_HEIGHT,
@@ -20,6 +21,7 @@ import { RosterPanel } from './RosterPanel'
  */
 export function Bracket() {
   const { loading, data } = useBracket()
+  const stats = useTournamentStats()
   const view = useMemo(() => buildBracketView(data), [data])
   const rounds = view.rounds
   const walkoversPossible = view.phase !== 'registration'
@@ -141,6 +143,7 @@ export function Bracket() {
 
       <RosterPanel
         team={openTeamId ? (view.teams[openTeamId] ?? null) : null}
+        stats={stats?.players}
         onClose={() => setOpenTeamId(null)}
       />
     </section>

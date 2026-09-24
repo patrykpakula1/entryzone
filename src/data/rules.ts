@@ -21,4 +21,5 @@ export const rules = [
   `Pula ${prizes.poolTotal} zł jest gwarantowana niezależnie od liczby zgłoszonych drużyn.`,
   'Przy mniej niż 8 zgłoszonych drużynach organizator może przełożyć turniej.',
   'Udział w turnieju oznacza zgodę na transmisję meczu i publikację wyniku wraz z nickami zawodników.',
+  'MVP turnieju = gracz z najwyższym średnim ADR ze wszystkich rozegranych map (minimum 3 mapy). Przy remisie decyduje wyższe K/D. Statystyki pochodzą z FACEIT.',
 ]

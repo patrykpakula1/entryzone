@@ -50,4 +50,9 @@ export const faq = [
     answer:
       'Tak, w niedzielę oba półfinały (jeden po drugim) i wielki finał BO3 gramy z komentarzem na żywo. Udział w turnieju oznacza zgodę na transmisję meczu i publikację wyniku wraz z nickami zawodników.',
   },
+  {
+    question: 'Jak wybieracie MVP?',
+    answer:
+      'MVP turnieju = gracz z najwyższym średnim ADR ze wszystkich rozegranych map (minimum 3 mapy). Przy remisie decyduje wyższe K/D. Statystyki pochodzą z FACEIT.',
+  },
 ]

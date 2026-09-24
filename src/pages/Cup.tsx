@@ -1,6 +1,7 @@
 import { Navbar } from '../components/nav/Navbar'
 import { CupOverview } from '../components/cup/CupOverview'
 import { Bracket } from '../components/cup/Bracket'
+import { MvpRanking } from '../components/cup/MvpRanking'
 import { Regulamin } from '../components/cup/Regulamin'
 import { Faq } from '../components/cup/Faq'
 import { Footer } from '../components/layout/Footer'
@@ -17,6 +18,7 @@ export function Cup() {
       <Navbar mode="page" />
       <CupOverview />
       <Bracket />
+      <MvpRanking />
       <Regulamin />
       <Faq />
       <Footer />

@@ -96,6 +96,10 @@ Pula: **[X XXX zł]**
     turniej.
 12. Udział w turnieju oznacza zgodę na transmisję meczu i publikację wyniku
     wraz z nickami zawodników.
+13. MVP turnieju = gracz z najwyższym średnim ADR ze wszystkich rozegranych map (minimum 3 mapy). Przy remisie decyduje wyższe K/D. Statystyki pochodzą z FACEIT.
+
+FAQ — **Jak wybieracie MVP?**
+MVP turnieju = gracz z najwyższym średnim ADR ze wszystkich rozegranych map (minimum 3 mapy). Przy remisie decyduje wyższe K/D. Statystyki pochodzą z FACEIT.
 
 ---
 

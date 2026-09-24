@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { RosterTeam } from '../../data/bracket'
+import type { PlayerStats } from '../../hooks/useTournamentStats'
 
 const FULL_ROSTER = 5
 
@@ -48,9 +49,12 @@ function LevelBadge({ level }: { level: number | null }) {
 /** Panel składu drużyny — otwierany klikiem w kartę meczu, zamykany Escape lub klikiem obok. */
 export function RosterPanel({
   team,
+  stats,
   onClose,
 }: {
   team: RosterTeam | null
+  /** Turniejowe statystyki graczy z /api/stats; gracz bez wpisu jeszcze nie grał. */
+  stats?: PlayerStats[]
   onClose: () => void
 }) {
   useEffect(() => {
@@ -63,6 +67,8 @@ export function RosterPanel({
   }, [team, onClose])
 
   if (!team) return null
+
+  const statsById = new Map((stats ?? []).map((s) => [s.playerId, s]))
 
   return (
     <div
@@ -113,16 +119,26 @@ export function RosterPanel({
         </div>
 
         <ul className="mt-6 flex flex-col divide-y divide-border">
-          {team.players.map((player, i) => (
-            <li key={`${player.nickname}-${i}`} className="flex items-center gap-3 py-3">
-              <Avatar src={player.avatar} name={player.nickname} className="h-8 w-8" />
-              <span className="min-w-0 flex-1 truncate text-text">{player.nickname}</span>
-              <LevelBadge level={player.level} />
-              <span className="font-display w-12 shrink-0 text-right text-xs text-text/60">
-                {player.elo ?? '—'}
-              </span>
-            </li>
-          ))}
+          {team.players.map((player, i) => {
+            const played = player.id ? statsById.get(player.id) : undefined
+            return (
+              <li key={`${player.nickname}-${i}`} className="flex items-center gap-3 py-3">
+                <Avatar src={player.avatar} name={player.nickname} className="h-8 w-8" />
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate text-text">{player.nickname}</span>
+                  {played && (
+                    <span className="font-display block text-xs tabular-nums text-text/50">
+                      ADR {played.adr.toFixed(1)} · K/D {played.kd.toFixed(2)}
+                    </span>
+                  )}
+                </span>
+                <LevelBadge level={player.level} />
+                <span className="font-display w-12 shrink-0 text-right text-xs tabular-nums text-text/60">
+                  {player.elo ?? '—'}
+                </span>
+              </li>
+            )
+          })}
         </ul>
 
         {team.players.length < FULL_ROSTER && (

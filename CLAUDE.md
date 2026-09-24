@@ -12,8 +12,9 @@ Deadline v1: 12 września.
 - Lenis — smooth scroll
 - Tailwind — style
 - Dane (drużyny, zawodnicy, drabinka, zwycięzcy) w plikach JSON. ZERO backendu w v1.
-  Jedyny wyjątek: dwie funkcje serverless Vercel z FACEIT Data API —
-  `api/teams.ts` (licznik zapisanych drużyn) i `api/bracket.ts` (drabinka i składy).
+  Jedyny wyjątek: trzy funkcje serverless Vercel z FACEIT Data API —
+  `api/teams.ts` (licznik zapisanych drużyn), `api/bracket.ts` (drabinka i składy)
+  i `api/stats.ts` (statystyki meczowe i ranking MVP).
   Klucz w zmiennej `FACEIT_API_KEY` na Vercelu — nigdy w repo ani we froncie.
   Żadnych innych endpointów.
 
@@ -54,12 +55,16 @@ akcentu, stan aktywny. Nigdy całe sekcje w złocie.
 5. DISCORD — zaproszenie
 6. Pasek nawigacji + wersja mobilna
 7. Zapisy — bezpłatny udział, wyłącznie przez FACEIT (link do turnieju) + licznik miejsc + termin
+8. Statystyki meczowe i ranking MVP turnieju — z FACEIT przez `api/stats.ts`
+   (ranking pod drabinką na /cup, ADR i K/D w widoku składu)
 
-Poza zakresem v1 (nie proponuj, nie buduj): statystyki zawodników z API,
-overlay do streamów, sklep z merchem, logowanie, panel admina, backend, baza danych.
+Poza zakresem v1 (nie proponuj, nie buduj): profile graczy, historia wszystkich
+turniejów, ranking EntryZone między turniejami (to etap EntryZone Hub),
+overlay do streamów, sklep z merchem, logowanie, panel admina, backend, baza
+danych.
 Wyjątek: dozwolone są dane z FACEIT Data API przez funkcje serverless w `api/`
-(licznik zapisanych drużyn, drabinka, składy z poziomem i ELO). Pełne statystyki
-meczowe (K/D, ADR, MVP) to osobny etap — EntryZone Hub, po turnieju.
+(licznik zapisanych drużyn, drabinka, składy z poziomem i ELO, statystyki
+meczowe i ranking MVP turnieju).
 
 ## Hero — animacja (osobna, w 5 krokach)
 Faza 0: ciemność, cząsteczki kurzu w smudze światła, sygnet + ENTRYZONE, "scroll"

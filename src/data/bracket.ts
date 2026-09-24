@@ -73,6 +73,8 @@ export const bracket: Match[][] = [
  * API, czy to statyczny fallback — komponenty rysują zawsze to samo.
  */
 export type RosterPlayer = {
+  /** Id gracza na FACEIT — brak w statycznym fallbacku. */
+  id?: string
   nickname: string
   avatar: string | null
   level: number | null
