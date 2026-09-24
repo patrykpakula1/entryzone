@@ -10,7 +10,7 @@ const FORMAT = [
   { label: 'Zapisy', text: 'przez FACEIT, otwarte dla wszystkich, bez limitu rangi' },
   {
     label: 'Terminarz',
-    text: 'Sobota 14 listopada, start 14:00: runda 1 i ćwierćfinały. Niedziela 15 listopada: półfinały o 18:00, wielki finał BO3 o 20:00 z komentarzem na żywo. Check-in kapitanów w sobotę 12:30–13:00.',
+    text: 'Sobota 14 listopada, 14:00: runda 1 i ćwierćfinały (BO1). Niedziela 15 listopada: półfinał 1 o 17:00, półfinał 2 o 18:15 (BO1), wielki finał BO3 o 20:00 — wszystko z komentarzem na żywo. Check-in kapitanów: sobota 14 listopada, 12:30–13:00.',
   },
   { label: 'Udział', text: 'bezpłatny' },
   {

@@ -50,9 +50,10 @@ mapa jest finałem. Wszystkie rundy w formacie BO1, wielki finał BO3.
 - **Mapy:** aktywna pula Premier, veto systemem ban/ban/pick
 - **Serwery:** FACEIT
 - **Zapisy:** przez FACEIT, otwarte dla wszystkich, bez limitu rangi
-- **Terminarz:** sobota 14 listopada, start 14:00 — runda 1 i ćwierćfinały;
-  niedziela 15 listopada — półfinały o 18:00, wielki finał BO3 o 20:00 z
-  komentarzem na żywo. Check-in kapitanów w sobotę 12:30–13:00
+- **Terminarz:** sobota 14 listopada, 14:00 — runda 1 i ćwierćfinały (BO1);
+  niedziela 15 listopada — półfinał 1 o 17:00, półfinał 2 o 18:15 (BO1),
+  wielki finał BO3 o 20:00 — wszystko z komentarzem na żywo. Check-in
+  kapitanów: sobota 14 listopada, 12:30–13:00
 - **Udział:** bezpłatny
 
 ### Nagrody
@@ -73,15 +74,15 @@ Pula: **[X XXX zł]**
    zgłoszony przy zapisie na FACEIT. Kapitan może wymienić gracza z
    rezerwowym przed meczem. Dodanie nowej osoby do składu wymaga wypisania
    drużyny i ponownego zapisu przed startem turnieju.
-3. Turniej trwa dwa dni. Sobota 14 listopada: runda 1 i ćwierćfinały.
-   Niedziela 15 listopada: półfinały i wielki finał. Wymagana dostępność w
-   obu terminach.
+3. Turniej trwa dwa dni. Sobota 14 listopada, 14:00: runda 1 i ćwierćfinały
+   (BO1). Niedziela 15 listopada: półfinał 1 o 17:00, półfinał 2 o 18:15
+   (BO1), wielki finał BO3 o 20:00. Półfinały grane są jeden po drugim, bo
+   oba są transmitowane. Wymagana dostępność w obu dniach.
 4. Check-in robi kapitan na FACEIT w sobotę 14 listopada, 12:30–13:00.
    Brak check-inu to usunięcie drużyny z turnieju.
 5. Konta muszą być bez blokad VAC i Overwatch. Konto z blokadą to walkower.
-6. Drużyna musi dołączyć do serwera, zanim skończy się licznik w pokoju
-   meczowym FACEIT. Po jego upływie FACEIT automatycznie przyznaje walkower
-   przeciwnikowi.
+6. Drużyna musi wejść na serwer w czasie odliczanym w pokoju meczowym
+   FACEIT. Kto się spóźni, dostaje walkower.
 7. Spory zgłasza kapitan adminowi turnieju w trakcie meczu — admin może
    zapauzować mecz.
 8. Odwołanie zgłaszamy na #odwołania w ciągu 30 minut od końca meczu, z

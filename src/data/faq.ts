@@ -38,7 +38,7 @@ export const faq = [
   {
     question: 'Co jeśli ktoś z drużyny nie może w niedzielę?',
     answer:
-      'Dostępność w obu dniach turnieju jest wymagana — dlatego regulamin pozwala zgłosić rezerwowego, którym kapitan może przed meczem wymienić gracza z podstawowego składu. Pamiętajcie też o liczniku w pokoju meczowym FACEIT: drużyna musi dołączyć do serwera, zanim się wyzeruje, inaczej FACEIT automatycznie przyzna walkower przeciwnikowi.',
+      'Dostępność w obu dniach turnieju jest wymagana. W niedzielę grają półfinał 1 (17:00), półfinał 2 (18:15) i wielki finał BO3 (20:00) — dlatego regulamin pozwala zgłosić rezerwowego, którym kapitan może przed meczem wymienić gracza z podstawowego składu. Pamiętajcie też: drużyna musi wejść na serwer w czasie odliczanym w pokoju meczowym FACEIT. Kto się spóźni, dostaje walkower.',
   },
   {
     question: 'Kiedy dostanę nagrodę?',
@@ -48,6 +48,6 @@ export const faq = [
   {
     question: 'Czy będzie transmisja?',
     answer:
-      'Tak, półfinały i wielki finał BO3 gramy z komentarzem na żywo. Udział w turnieju oznacza zgodę na transmisję meczu i publikację wyniku wraz z nickami zawodników.',
+      'Tak, w niedzielę oba półfinały (jeden po drugim) i wielki finał BO3 gramy z komentarzem na żywo. Udział w turnieju oznacza zgodę na transmisję meczu i publikację wyniku wraz z nickami zawodników.',
   },
 ]
