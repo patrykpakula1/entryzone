@@ -1,5 +1,6 @@
-import { useState } from 'react'
-import { bracket, teams, ROUND_LABELS } from '../../data/bracket'
+import { useMemo, useState } from 'react'
+import { buildBracketView, ROUND_LABELS } from '../../data/bracket'
+import { useBracket } from '../../hooks/useBracket'
 import {
   CONNECTORS,
   HEADER_HEIGHT,
@@ -12,8 +13,16 @@ import {
 import { BracketMatch } from './BracketMatch'
 import { RosterPanel } from './RosterPanel'
 
-/** Drabinka CUP‑u: 16 drużyn, single elimination, pod opisem formatu w CupOverview. */
+/**
+ * Drabinka CUP‑u: 16 drużyn, single elimination, pod opisem formatu w
+ * CupOverview. Drużyny, pary i wyniki idą z FACEIT przez /api/bracket; gdy API
+ * nie odpowie, rysujemy statyczną drabinkę z data/bracket.ts.
+ */
 export function Bracket() {
+  const { loading, data } = useBracket()
+  const view = useMemo(() => buildBracketView(data), [data])
+  const rounds = view.rounds
+  const walkoversPossible = view.phase !== 'registration'
   const [openTeamId, setOpenTeamId] = useState<string | null>(null)
   const [activeRound, setActiveRound] = useState(0)
 
@@ -23,6 +32,12 @@ export function Bracket() {
         <div className="flex flex-col items-center gap-6 text-center">
           <span className="h-px w-12 bg-gold" />
           <h2 className="text-3xl text-text sm:text-4xl">Drabinka</h2>
+          {/* Wysokość zarezerwowana od razu, żeby dopisek nie przesuwał drabinki. */}
+          <p className="min-h-[3rem] max-w-md text-sm text-text/50 sm:min-h-[1.5rem]">
+            {view.source === 'api' &&
+              view.phase === 'registration' &&
+              'Pary zostaną wylosowane przez FACEIT przy starcie turnieju, 14.11 o 14:00.'}
+          </p>
         </div>
 
         {/* Mobile: pełna drabinka nie mieści się na ekranie bez przewijania
@@ -47,12 +62,16 @@ export function Bracket() {
             ))}
           </div>
 
-          <div className="mt-8 flex flex-col gap-4">
-            {bracket[activeRound].map((match) => (
+          <div className="mt-8 flex flex-col gap-8">
+            {rounds[activeRound].map((match, i) => (
               <BracketMatch
                 key={match.id}
                 match={match}
                 round={activeRound}
+                position={i}
+                teams={view.teams}
+                loading={loading}
+                walkoversPossible={walkoversPossible}
                 onSelectTeam={setOpenTeamId}
                 style={{ position: 'relative', width: '100%', height: MATCH_HEIGHT }}
               />
@@ -95,12 +114,16 @@ export function Bracket() {
               ))}
             </svg>
 
-            {bracket.map((round, r) =>
+            {rounds.map((round, r) =>
               round.map((match, i) => (
                 <BracketMatch
                   key={match.id}
                   match={match}
                   round={r}
+                  position={i}
+                  teams={view.teams}
+                  loading={loading}
+                  walkoversPossible={walkoversPossible}
                   onSelectTeam={setOpenTeamId}
                   style={{
                     position: 'absolute',
@@ -117,7 +140,7 @@ export function Bracket() {
       </div>
 
       <RosterPanel
-        team={openTeamId ? teams[openTeamId] : null}
+        team={openTeamId ? (view.teams[openTeamId] ?? null) : null}
         onClose={() => setOpenTeamId(null)}
       />
     </section>
