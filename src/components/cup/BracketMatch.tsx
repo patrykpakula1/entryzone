@@ -11,7 +11,6 @@ function TeamRow({
   loading,
   isRegistrationRound,
   isWalkover,
-  isFinal,
   onSelect,
 }: {
   slot: Slot
@@ -21,21 +20,19 @@ function TeamRow({
   loading: boolean
   isRegistrationRound: boolean
   isWalkover: boolean
-  isFinal: boolean
   onSelect: (teamId: string) => void
 }) {
   const team = slot ? teams[slot] : null
 
-  // Drukowana drabinka: slot to jedna linijka tekstu na cienkiej linii bazowej,
-  // bez ramek i tła. Złoto tylko w kropce przed nazwą i przy wyniku zwycięzcy.
-  const line = 'flex flex-1 items-end justify-between gap-2 border-b border-border/60 pb-1.5'
-  const size = isFinal ? 'text-base' : 'text-sm'
+  // Mecz to jedna karta (tło surface, ramka border); drużyny oddziela cienka
+  // linia w środku. Złoto tylko przy zwycięzcy i jako kreska przy zapisanej drużynie.
+  const row = 'relative flex flex-1 items-center justify-between gap-2 px-3.5 text-sm'
 
   // Do czasu odpowiedzi API nie wiemy, czy miejsce jest wolne — pokazujemy
   // neutralny pasek zamiast fałszywego "wolne miejsce".
   if (loading) {
     return (
-      <div className={`${line} items-center`} aria-hidden="true">
+      <div className={row} aria-hidden="true">
         <span className="h-2 w-24 animate-pulse rounded-full bg-text/10" />
       </div>
     )
@@ -43,7 +40,7 @@ function TeamRow({
 
   if (!team) {
     return (
-      <div className={`${line} text-xs ${isWalkover ? 'text-copper' : 'text-text/25'}`}>
+      <div className={`${row} ${isWalkover ? 'text-copper' : 'text-text/30'}`}>
         {isWalkover ? 'walkower' : isRegistrationRound ? 'wolne miejsce' : 'TBD'}
       </div>
     )
@@ -53,22 +50,20 @@ function TeamRow({
     <button
       type="button"
       onClick={() => onSelect(team.id)}
-      className={`${line} ${size} text-left transition-colors duration-150 hover:text-gold-lite ${
+      className={`${row} text-left transition-colors duration-150 hover:text-gold-lite ${
         state === 'loser' ? 'text-text/40' : state === 'winner' ? 'text-gold' : 'text-text'
       }`}
     >
-      <span className="flex min-w-0 items-center gap-2">
+      {score === undefined && (
         <span
           aria-hidden="true"
-          className={`h-1 w-1 shrink-0 rounded-full ${state === 'loser' ? 'bg-text/25' : 'bg-gold'}`}
+          className="absolute left-0 top-1/2 h-4 w-0.5 -translate-y-1/2 bg-gold"
         />
-        <span className="truncate">{team.name}</span>
-      </span>
+      )}
+      <span className="truncate">{team.name}</span>
       {score !== undefined && (
         <span
-          className={`font-display shrink-0 text-xs tabular-nums ${
-            state === 'winner' ? 'text-gold' : 'text-text/40'
-          }`}
+          className={`shrink-0 tabular-nums ${state === 'winner' ? 'text-gold' : 'text-text/40'}`}
         >
           {score}
         </span>
@@ -107,12 +102,11 @@ export function BracketMatch({
     Boolean(match.teamA) !== Boolean(match.teamB)
   const caption = result ? null : matchCaption(round, position, match.scheduledAt)
 
-  const rowProps = { teams, loading, isRegistrationRound, isWalkover, isFinal, onSelect: onSelectTeam }
+  const rowProps = { teams, loading, isRegistrationRound, isWalkover, onSelect: onSelectTeam }
 
   return (
     <div style={style} className="relative">
       {/* Podpis leży nad kartą i nie zajmuje miejsca, więc nie rusza układu. */}
-      {isFinal && <span className="absolute -top-[26px] left-0 right-0 h-px bg-gold/50" />}
       {caption && (
         <span
           className={`font-display absolute -top-[18px] left-0 text-[10px] uppercase tracking-[0.15em] ${
@@ -122,7 +116,8 @@ export function BracketMatch({
           {caption}
         </span>
       )}
-      <div className="flex h-full flex-col">
+      <div className="relative flex h-full flex-col overflow-hidden rounded-sm border border-border bg-surface">
+        {isFinal && <span className="absolute inset-x-0 top-0 h-0.5 bg-gold" />}
         <TeamRow
           slot={match.teamA}
           score={result?.scoreA}
@@ -137,6 +132,7 @@ export function BracketMatch({
           }
           {...rowProps}
         />
+        <div className="mx-2.5 h-px bg-border" />
         <TeamRow
           slot={match.teamB}
           score={result?.scoreB}

@@ -21,10 +21,9 @@ function Row({ player, place }: { player: PlayerStats; place: number }) {
   const leader = place === 1
   return (
     <li
-      className={`grid ${ROW_COLS} px-1 py-4 md:px-5 ${
-        leader ? 'border-y border-gold/50 md:-mt-px' : 'border-b border-border/60'
-      }`}
+      className={`grid ${ROW_COLS} relative overflow-hidden rounded-sm border border-border bg-surface px-4 py-4 md:px-5`}
     >
+      {leader && <span aria-hidden="true" className="absolute inset-y-0 left-0 w-0.5 bg-gold" />}
       <span className="font-display tabular-nums text-lg text-copper md:text-base">{place}</span>
 
       <span className="min-w-0">
@@ -58,7 +57,7 @@ function PlaceholderRow() {
   return (
     <li
       aria-hidden="true"
-      className={`grid ${ROW_COLS} border-b border-border/60 px-1 py-4 text-text/25 md:px-5`}
+      className={`grid ${ROW_COLS} rounded-sm border border-border bg-surface px-4 py-4 text-text/25 md:px-5`}
     >
       <span className="font-display text-lg md:text-base">—</span>
       <span className="min-w-0">
@@ -81,7 +80,7 @@ function PlaceholderRow() {
 function TableHead() {
   return (
     <div
-      className={`hidden md:grid ${ROW_COLS} border-b border-border/60 px-5 pb-3 text-[10px] uppercase tracking-[0.2em] text-copper`}
+      className={`hidden md:grid ${ROW_COLS} px-5 pb-3 text-[10px] uppercase tracking-[0.2em] text-copper`}
       aria-hidden="true"
     >
       <span>#</span>
@@ -122,7 +121,7 @@ export function MvpRanking() {
             </p>
             <div className="w-full">
               <TableHead />
-              <ol className="flex flex-col">
+              <ol className="flex flex-col gap-3">
                 {[0, 1, 2].map((i) => (
                   <PlaceholderRow key={i} />
                 ))}
@@ -134,7 +133,7 @@ export function MvpRanking() {
             {mvpRanking.length > 0 ? (
               <div className="w-full">
                 <TableHead />
-                <ol className="flex flex-col">
+                <ol className="flex flex-col gap-3">
                   {mvpRanking.map((player, i) => (
                     <Row key={player.playerId} player={player} place={i + 1} />
                   ))}

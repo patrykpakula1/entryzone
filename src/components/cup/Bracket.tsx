@@ -26,7 +26,6 @@ export function Bracket() {
   const rounds = view.rounds
   const walkoversPossible = view.phase !== 'registration'
   const [openTeamId, setOpenTeamId] = useState<string | null>(null)
-  const [activeRound, setActiveRound] = useState(0)
 
   return (
     <section className="bg-bg px-6 pb-20 sm:pb-28">
@@ -42,46 +41,9 @@ export function Bracket() {
           </p>
         </div>
 
-        {/* Mobile: pełna drabinka nie mieści się na ekranie bez przewijania
-            w poziomie, więc poniżej md pokazujemy jedną rundę naraz przez
-            zakładki, na pełną szerokość. Od md w górę wraca widok całości. */}
-        <div className="w-full md:hidden">
-          <div className="grid grid-cols-2 gap-2">
-            {ROUND_LABELS.map((label, r) => (
-              <button
-                key={label}
-                type="button"
-                onClick={() => setActiveRound(r)}
-                aria-pressed={activeRound === r}
-                className={`font-display rounded-full px-3 py-2.5 text-xs uppercase tracking-[0.15em] transition-colors duration-150 ${
-                  activeRound === r
-                    ? 'bg-gold text-bg'
-                    : 'border border-border text-text/60 hover:text-gold-lite'
-                }`}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-
-          <div className="mt-10 flex flex-col gap-8">
-            {rounds[activeRound].map((match, i) => (
-              <BracketMatch
-                key={match.id}
-                match={match}
-                round={activeRound}
-                position={i}
-                teams={view.teams}
-                loading={loading}
-                walkoversPossible={walkoversPossible}
-                onSelectTeam={setOpenTeamId}
-                style={{ position: 'relative', width: '100%', height: MATCH_HEIGHT }}
-              />
-            ))}
-          </div>
-        </div>
-
-        <div className="hidden w-full overflow-x-auto pb-2 md:block">
+        {/* Karty mają stałą szerokość — na telefonie drabinka przewija się poziomo
+            w swoim kontenerze zamiast się ściskać. */}
+        <div className="w-full overflow-x-auto pb-2">
           <div
             className="relative mx-auto"
             style={{ width: TOTAL_WIDTH, height: TOTAL_HEIGHT + HEADER_HEIGHT }}
