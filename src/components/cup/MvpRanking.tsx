@@ -6,11 +6,13 @@ const MIN_MAPS = 3
 const ROW_COLS =
   'grid-cols-[2rem_1fr] gap-x-4 md:grid-cols-[3rem_1.2fr_1fr_5rem_5rem_5rem] md:items-center md:gap-x-6'
 
-function Stat({ label, value }: { label: string; value: string }) {
+function Stat({ label, value, accent }: { label: string; value: string; accent?: boolean }) {
   return (
     <span className="flex flex-col md:block md:text-right">
       <span className="text-[10px] uppercase tracking-[0.15em] text-text/40 md:hidden">{label}</span>
-      <span className="font-display tabular-nums text-text">{value}</span>
+      <span className={`font-display tabular-nums ${accent ? 'text-gold' : 'text-text'}`}>
+        {value}
+      </span>
     </span>
   )
 }
@@ -20,19 +22,21 @@ function Row({ player, place }: { player: PlayerStats; place: number }) {
   return (
     <li
       className={`grid ${ROW_COLS} rounded-sm border bg-surface px-4 py-4 md:px-5 ${
-        leader ? 'border-gold' : 'border-border'
+        leader ? 'border-gold shadow-[0_0_14px_0] shadow-gold/15' : 'border-copper/40'
       }`}
     >
       <span
         className={`font-display tabular-nums text-lg md:text-base ${
-          leader ? 'text-gold' : 'text-copper'
+          leader ? 'text-gold' : place <= 3 ? 'text-gold-lite' : 'text-copper'
         }`}
       >
         {place}
       </span>
 
       <span className="min-w-0">
-        <span className="block truncate text-text">{player.nickname}</span>
+        <span className={`block truncate ${leader ? 'text-gold' : 'text-text'}`}>
+          {player.nickname}
+        </span>
         {/* Na telefonie drużyna schodzi pod nick; od md ma własną kolumnę. */}
         <span className="block truncate text-sm text-text/50 md:hidden">
           {player.teamName ?? '—'}
@@ -47,7 +51,7 @@ function Row({ player, place }: { player: PlayerStats; place: number }) {
       <span className="hidden truncate text-text/60 md:block">{player.teamName ?? '—'}</span>
 
       <span className="col-start-2 mt-3 flex gap-8 md:contents">
-        <Stat label="ADR" value={player.adr.toFixed(1)} />
+        <Stat label="ADR" value={player.adr.toFixed(1)} accent={leader} />
         <Stat label="K/D" value={player.kd.toFixed(2)} />
         <Stat label="Mapy" value={String(player.maps)} />
       </span>
@@ -60,7 +64,7 @@ function PlaceholderRow() {
   return (
     <li
       aria-hidden="true"
-      className={`grid ${ROW_COLS} rounded-sm border border-border/50 bg-surface/50 px-4 py-4 text-text/25 md:px-5`}
+      className={`grid ${ROW_COLS} rounded-sm border border-copper/30 bg-surface/50 px-4 py-4 text-text/25 md:px-5`}
     >
       <span className="font-display text-lg md:text-base">—</span>
       <span className="min-w-0">
@@ -83,7 +87,7 @@ function PlaceholderRow() {
 function TableHead() {
   return (
     <div
-      className={`hidden md:grid ${ROW_COLS} px-5 pb-3 text-[10px] uppercase tracking-[0.2em] text-text/40`}
+      className={`hidden md:grid ${ROW_COLS} px-5 pb-3 text-[10px] uppercase tracking-[0.2em] text-copper`}
       aria-hidden="true"
     >
       <span>#</span>
