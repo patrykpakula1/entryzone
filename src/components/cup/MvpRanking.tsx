@@ -55,15 +55,57 @@ function Row({ player, place }: { player: PlayerStats; place: number }) {
   )
 }
 
+/** Wyszarzony wiersz-zapowiedź: ten sam układ i wysokość co prawdziwy, same kreski. */
+function PlaceholderRow() {
+  return (
+    <li
+      aria-hidden="true"
+      className={`grid ${ROW_COLS} rounded-sm border border-border/50 bg-surface/50 px-4 py-4 text-text/25 md:px-5`}
+    >
+      <span className="font-display text-lg md:text-base">—</span>
+      <span className="min-w-0">
+        <span className="block">—</span>
+        <span className="block text-sm md:hidden">—</span>
+      </span>
+      <span className="hidden md:block">—</span>
+      <span className="col-start-2 mt-3 flex gap-8 md:contents">
+        {['ADR', 'K/D', 'Mapy'].map((label) => (
+          <span key={label} className="flex flex-col md:block md:text-right">
+            <span className="text-[10px] uppercase tracking-[0.15em] md:hidden">{label}</span>
+            <span className="font-display">—</span>
+          </span>
+        ))}
+      </span>
+    </li>
+  )
+}
+
+function TableHead() {
+  return (
+    <div
+      className={`hidden md:grid ${ROW_COLS} px-5 pb-3 text-[10px] uppercase tracking-[0.2em] text-text/40`}
+      aria-hidden="true"
+    >
+      <span>#</span>
+      <span>Gracz</span>
+      <span>Drużyna</span>
+      <span className="text-right">ADR</span>
+      <span className="text-right">K/D</span>
+      <span className="text-right">Mapy</span>
+    </div>
+  )
+}
+
 /**
- * Ranking MVP pod drabinką na /cup. Do pierwszego zakończonego meczu z
- * statystykami sekcji nie ma w ogóle (ani pustej tabeli, ani nagłówka).
+ * Ranking MVP pod drabinką na /cup. Do pierwszego zakończonego meczu ze
+ * statystykami (a także w czasie ładowania i gdy API zawiedzie) sekcja jest
+ * zapowiedzią: opis zasad i wyszarzona makieta tabeli o tej samej wysokości,
+ * więc layout nie skacze. Potem działa jak prawdziwy ranking.
  */
 export function MvpRanking() {
   const stats = useTournamentStats()
-  if (!stats || stats.players.length === 0) return null
-
-  const { mvpRanking } = stats
+  const hasStats = stats !== null && stats.players.length > 0
+  const mvpRanking = stats?.mvpRanking ?? []
 
   return (
     <section id="mvp" className="scroll-mt-24 bg-bg px-6 pb-20 sm:scroll-mt-32 sm:pb-28">
@@ -73,35 +115,45 @@ export function MvpRanking() {
           <h2 className="text-3xl text-text sm:text-4xl">Ranking MVP</h2>
         </div>
 
-        {mvpRanking.length > 0 ? (
-          <div className="w-full">
-            <div
-              className={`hidden md:grid ${ROW_COLS} px-5 pb-3 text-[10px] uppercase tracking-[0.2em] text-text/40`}
-              aria-hidden="true"
-            >
-              <span>#</span>
-              <span>Gracz</span>
-              <span>Drużyna</span>
-              <span className="text-right">ADR</span>
-              <span className="text-right">K/D</span>
-              <span className="text-right">Mapy</span>
+        {!hasStats ? (
+          <>
+            <p className="max-w-md text-center text-text/60">
+              Wyścig o GTA 6 startuje 14 listopada. Ranking liczy się na żywo ze statystyk
+              FACEIT — średni ADR ze wszystkich map, minimum {MIN_MAPS} mapy, przy remisie decyduje
+              K/D.
+            </p>
+            <div className="w-full">
+              <TableHead />
+              <ol className="flex flex-col gap-3">
+                {[0, 1, 2].map((i) => (
+                  <PlaceholderRow key={i} />
+                ))}
+              </ol>
             </div>
-            <ol className="flex flex-col gap-3">
-              {mvpRanking.map((player, i) => (
-                <Row key={player.playerId} player={player} place={i + 1} />
-              ))}
-            </ol>
-          </div>
+          </>
         ) : (
-          <p className="text-center text-text/50">
-            Ranking pojawi się, gdy pierwsi gracze rozegrają {MIN_MAPS} mapy.
-          </p>
-        )}
+          <>
+            {mvpRanking.length > 0 ? (
+              <div className="w-full">
+                <TableHead />
+                <ol className="flex flex-col gap-3">
+                  {mvpRanking.map((player, i) => (
+                    <Row key={player.playerId} player={player} place={i + 1} />
+                  ))}
+                </ol>
+              </div>
+            ) : (
+              <p className="text-center text-text/50">
+                Ranking pojawi się, gdy pierwsi gracze rozegrają {MIN_MAPS} mapy.
+              </p>
+            )}
 
-        <p className="max-w-md text-center text-sm text-text/40">
-          W rankingu są gracze z co najmniej {MIN_MAPS} rozegranymi mapami, wg średniego ADR; przy
-          remisie decyduje wyższe K/D. Statystyki pochodzą z FACEIT.
-        </p>
+            <p className="max-w-md text-center text-sm text-text/40">
+              W rankingu są gracze z co najmniej {MIN_MAPS} rozegranymi mapami, wg średniego ADR;
+              przy remisie decyduje wyższe K/D. Statystyki pochodzą z FACEIT.
+            </p>
+          </>
+        )}
       </div>
     </section>
   )
