@@ -14,7 +14,7 @@
  * lecimy po kilka naraz i pamiętamy 30 min w pamięci instancji.
  */
 
-import { faceit, isObj, num, str, UpstreamError, type Json } from './_faceit.ts'
+import { faceit, isObj, num, str, UpstreamError, type Json } from './_faceit.js'
 
 const CHAMPIONSHIP_ID = '4c962c5e-7481-4fd2-ae32-007a47e79455'
 

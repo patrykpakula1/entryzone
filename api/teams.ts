@@ -4,7 +4,7 @@
  * frontend woła tylko /api/teams i nigdy go nie widzi.
  */
 
-import { faceit, UpstreamError } from './_faceit.ts'
+import { faceit, UpstreamError } from './_faceit.js'
 
 const CHAMPIONSHIP_ID = '4c962c5e-7481-4fd2-ae32-007a47e79455'
 

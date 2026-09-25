@@ -9,7 +9,7 @@
  *    (`rounds[]`: w BO3 są trzy wpisy, każda mapa liczy się osobno).
  */
 
-import { faceit, isObj, num, str, UpstreamError, type Json } from './_faceit.ts'
+import { faceit, isObj, num, str, UpstreamError, type Json } from './_faceit.js'
 
 const CHAMPIONSHIP_ID = '4c962c5e-7481-4fd2-ae32-007a47e79455'
 
