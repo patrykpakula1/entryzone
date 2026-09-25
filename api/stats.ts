@@ -9,8 +9,9 @@
  *    (`rounds[]`: w BO3 są trzy wpisy, każda mapa liczy się osobno).
  */
 
+import { faceit, isObj, num, str, UpstreamError, type Json } from './_faceit.ts'
+
 const CHAMPIONSHIP_ID = '4c962c5e-7481-4fd2-ae32-007a47e79455'
-const API = 'https://open.faceit.com/data/v4'
 
 const CACHE_OK = 'public, s-maxage=300, stale-while-revalidate=600'
 
@@ -30,8 +31,6 @@ type PlayerStats = {
   hs: number
 }
 
-type Json = Record<string, unknown>
-
 function json(body: unknown, status: number, cacheControl: string) {
   return new Response(JSON.stringify(body), {
     status,
@@ -40,34 +39,6 @@ function json(body: unknown, status: number, cacheControl: string) {
       'Cache-Control': cacheControl,
     },
   })
-}
-
-class UpstreamError extends Error {
-  status: number | null
-  constructor(message: string, status: number | null = null) {
-    super(message)
-    this.status = status
-  }
-}
-
-const isObj = (v: unknown): v is Json => typeof v === 'object' && v !== null
-const str = (v: unknown): string | null => (typeof v === 'string' && v !== '' ? v : null)
-// FACEIT oddaje statystyki jako stringi ("13", "84.5"), więc liczby czytamy z obu form.
-const num = (v: unknown): number | null =>
-  typeof v === 'number' && Number.isFinite(v)
-    ? v
-    : typeof v === 'string' && v.trim() !== '' && Number.isFinite(Number(v))
-      ? Number(v)
-      : null
-
-async function faceit(path: string, apiKey: string): Promise<Json> {
-  const res = await fetch(`${API}${path}`, {
-    headers: { Authorization: `Bearer ${apiKey}` },
-  })
-  if (!res.ok) throw new UpstreamError(`${res.status} ${path}`, res.status)
-  const data: unknown = await res.json()
-  if (!isObj(data)) throw new UpstreamError(`bad payload ${path}`)
-  return data
 }
 
 type FinishedMatch = { id: string; teamNames: Map<string, string> }

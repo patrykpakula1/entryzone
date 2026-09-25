@@ -122,10 +122,13 @@ export function RosterPanel({
           {team.players.map((player, i) => {
             const played = player.id ? statsById.get(player.id) : undefined
             return (
-              <li key={`${player.nickname}-${i}`} className="flex items-center gap-3 py-3">
-                <Avatar src={player.avatar} name={player.nickname} className="h-8 w-8" />
+              <li key={`${player.id ?? player.nickname ?? 'gracz'}-${i}`} className="flex items-center gap-3 py-3">
+                <Avatar src={player.avatar} name={player.nickname ?? 'G'} className="h-8 w-8" />
                 <span className="min-w-0 flex-1">
-                  <span className="block truncate text-text">{player.nickname}</span>
+                  <span className="block truncate text-text">{player.nickname ?? 'Gracz'}</span>
+                  {player.nickname === null && (
+                    <span className="block text-xs text-text/40">brak danych z FACEIT</span>
+                  )}
                   {played && (
                     <span className="font-display block text-xs tabular-nums text-text/50">
                       ADR {played.adr.toFixed(1)} · K/D {played.kd.toFixed(2)}

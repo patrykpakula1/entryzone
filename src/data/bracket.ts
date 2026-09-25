@@ -75,7 +75,8 @@ export const bracket: Match[][] = [
 export type RosterPlayer = {
   /** Id gracza na FACEIT — brak w statycznym fallbacku. */
   id?: string
-  nickname: string
+  /** null — FACEIT nie oddał danych gracza (panel pokazuje "Gracz"). */
+  nickname: string | null
   avatar: string | null
   level: number | null
   elo: number | null

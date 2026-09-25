@@ -6,25 +6,35 @@
  * Trzy źródła danych:
  *  - /championships/{id}/subscriptions — zapisane drużyny (max 10 na stronę),
  *  - /championships/{id}/matches       — mecze, dopiero gdy turniej ruszy,
- *  - /players/{id}                     — poziom i ELO w CS2 każdego gracza.
+ *  - /players/{id}                     — poziom i ELO w CS2 każdego gracza,
+ *  - /teams/{id}                       — zapas dla /players: nick, avatar i poziom
+ *    członków drużyny (bez ELO), gdy profil gracza nie chce się pobrać.
+ *
+ * Zapytania idą przez ./_faceit.ts (retry przy 429 i 5xx). Profile graczy
+ * lecimy po kilka naraz i pamiętamy 30 min w pamięci instancji.
  */
 
+import { faceit, isObj, num, str, UpstreamError, type Json } from './_faceit.ts'
+
 const CHAMPIONSHIP_ID = '4c962c5e-7481-4fd2-ae32-007a47e79455'
-const API = 'https://open.faceit.com/data/v4'
 
 const CACHE_OK = 'public, s-maxage=300, stale-while-revalidate=600'
+// Gdy komuś brakuje danych z FACEIT, niepełnej odpowiedzi nie trzymamy w CDN długo.
+const CACHE_PARTIAL = 'public, s-maxage=30'
 
 const SUBSCRIPTIONS_PAGE = 10 // twardy limit FACEIT dla tego endpointu
 const MAX_SUBSCRIPTION_PAGES = 4 // 40 drużyn — z dużym zapasem ponad 16 miejsc
 const MATCHES_LIMIT = 100 // 15 meczów w drabince 16 drużyn
-const PLAYER_BATCH = 20 // ile /players/{id} lecimy naraz
+const PLAYER_CONCURRENCY = 4 // ile /players/{id} lecimy naraz — więcej kończy się 429
+const PLAYER_TTL_MS = 30 * 60 * 1000
 
 type Phase = 'registration' | 'live' | 'finished'
 type MatchStatus = 'scheduled' | 'live' | 'finished' | 'cancelled'
 
 type Player = {
   id: string
-  nickname: string
+  /** null = FACEIT nie oddał profilu ani zapasowych danych; front pokazuje "Gracz". */
+  nickname: string | null
   avatar: string | null
   level: number | null
   elo: number | null
@@ -59,8 +69,6 @@ type RawTeam = {
 }
 type RawPlayer = { id: string; nickname: string | null; avatar: string | null }
 
-type Json = Record<string, unknown>
-
 function json(body: unknown, status: number, cacheControl: string) {
   return new Response(JSON.stringify(body), {
     status,
@@ -69,33 +77,6 @@ function json(body: unknown, status: number, cacheControl: string) {
       'Cache-Control': cacheControl,
     },
   })
-}
-
-class UpstreamError extends Error {
-  status: number | null
-  constructor(message: string, status: number | null = null) {
-    super(message)
-    this.status = status
-  }
-}
-
-const isObj = (v: unknown): v is Json => typeof v === 'object' && v !== null
-const str = (v: unknown): string | null => (typeof v === 'string' && v !== '' ? v : null)
-const num = (v: unknown): number | null =>
-  typeof v === 'number' && Number.isFinite(v)
-    ? v
-    : typeof v === 'string' && v.trim() !== '' && Number.isFinite(Number(v))
-      ? Number(v)
-      : null
-
-async function faceit(path: string, apiKey: string): Promise<Json> {
-  const res = await fetch(`${API}${path}`, {
-    headers: { Authorization: `Bearer ${apiKey}` },
-  })
-  if (!res.ok) throw new UpstreamError(`${res.status} ${path}`, res.status)
-  const data: unknown = await res.json()
-  if (!isObj(data)) throw new UpstreamError(`bad payload ${path}`)
-  return data
 }
 
 /**
@@ -127,6 +108,9 @@ const INACTIVE_SUBSCRIPTION = /reject|declin|cancel|kick|withdr|disqual|remov/i
 
 async function fetchSubscriptions(apiKey: string): Promise<RawTeam[]> {
   const teams: RawTeam[] = []
+  const statuses = new Map<string, number>() // status zgłoszenia → ile ich
+  let dropped = 0 // odrzucone przez INACTIVE_SUBSCRIPTION lub bez team_id
+  let total = 0
   for (let page = 0; page < MAX_SUBSCRIPTION_PAGES; page++) {
     const data = await faceit(
       `/championships/${CHAMPIONSHIP_ID}/subscriptions?offset=${page * SUBSCRIPTIONS_PAGE}&limit=${SUBSCRIPTIONS_PAGE}`,
@@ -134,11 +118,22 @@ async function fetchSubscriptions(apiKey: string): Promise<RawTeam[]> {
     )
     const items = Array.isArray(data.items) ? data.items : []
     for (const item of items) {
-      if (!isObj(item) || !isObj(item.team)) continue
+      total++
+      if (!isObj(item) || !isObj(item.team)) {
+        dropped++
+        continue
+      }
       const status = str(item.status)
-      if (status && INACTIVE_SUBSCRIPTION.test(status)) continue
+      statuses.set(status ?? '(brak)', (statuses.get(status ?? '(brak)') ?? 0) + 1)
+      if (status && INACTIVE_SUBSCRIPTION.test(status)) {
+        dropped++
+        continue
+      }
       const id = str(item.team.team_id)
-      if (!id) continue
+      if (!id) {
+        dropped++
+        continue
+      }
       teams.push({
         id,
         name: str(item.team.name) ?? str(item.team.nickname) ?? 'Drużyna',
@@ -148,6 +143,10 @@ async function fetchSubscriptions(apiKey: string): Promise<RawTeam[]> {
     }
     if (items.length < SUBSCRIPTIONS_PAGE) break
   }
+  const byStatus = [...statuses].map(([s, n]) => `${s}×${n}`).join(', ')
+  console.warn(
+    `[bracket] zgłoszenia: ${total}, drużyn w drabince: ${teams.length}, odrzuconych: ${dropped} (statusy: ${byStatus || 'brak'})`,
+  )
   return teams
 }
 
@@ -272,36 +271,130 @@ function assignPositions(matches: RawMatch[]): Map<RawMatch, number> {
   return positions
 }
 
-async function fetchPlayer(
-  id: string,
-  apiKey: string,
-): Promise<{ nickname: string | null; avatar: string | null; level: number | null; elo: number | null }> {
-  try {
-    const data = await faceit(`/players/${encodeURIComponent(id)}`, apiKey)
-    const games = isObj(data.games) ? data.games : {}
-    const cs2 = isObj(games.cs2) ? games.cs2 : {}
-    return {
-      nickname: str(data.nickname),
-      avatar: str(data.avatar),
-      level: num(cs2.skill_level),
-      elo: num(cs2.faceit_elo),
-    }
-  } catch {
-    // Jeden nieudany profil nie kładzie całej drabinki — gracz dostaje "—".
-    return { nickname: null, avatar: null, level: null, elo: null }
+type PlayerInfo = {
+  nickname: string | null
+  avatar: string | null
+  level: number | null
+  elo: number | null
+}
+
+/** Profil gracza z /players — jedyne źródło ELO. Rzuca UpstreamError po wyczerpaniu retry. */
+async function fetchPlayer(id: string, apiKey: string): Promise<PlayerInfo> {
+  const data = await faceit(`/players/${encodeURIComponent(id)}`, apiKey)
+  const games = isObj(data.games) ? data.games : {}
+  const cs2 = isObj(games.cs2) ? games.cs2 : {}
+  return {
+    nickname: str(data.nickname),
+    avatar: str(data.avatar),
+    level: num(cs2.skill_level),
+    elo: num(cs2.faceit_elo),
   }
 }
 
-type PlayerInfo = Awaited<ReturnType<typeof fetchPlayer>>
-
-async function fetchPlayers(ids: string[], apiKey: string): Promise<Map<string, PlayerInfo>> {
-  const unique = [...new Set(ids)]
-  const infos = new Map<string, PlayerInfo>()
-  for (let i = 0; i < unique.length; i += PLAYER_BATCH) {
-    const batch = unique.slice(i, i + PLAYER_BATCH)
-    const results = await Promise.all(batch.map((id) => fetchPlayer(id, apiKey)))
-    batch.forEach((id, j) => infos.set(id, results[j]))
+/**
+ * Zapas na porażkę /players: /teams/{id} podaje w `members` nick, avatar
+ * i skill_level (poziom) każdego członka — bez ELO. Błąd to pusta mapa.
+ */
+async function fetchTeamMembers(
+  teamId: string,
+  apiKey: string,
+  onFailure: (err: unknown) => void,
+): Promise<Map<string, PlayerInfo>> {
+  const members = new Map<string, PlayerInfo>()
+  try {
+    const data = await faceit(`/teams/${encodeURIComponent(teamId)}`, apiKey)
+    for (const m of Array.isArray(data.members) ? data.members : []) {
+      if (!isObj(m)) continue
+      const id = str(m.user_id) ?? str(m.player_id)
+      if (id) {
+        members.set(id, {
+          nickname: str(m.nickname),
+          avatar: str(m.avatar),
+          level: num(m.skill_level),
+          elo: null,
+        })
+      }
+    }
+  } catch (err) {
+    onFailure(err)
   }
+  return members
+}
+
+// Pamięć instancji: ciepła funkcja nie pyta FACEIT o tych samych graczy co
+// 5 min. Trafiają tu tylko pełne profile z /players, nigdy dane zapasowe.
+const playerCache = new Map<string, { info: PlayerInfo; expires: number }>()
+
+/** Przetwarza items po `limit` naraz. */
+async function forEachLimit<T>(items: T[], limit: number, fn: (item: T) => Promise<void>) {
+  let next = 0
+  const worker = async () => {
+    while (next < items.length) await fn(items[next++])
+  }
+  await Promise.all(Array.from({ length: Math.min(limit, items.length) }, worker))
+}
+
+const failureCode = (err: unknown) =>
+  err instanceof UpstreamError && err.status !== null ? String(err.status) : 'sieć'
+
+/** "429×3, 500×1" — do logu, bez niczego, co mogłoby zdradzić klucz. */
+const countCodes = (codes: string[]) => {
+  const counts = new Map<string, number>()
+  for (const c of codes) counts.set(c, (counts.get(c) ?? 0) + 1)
+  return [...counts].map(([c, n]) => `${c}×${n}`).join(', ')
+}
+
+async function fetchPlayers(teams: RawTeam[], apiKey: string): Promise<Map<string, PlayerInfo>> {
+  const teamOf = new Map<string, string>() // id gracza → id jego drużyny
+  for (const t of teams) for (const p of t.roster) if (!teamOf.has(p.id)) teamOf.set(p.id, t.id)
+
+  const infos = new Map<string, PlayerInfo>()
+  const todo: string[] = []
+  const now = Date.now()
+  for (const id of teamOf.keys()) {
+    const cached = playerCache.get(id)
+    if (cached && cached.expires > now) infos.set(id, cached.info)
+    else todo.push(id)
+  }
+
+  const failed: string[] = []
+  const codes: string[] = []
+  await forEachLimit(todo, PLAYER_CONCURRENCY, async (id) => {
+    try {
+      const info = await fetchPlayer(id, apiKey)
+      infos.set(id, info)
+      playerCache.set(id, { info, expires: Date.now() + PLAYER_TTL_MS })
+    } catch (err) {
+      failed.push(id)
+      codes.push(failureCode(err))
+    }
+  })
+  if (failed.length === 0) return infos
+
+  // Zapas: jeden /teams/{id} na drużynę, do której należy nieudany gracz.
+  const teamCodes: string[] = []
+  const teamIds = [...new Set(failed.map((id) => teamOf.get(id) as string))]
+  const members = new Map<string, Map<string, PlayerInfo>>()
+  await forEachLimit(teamIds, PLAYER_CONCURRENCY, async (teamId) => {
+    members.set(
+      teamId,
+      await fetchTeamMembers(teamId, apiKey, (err) => teamCodes.push(failureCode(err))),
+    )
+  })
+  let rescued = 0
+  for (const id of failed) {
+    const member = members.get(teamOf.get(id) as string)?.get(id)
+    if (member) {
+      infos.set(id, member)
+      rescued++
+    }
+  }
+
+  console.warn(
+    `[bracket] profile graczy: ${failed.length}/${todo.length} nie powiodło się mimo retry (HTTP: ${countCodes(codes)}); ` +
+      `z /teams uratowano ${rescued}` +
+      (teamCodes.length ? `; /teams też zawiodło (HTTP: ${countCodes(teamCodes)})` : ''),
+  )
   return infos
 }
 
@@ -310,7 +403,7 @@ function buildTeam(raw: RawTeam, infos: Map<string, PlayerInfo>): Team {
     const info = infos.get(p.id)
     return {
       id: p.id,
-      nickname: info?.nickname ?? p.nickname ?? '—',
+      nickname: info?.nickname ?? p.nickname ?? null,
       avatar: info?.avatar ?? p.avatar,
       level: info?.level ?? null,
       elo: info?.elo ?? null,
@@ -356,11 +449,15 @@ async function build(apiKey: string) {
     }
   }
 
-  const infos = await fetchPlayers(
-    [...rawTeams.values()].flatMap((t) => t.roster.map((p) => p.id)),
-    apiKey,
-  )
+  const infos = await fetchPlayers([...rawTeams.values()], apiKey)
   const teams = [...rawTeams.values()].map((t) => buildTeam(t, infos))
+  const missingNicknames = teams.reduce(
+    (n, t) => n + t.players.filter((p) => p.nickname === null).length,
+    0,
+  )
+  if (missingNicknames > 0) {
+    console.warn(`[bracket] ${missingNicknames} graczy bez nicku mimo retry i zapasu z /teams`)
+  }
 
   const positions = assignPositions(rawMatches)
   const matches: BracketMatch[] = rawMatches.map((m) => {
@@ -388,7 +485,7 @@ async function build(apiKey: string) {
       ? 'finished'
       : 'live'
 
-  return { phase, teams, matches: started ? matches : [] }
+  return { body: { phase, teams, matches: started ? matches : [] }, complete: missingNicknames === 0 }
 }
 
 export default {
@@ -399,7 +496,9 @@ export default {
     }
 
     try {
-      return json(await build(apiKey), 200, CACHE_OK)
+      // Komplet nicków → pełny cache; inaczej krótki, żeby dziura nie wisiała 15 min.
+      const { body, complete } = await build(apiKey)
+      return json(body, 200, complete ? CACHE_OK : CACHE_PARTIAL)
     } catch (err) {
       if (err instanceof UpstreamError) {
         return json({ error: 'FACEIT API error' }, 502, 'no-store')
