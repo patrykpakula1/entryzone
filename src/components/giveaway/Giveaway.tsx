@@ -1,7 +1,38 @@
+import type { ReactNode } from 'react'
 import giveaway from '../../data/giveaway.json'
 import { registration } from '../../data/registration'
+import { socials } from '../../data/socials'
 
 type PastWinner = { date: string; prize: string; winner: string }
+
+const linkClassName =
+  'text-gold underline decoration-border underline-offset-4 transition-colors duration-200 hover:text-gold-lite'
+
+const platformMentions = [
+  { match: 'Instagramie', social: 'Instagram' },
+  { match: 'TikToku', social: 'TikTok' },
+  { match: 'Facebooku', social: 'Facebook' },
+]
+
+/** Zamienia nazwę platformy w tekście kroku na link do jej profilu (URL-e z socials.ts). */
+function linkifyStep(text: string): ReactNode {
+  for (const { match, social } of platformMentions) {
+    const index = text.indexOf(match)
+    if (index === -1) continue
+    const url = socials.find((s) => s.name === social)?.url
+    if (!url) continue
+    return (
+      <>
+        {text.slice(0, index)}
+        <a href={url} target="_blank" rel="noreferrer" className={linkClassName}>
+          {match}
+        </a>
+        {text.slice(index + match.length)}
+      </>
+    )
+  }
+  return text
+}
 
 const pastWinners: PastWinner[] = [...giveaway.pastWinners].sort(
   (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
@@ -34,7 +65,7 @@ export function Giveaway() {
           <span className="h-px w-12 bg-gold" />
           <h1 className="text-4xl text-text sm:text-5xl">Giveaway</h1>
           <p className="text-lg text-text/70 sm:text-xl">
-            Co 10 dni losujemy skina do CS2 wśród społeczności EntryZone.
+            Co 10 dni rozdajemy skiny do CS2 w społeczności EntryZone.
           </p>
         </div>
 
@@ -45,7 +76,7 @@ export function Giveaway() {
                 Następny giveaway
               </span>
               <span className="font-display text-xl text-text sm:text-2xl">
-                Już wkrótce — zapowiedź nowego skina na Discordzie EntryZone
+                Już wkrótce — zapowiedź nowych skinów na Discordzie EntryZone
               </span>
             </div>
           ) : (
@@ -56,6 +87,9 @@ export function Giveaway() {
                 </span>
                 <span className="font-display text-3xl text-gold sm:text-4xl">
                   {current.prize}
+                </span>
+                <span className="text-sm text-text/60">
+                  Oba skiny dla jednej osoby
                 </span>
               </div>
               <div className="flex flex-col items-center gap-2">
@@ -74,7 +108,7 @@ export function Giveaway() {
                   {current.howToEnter.map((step, i) => (
                     <li key={step} className="flex gap-4">
                       <span className="font-display text-gold">{i + 1}.</span>
-                      <span>{step}</span>
+                      <span>{linkifyStep(step)}</span>
                     </li>
                   ))}
                 </ol>
