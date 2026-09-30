@@ -3,7 +3,9 @@ import { registration } from '../../data/registration'
 
 type PastWinner = { date: string; prize: string; winner: string }
 
-const pastWinners: PastWinner[] = giveaway.pastWinners
+const pastWinners: PastWinner[] = [...giveaway.pastWinners].sort(
+  (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+)
 
 function formatDate(iso: string, withTime: boolean) {
   const d = new Date(iso)
@@ -23,6 +25,7 @@ function formatDate(iso: string, withTime: boolean) {
 /** Sekcja podstrony /giveaway. Treść do edycji w src/data/giveaway.json. */
 export function Giveaway() {
   const { current, rules } = giveaway
+  const isPastDraw = new Date(current.drawDate) < new Date()
 
   return (
     <section className="flex flex-col items-center bg-bg px-6 pb-16 pt-32 sm:pb-24 sm:pt-40">
@@ -31,40 +34,53 @@ export function Giveaway() {
           <span className="h-px w-12 bg-gold" />
           <h1 className="text-4xl text-text sm:text-5xl">Giveaway</h1>
           <p className="text-lg text-text/70 sm:text-xl">
-            Co tydzień losujemy skina do CS2 wśród społeczności EntryZone.
+            Co 10 dni losujemy skina do CS2 wśród społeczności EntryZone.
           </p>
         </div>
 
         <div className="flex w-full flex-col items-center gap-8 border border-border px-6 py-10 sm:px-10">
-          <div className="flex flex-col items-center gap-2">
-            <span className="text-xs uppercase tracking-[0.2em] text-copper">
-              Nagroda
-            </span>
-            <span className="font-display text-3xl text-gold sm:text-4xl">
-              {current.prize}
-            </span>
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <span className="text-xs uppercase tracking-[0.2em] text-copper">
-              Losowanie
-            </span>
-            <span className="font-display text-xl text-text sm:text-2xl">
-              {formatDate(current.drawDate, true)}
-            </span>
-          </div>
-          <div className="flex w-full flex-col items-center gap-4">
-            <span className="text-xs uppercase tracking-[0.2em] text-copper">
-              Jak wziąć udział
-            </span>
-            <ol className="flex flex-col gap-3 text-left text-text/80">
-              {current.howToEnter.map((step, i) => (
-                <li key={step} className="flex gap-4">
-                  <span className="font-display text-gold">{i + 1}.</span>
-                  <span>{step}</span>
-                </li>
-              ))}
-            </ol>
-          </div>
+          {isPastDraw ? (
+            <div className="flex flex-col items-center gap-2">
+              <span className="text-xs uppercase tracking-[0.2em] text-copper">
+                Następny giveaway
+              </span>
+              <span className="font-display text-xl text-text sm:text-2xl">
+                Już wkrótce — zapowiedź nowego skina na Discordzie EntryZone
+              </span>
+            </div>
+          ) : (
+            <>
+              <div className="flex flex-col items-center gap-2">
+                <span className="text-xs uppercase tracking-[0.2em] text-copper">
+                  Nagroda
+                </span>
+                <span className="font-display text-3xl text-gold sm:text-4xl">
+                  {current.prize}
+                </span>
+              </div>
+              <div className="flex flex-col items-center gap-2">
+                <span className="text-xs uppercase tracking-[0.2em] text-copper">
+                  Losowanie
+                </span>
+                <span className="font-display text-xl text-text sm:text-2xl">
+                  {formatDate(current.drawDate, true)}
+                </span>
+              </div>
+              <div className="flex w-full flex-col items-center gap-4">
+                <span className="text-xs uppercase tracking-[0.2em] text-copper">
+                  Jak wziąć udział
+                </span>
+                <ol className="flex flex-col gap-3 text-left text-text/80">
+                  {current.howToEnter.map((step, i) => (
+                    <li key={step} className="flex gap-4">
+                      <span className="font-display text-gold">{i + 1}.</span>
+                      <span>{step}</span>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            </>
+          )}
         </div>
 
         <a

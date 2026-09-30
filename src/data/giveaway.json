@@ -16,5 +16,11 @@
     "Skina przekazujemy przez wymianę na Steamie — zwycięzca podaje swój trade link i musi mieć konto bez blokady wymian.",
     "EntryZone może wykluczyć konta oszukujące lub łamiące regulamin serwera."
   ],
-  "pastWinners": []
+  "pastWinners": [
+    {
+      "date": "2026-09-30T20:00:00",
+      "prize": "AK-47 | Redline (Field-Tested)",
+      "winner": "olkvv"
+    }
+  ]
 }

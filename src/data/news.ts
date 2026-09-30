@@ -23,11 +23,11 @@ export type NewsEntry = {
 export const news: NewsEntry[] = [
   {
     slug: 'startujemy-z-cotygodniowym-giveawayem',
-    title: 'Startujemy z cotygodniowym giveawayem',
+    title: 'Startujemy z giveawayem co 10 dni',
     date: '2026-09-20',
-    excerpt: 'Co tydzień losujemy skina do CS2 wśród członków naszego serwera Discord.',
+    excerpt: 'Co 10 dni losujemy skina do CS2 wśród członków naszego serwera Discord.',
     body: [
-      'EntryZone rusza z cotygodniowym losowaniem skinów dla społeczności. Bez wpisowego i bez żadnych zadań — wystarczy być na naszym serwerze Discord i kliknąć reakcję pod wpisem z losowaniem.',
+      'EntryZone rusza z losowaniem skinów co 10 dni dla społeczności. Bez wpisowego i bez żadnych zadań — wystarczy być na naszym serwerze Discord i kliknąć reakcję pod wpisem z losowaniem.',
       'Pierwszą nagrodą jest AK-47 | Redline (Field-Tested). Losowanie odbędzie się 30 września o 20:00, a zwycięzcę ogłosimy na Discordzie.',
       'Skina przekazujemy przez wymianę na Steamie. Jeśli chcesz mieć pewność, że wszystko pójdzie sprawnie, dodaj się wcześniej do znajomych z kontem organizatora — dzięki temu wymiana nie zatrzyma się na formalnościach.',
       'Szczegóły i zasady znajdziesz na stronie giveaway, a na serwer Discord wejdziesz z linku poniżej.',

@@ -6,7 +6,7 @@ import { usePageMeta } from '../hooks/usePageMeta'
 export function GiveawayPage() {
   usePageMeta(
     'EntryZone — giveaway',
-    'Cotygodniowe losowanie skinów do CS2 dla społeczności EntryZone — nagroda, termin, zasady i poprzedni zwycięzcy.',
+    'Giveaway skinów do CS2 co 10 dni dla społeczności EntryZone: nagroda, termin, zasady i poprzedni zwycięzcy.',
   )
 
   return (
