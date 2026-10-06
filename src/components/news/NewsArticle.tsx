@@ -13,6 +13,14 @@ export function NewsArticle({ entry }: { entry: NewsEntry }) {
           <h1 className="text-4xl text-text sm:text-5xl">{entry.title}</h1>
         </div>
 
+        {entry.image && (
+          <img
+            src={entry.image}
+            alt={entry.title}
+            className="h-auto w-full border border-border"
+          />
+        )}
+
         <div className="flex flex-col gap-6 text-lg leading-loose text-text/80 sm:text-xl">
           {entry.body.map((paragraph, i) => (
             <p key={i}>{paragraph}</p>

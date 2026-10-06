@@ -1,5 +1,6 @@
 import { registration } from '../../data/registration'
 import { prizes } from '../../data/prizes'
+import { partners } from '../../data/partners'
 
 const FORMAT = [
   { label: 'Drużyny', text: '16 składów po 5 zawodników (+ opcjonalnie 1 rezerwowy)' },
@@ -18,6 +19,9 @@ const FORMAT = [
     text: `Pula ${prizes.poolTotal} zł — ${prizes.first} zł za I miejsce, ${prizes.second} zł za II miejsce, dla MVP turnieju ${prizes.mvpPrize}`,
   },
 ]
+
+/** Partnerzy tego turnieju — z data/partners.ts, po `role` zawierającym „Cup #1”. */
+const cupPartners = partners.filter((partner) => partner.role?.includes('Cup #1'))
 
 /** Nagłówek + opis + format CUP‑u. Treść: entryzone-tresci.md, sekcja „CUP — opis turnieju”. */
 export function CupOverview() {
@@ -55,6 +59,29 @@ export function CupOverview() {
             </li>
           ))}
         </ul>
+
+        {cupPartners.length > 0 && (
+          <ul className="flex w-full flex-col gap-2 border-y border-gold/40 py-4 text-sm text-text/70">
+            {cupPartners.map((partner) => (
+              <li key={partner.name}>
+                Partner turnieju:{' '}
+                {partner.url ? (
+                  <a
+                    href={partner.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-gold underline decoration-border underline-offset-4 transition-colors duration-200 hover:text-gold-lite"
+                  >
+                    {partner.name}
+                  </a>
+                ) : (
+                  <span className="text-text">{partner.name}</span>
+                )}
+                {partner.tagline && <> · {partner.tagline}</>}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </section>
   )

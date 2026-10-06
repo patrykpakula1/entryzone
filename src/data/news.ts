@@ -10,6 +10,8 @@ export type NewsEntry = {
   excerpt: string
   /** Pełna treść wpisu, jeden string na akapit. */
   body: string[]
+  /** Opcjonalny obrazek (ścieżka w /public) — pokazywany na górze wpisu, alt = tytuł. */
+  image?: string
   /** Opcjonalne linki na końcu wpisu. `to` zaczynające się od „/” to trasa wewnętrzna, reszta — adres zewnętrzny. */
   links?: { label: string; to: string }[]
 }
@@ -21,6 +23,24 @@ export type NewsEntry = {
  * /aktualnosci/{slug} — małe litery, myślniki, bez polskich znaków.
  */
 export const news: NewsEntry[] = [
+  {
+    slug: 'jakub-kacprzak-partnerem-entryzone-cup-1',
+    title: 'Jakub Kacprzak partnerem EntryZone Cup #1',
+    date: '2026-10-06',
+    image: '/partners/entryzone-x-kacprzak.png',
+    excerpt:
+      'Mamy pierwszego partnera turnieju. Do EntryZone Cup #1 dołącza Jakub Kacprzak, który zajmuje się handlem skinami CS2.',
+    body: [
+      'EntryZone ma pierwszego partnera. Do EntryZone Cup #1 dołącza Jakub Kacprzak, który zajmuje się handlem skinami CS2.',
+      `Turniej odbędzie się ${registration.startDate} 2026 — 16 drużyn, pula nagród ${prizes.poolTotal} zł.`,
+      'Dziękujemy za wsparcie. Więcej o turnieju, drabinkę i regulamin znajdziesz na stronie CUP.',
+    ],
+    links: [
+      { label: 'Jakub Kacprzak na Facebooku', to: 'https://www.facebook.com/jakub.kacprzak.90/' },
+      { label: 'EntryZone Cup #1', to: '/cup' },
+      { label: 'Dołącz do Discorda', to: registration.discordUrl },
+    ],
+  },
   {
     slug: 'startujemy-z-cotygodniowym-giveawayem',
     title: 'Startujemy z giveawayem co 10 dni',
