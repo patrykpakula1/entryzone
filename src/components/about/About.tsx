@@ -1,3 +1,5 @@
+import { tournamentCancelled } from '../../data/tournament'
+
 export function About() {
   return (
     <section className="flex min-h-svh flex-col items-center justify-center bg-bg px-6 pb-16 pt-32 sm:pb-20 sm:pt-40">
@@ -22,8 +24,9 @@ export function About() {
             zasadami i nagrodami.
           </p>
           <p>
-            Startujemy z pierwszym CUP‑em. Dołącz i pokaż kto jest nowym
-            królem EntryZone!
+            {tournamentCancelled
+              ? 'Pierwszy turniej został odwołany — kolejne wkrótce. Bądź na bieżąco na Discordzie i w naszych social mediach.'
+              : 'Startujemy z pierwszym CUP‑em. Dołącz i pokaż kto jest nowym królem EntryZone!'}
           </p>
         </div>
       </div>

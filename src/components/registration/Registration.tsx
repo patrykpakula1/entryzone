@@ -1,4 +1,5 @@
 import { registration } from '../../data/registration'
+import { tournamentCancelled } from '../../data/tournament'
 import { useTeamsRegistered } from '../../hooks/useTeamsRegistered'
 
 const buttonBase =
@@ -8,7 +9,8 @@ const statLabel = 'text-xs uppercase tracking-[0.25em] text-text/50'
 const statCard = 'rounded-2xl border border-border bg-surface px-6 py-5 text-left'
 
 export function Registration() {
-  const { status } = registration
+  // Odwołany turniej zawsze pokazuje stan „none”, niezależnie od registration.status.
+  const status = tournamentCancelled ? 'none' : registration.status
   const { registered: teamsRegistered, max: teamsMax } = useTeamsRegistered()
   const progress =
     teamsRegistered === null
@@ -132,8 +134,9 @@ export function Registration() {
               Następny cup wkrótce
             </h2>
             <p className="max-w-sm text-text/60">
-              Terminy ogłaszamy najpierw na Discordzie. Wejdź, żeby nie
-              przegapić zapisów.
+              {tournamentCancelled
+                ? 'EntryZone Cup #1 został odwołany. Dziękujemy wszystkim drużynom za zapisy. O kolejnych turniejach poinformujemy na Discordzie i w social mediach.'
+                : 'Terminy ogłaszamy najpierw na Discordzie. Wejdź, żeby nie przegapić zapisów.'}
             </p>
             <a
               href={registration.discordUrl}

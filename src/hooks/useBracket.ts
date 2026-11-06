@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { BracketApi } from '../data/bracket'
+import { tournamentCancelled } from '../data/tournament'
 
 type State = { loading: boolean; data: BracketApi | null }
 
@@ -17,6 +18,9 @@ function isBracketApi(v: unknown): v is BracketApi {
 }
 
 function fetchBracket(): Promise<BracketApi | null> {
+  // Odwołany turniej — bez zapytań do FACEIT, jak przy braku odpowiedzi API.
+  if (tournamentCancelled) return Promise.resolve(null)
+
   request ??= fetch('/api/bracket')
     .then((res) => {
       if (!res.ok) throw new Error(`HTTP ${res.status}`)

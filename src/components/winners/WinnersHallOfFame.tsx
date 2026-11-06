@@ -1,3 +1,4 @@
+import { tournamentCancelled } from '../../data/tournament'
 import { winners, type WinnerEntry } from '../../data/winners'
 
 function WinnerCard({ entry }: { entry: WinnerEntry }) {
@@ -31,9 +32,11 @@ function EmptyStateTemplate() {
     >
       <div className="flex flex-wrap items-baseline justify-center gap-x-4 gap-y-1">
         <span className="font-display text-lg uppercase tracking-[0.15em] text-text/70">
-          EntryZone Cup #1
+          {tournamentCancelled ? 'Pierwszy turniej' : 'EntryZone Cup #1'}
         </span>
-        <span className="text-sm text-text/40">listopad 2026</span>
+        <span className="text-sm text-text/40">
+          {tournamentCancelled ? 'wkrótce' : 'listopad 2026'}
+        </span>
       </div>
       <div className="flex flex-col items-center gap-2">
         <span className="text-xs uppercase tracking-[0.2em] text-copper">
@@ -71,8 +74,9 @@ export function WinnersHallOfFame() {
 
         {isEmpty && (
           <p className="text-text/70">
-            Pierwszy CUP jeszcze się nie odbył. Ta strona zapełni się po jego
-            zakończeniu.
+            {tournamentCancelled
+              ? 'Pierwszy turniej został odwołany — kolejne wkrótce. Ta strona zapełni się po pierwszym rozegranym turnieju.'
+              : 'Pierwszy CUP jeszcze się nie odbył. Ta strona zapełni się po jego zakończeniu.'}
           </p>
         )}
 

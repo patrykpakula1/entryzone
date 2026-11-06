@@ -3,12 +3,15 @@ import { Footer } from '../components/layout/Footer'
 import { usePageMeta } from '../hooks/usePageMeta'
 import { registration } from '../data/registration'
 import { prizes } from '../data/prizes'
+import { tournamentCancelled } from '../data/tournament'
 import { rules } from '../data/rules'
 
 export function Regulamin() {
   usePageMeta(
     'EntryZone — Regulamin',
-    'Pełny regulamin Entryzone Cup #1 — zasady składów, zapisów, terminarza, sporów i dyskwalifikacji.',
+    tournamentCancelled
+      ? 'Regulamin turniejów EntryZone — zasady składów, sporów i dyskwalifikacji. Pierwszy turniej został odwołany, kolejne wkrótce.'
+      : 'Pełny regulamin Entryzone Cup #1 — zasady składów, zapisów, terminarza, sporów i dyskwalifikacji.',
   )
 
   return (
@@ -20,15 +23,23 @@ export function Regulamin() {
             <span className="h-px w-12 bg-gold" />
             <h1 className="text-4xl text-text sm:text-5xl">Regulamin</h1>
             <p className="font-display text-sm uppercase tracking-[0.2em] text-copper">
-              Entryzone Cup #1 — {registration.startDate}
+              {tournamentCancelled
+                ? 'Pierwszy turniej został odwołany — kolejne wkrótce'
+                : `Entryzone Cup #1 — ${registration.startDate}`}
             </p>
           </div>
 
           <p className="text-lg leading-loose text-text/70 sm:text-xl">
-            16 drużyn, system pucharowy (single elimination) — BO1 we
-            wszystkich rundach, wielki finał BO3. Udział bezpłatny, zapisy
-            wyłącznie przez FACEIT, gwarantowana pula nagród{' '}
-            {prizes.poolTotal} zł.
+            {tournamentCancelled ? (
+              'Poniżej ogólne zasady turniejów EntryZone. Terminy, format i nagrody podamy przy ogłoszeniu następnego turnieju.'
+            ) : (
+              <>
+                16 drużyn, system pucharowy (single elimination) — BO1 we
+                wszystkich rundach, wielki finał BO3. Udział bezpłatny, zapisy
+                wyłącznie przez FACEIT, gwarantowana pula nagród{' '}
+                {prizes.poolTotal} zł.
+              </>
+            )}
           </p>
 
           <ol className="flex w-full flex-col">

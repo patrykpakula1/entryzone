@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { registration } from '../data/registration'
+import { tournamentCancelled } from '../data/tournament'
 
 type Teams = { registered: number | null; max: number }
 
@@ -10,6 +11,14 @@ const FALLBACK_MAX = 16
 let request: Promise<Teams> | null = null
 
 function fetchTeams(): Promise<Teams> {
+  // Odwołany turniej — bez zapytań do FACEIT, zostaje wartość z registration.ts.
+  if (tournamentCancelled) {
+    return Promise.resolve({
+      registered: registration.teamsRegistered,
+      max: FALLBACK_MAX,
+    })
+  }
+
   request ??= fetch('/api/teams')
     .then((res) => {
       if (!res.ok) throw new Error(`HTTP ${res.status}`)

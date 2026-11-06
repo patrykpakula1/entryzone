@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { tournamentCancelled } from '../data/tournament'
 
 export type PlayerStats = {
   playerId: string
@@ -28,6 +29,9 @@ function isStats(v: unknown): v is TournamentStats {
 }
 
 function fetchStats(): Promise<TournamentStats | null> {
+  // Odwołany turniej — bez zapytań do FACEIT, jak przy braku odpowiedzi API.
+  if (tournamentCancelled) return Promise.resolve(null)
+
   request ??= fetch('/api/stats')
     .then((res) => {
       if (!res.ok) throw new Error(`HTTP ${res.status}`)

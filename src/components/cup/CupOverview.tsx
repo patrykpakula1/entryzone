@@ -1,6 +1,7 @@
 import { registration } from '../../data/registration'
 import { prizes } from '../../data/prizes'
 import { partners } from '../../data/partners'
+import { tournamentCancelled } from '../../data/tournament'
 
 const FORMAT = [
   { label: 'Drużyny', text: '16 składów po 5 zawodników (+ opcjonalnie 1 rezerwowy)' },
@@ -23,8 +24,47 @@ const FORMAT = [
 /** Partnerzy tego turnieju — z data/partners.ts, po `role` zawierającym „Cup #1”. */
 const cupPartners = partners.filter((partner) => partner.role?.includes('Cup #1'))
 
+/** Zamiast opisu i formatu (terminy, pula, check-in) — krótka informacja o odwołaniu. */
+function CancelledOverview() {
+  return (
+    <section className="flex flex-col items-center bg-bg px-6 pb-16 pt-32 sm:pb-20 sm:pt-40">
+      <div className="mx-auto flex max-w-[700px] flex-col items-center gap-8 text-center">
+        <div className="flex flex-col items-center gap-6">
+          <span className="h-px w-12 bg-gold" />
+          <h1 className="text-4xl text-text sm:text-5xl">Entryzone Cup #1</h1>
+          <p className="font-display text-sm uppercase tracking-[0.2em] text-copper">
+            Turniej odwołany
+          </p>
+        </div>
+
+        <div className="flex flex-col gap-6 text-lg leading-loose text-text/70 sm:text-xl">
+          <p>
+            Pierwszy turniej EntryZone został odwołany. Dziękujemy wszystkim
+            drużynom za zapisy.
+          </p>
+          <p>
+            O kolejnych turniejach poinformujemy na Discordzie i w social
+            mediach.
+          </p>
+        </div>
+
+        <a
+          href={registration.discordUrl}
+          target="_blank"
+          rel="noreferrer"
+          className="font-display inline-flex items-center justify-center rounded-full bg-gold px-10 py-4 text-sm uppercase tracking-[0.2em] text-bg transition-colors duration-200 hover:bg-gold-lite sm:text-base"
+        >
+          Dołącz na Discorda
+        </a>
+      </div>
+    </section>
+  )
+}
+
 /** Nagłówek + opis + format CUP‑u. Treść: entryzone-tresci.md, sekcja „CUP — opis turnieju”. */
 export function CupOverview() {
+  if (tournamentCancelled) return <CancelledOverview />
+
   return (
     <section className="flex flex-col items-center bg-bg px-6 pb-16 pt-32 sm:pb-20 sm:pt-40">
       <div className="mx-auto flex max-w-[700px] flex-col items-center gap-8 text-center">

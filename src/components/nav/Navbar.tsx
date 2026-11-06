@@ -1,6 +1,7 @@
 import { forwardRef, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { Link, useLocation } from 'react-router-dom'
+import { tournamentCancelled } from '../../data/tournament'
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
 import { lockScroll, scrollToTop } from '../../lib/scroll'
 
@@ -8,7 +9,7 @@ type Featured = 'solid' | 'outline'
 
 type NavItem = { label: string; to: string; featured?: Featured }
 
-const ITEMS: NavItem[] = [
+const ALL_ITEMS: NavItem[] = [
   { label: 'Zapisy', to: '/zapisy', featured: 'solid' },
   { label: 'O nas', to: '/o-nas' },
   { label: 'Cup', to: '/cup' },
@@ -18,6 +19,11 @@ const ITEMS: NavItem[] = [
   { label: 'Giveaway', to: '/giveaway' },
   { label: 'Discord', to: '/discord', featured: 'outline' },
 ]
+
+// Przy odwołanym turnieju nie ma czego zapisywać — przycisk „Zapisy” znika.
+const ITEMS = ALL_ITEMS.filter(
+  (item) => !(tournamentCancelled && item.to === '/zapisy'),
+)
 
 const linkBase =
   'font-display text-xs uppercase tracking-[0.15em] transition-colors duration-200 xl:text-sm xl:tracking-[0.2em]'
